@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMFRoundRobinCandidateSelector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EMF Model Generator</a> &gt; <a href="index.source.html" class="el_package">io.github.lorenzobettini.emfmodelgenerator</a> &gt; <span class="el_source">EMFRoundRobinCandidateSelector.java</span></div><h1>EMFRoundRobinCandidateSelector.java</h1><pre class="source lang-java linenums">package io.github.lorenzobettini.emfmodelgenerator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+
+/**
+ * Abstract round-robin selector for EMF EObjects of a specified type.
+ * 
+ * @param &lt;K&gt; the type of ENamedElement used as key (e.g., EClassifier, EAttribute)
+ * @param &lt;V&gt; the type of EObject to be selected
+ */
+<span class="fc" id="L16">public abstract class EMFRoundRobinCandidateSelector&lt;K extends ENamedElement, V extends EObject&gt; implements EMFCandidateSelectorStrategy&lt;K, V&gt; {</span>
+
+<span class="fc" id="L18">	private final Map&lt;K, Integer&gt; nextIndexMap = new HashMap&lt;&gt;();</span>
+
+	/**
+	 * Get or compute the list of possible candidates for the specified key within
+	 * the resource set of the provided context EObject.
+	 * 
+	 * @param context the EObject providing the resource set context
+	 * @param type    the type key to retrieve candidates for
+	 * @return the list of possible candidates for the given key
+	 */
+	protected abstract List&lt;V&gt; getOrCompute(final EObject context, final K type);
+
+	/**
+	 * Get the next assignable candidate for the specified type using round-robin
+	 * selection.
+	 * 
+	 * &lt;p&gt;
+	 * The method maintains state to ensure that subsequent calls continue from
+	 * where the previous call left off, providing better distribution of candidates
+	 * across multiple invocations.
+	 * &lt;/p&gt;
+	 * 
+	 * The method relies on the {@link #getOrCompute(EObject, ENamedElement)} method
+	 * to retrieve the list of all possible candidates for the given type within the
+	 * resource set of the provided context EObject.
+	 * 
+	 * @param context the EObject whose resource set will be scanned for candidates
+	 * @param type    the type of candidate to select
+	 * @return the next candidate in round-robin order, or null if no candidates are
+	 *         available
+	 */
+	@Override
+	public V getNextCandidate(final EObject context, final K type) {
+<span class="fc" id="L51">		final List&lt;V&gt; allCandidates = getOrCompute(context, type);</span>
+
+		// If no candidates available, return null
+<span class="fc bfc" id="L54" title="All 2 branches covered.">		if (allCandidates.isEmpty()) {</span>
+<span class="fc" id="L55">			return null;</span>
+		}
+
+		// Get the current index for this type, defaulting to 0
+<span class="fc" id="L59">		final int currentIndex = nextIndexMap.getOrDefault(type, 0);</span>
+
+		// Get the next candidate
+<span class="fc" id="L62">		final V candidate = allCandidates.get(currentIndex);</span>
+
+		// Update the next index for this type (wrap around)
+<span class="fc" id="L65">		final int nextIndex = (currentIndex + 1) % allCandidates.size();</span>
+<span class="fc" id="L66">		nextIndexMap.put(type, nextIndex);</span>
+
+<span class="fc" id="L68">		return candidate;</span>
+	}
+
+	/**
+	 * Check if there are any candidates available for the specified type.
+	 * 
+	 * It relies on the {@link #getOrCompute(EObject, ENamedElement)} method to
+	 * retrieve the list of all possible candidates for the given type within the
+	 * resource set of the provided context EObject.
+	 * 
+	 * @param context the EObject providing the resource set context
+	 * @param type    the type to check candidates for
+	 * @return true if there are candidates available, false otherwise
+	 */
+	@Override
+	public boolean hasCandidates(final EObject context, final K type) {
+<span class="fc" id="L84">		final List&lt;V&gt; allCandidates = getOrCompute(context, type);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">		return !allCandidates.isEmpty();</span>
+	}
+
+	/**
+	 * Reset the round-robin state.
+	 */
+	@Override
+	public void reset() {
+<span class="fc" id="L93">		nextIndexMap.clear();</span>
+<span class="fc" id="L94">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

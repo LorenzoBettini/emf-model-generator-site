@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMFResourceHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EMF Model Generator</a> &gt; <a href="index.source.html" class="el_package">io.github.lorenzobettini.emfmodelgenerator</a> &gt; <span class="el_source">EMFResourceHelper.java</span></div><h1>EMFResourceHelper.java</h1><pre class="source lang-java linenums">package io.github.lorenzobettini.emfmodelgenerator;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+/**
+ * Helper class for managing EMF resources in a given ResourceSet,
+ * including resource creation with proper naming schemes and output directory management.
+ */
+public final class EMFResourceHelper {
+
+	private static final String DEFAULT_FILE_EXTENSION = &quot;xmi&quot;;
+
+	private final String outputDirectory;
+<span class="fc" id="L23">	private final Map&lt;String, Integer&gt; fileCounters = new HashMap&lt;&gt;();</span>
+	private final ResourceSet resourceSet;
+<span class="fc" id="L25">	private String filePrefix = &quot;&quot;;</span>
+<span class="fc" id="L26">	private String globalFileExtension = DEFAULT_FILE_EXTENSION;</span>
+<span class="fc" id="L27">	private final Map&lt;EClass, String&gt; eClassExtensions = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L28">	private final Map&lt;EPackage, String&gt; ePackageExtensions = new HashMap&lt;&gt;();</span>
+
+	/**
+	 * Create a new EMFResourceHelper with a specific ResourceSet and output directory.
+	 * 
+	 * @param resourceSet the ResourceSet to use for creating resources
+	 * @param outputDirectory the directory where XMI files will be created
+	 */
+<span class="fc" id="L36">	public EMFResourceHelper(final ResourceSet resourceSet, final String outputDirectory) {</span>
+<span class="fc" id="L37">		this.resourceSet = resourceSet;</span>
+<span class="fc" id="L38">		this.outputDirectory = outputDirectory;</span>
+<span class="fc" id="L39">	}</span>
+
+	/**
+	 * Set a prefix to be added to all generated file names.
+	 * @param string
+	 */
+	public void setFilePrefix(String string) {
+<span class="fc" id="L46">		this.filePrefix = string;</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Set the global file extension to be used for all generated files
+	 * when no specific extension is defined for an EClass or EPackage.
+	 * 
+	 * @param extension the file extension (without the dot)
+	 */
+	public void setGlobalFileExtension(String extension) {
+<span class="fc" id="L56">		this.globalFileExtension = extension;</span>
+<span class="fc" id="L57">	}</span>
+
+	/**
+	 * Set a custom file extension for a specific EClass.
+	 * This takes precedence over EPackage and global extensions.
+	 * 
+	 * @param eClass the EClass
+	 * @param extension the file extension (without the dot)
+	 */
+	public void setFileExtensionForEClass(EClass eClass, String extension) {
+<span class="fc" id="L67">		eClassExtensions.put(eClass, extension);</span>
+<span class="fc" id="L68">	}</span>
+
+	/**
+	 * Set a custom file extension for all EClasses in a specific EPackage.
+	 * This takes precedence over the global extension but is overridden by EClass-specific extensions.
+	 * 
+	 * @param ePackage the EPackage
+	 * @param extension the file extension (without the dot)
+	 */
+	public void setFileExtensionForEPackage(EPackage ePackage, String extension) {
+<span class="fc" id="L78">		ePackageExtensions.put(ePackage, extension);</span>
+<span class="fc" id="L79">	}</span>
+
+	/**
+	 * Get the file extension for a given EClass, using the hierarchical lookup:
+	 * EClass-specific -&gt; EPackage-specific -&gt; global -&gt; default.
+	 * 
+	 * @param eClass the EClass
+	 * @return the file extension (without the dot)
+	 */
+	public String getFileExtension(EClass eClass) {
+		// Check EClass-specific extension
+<span class="fc" id="L90">		var fileExtension = eClassExtensions.get(eClass);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">		if (fileExtension != null) {</span>
+<span class="fc" id="L92">			return fileExtension;</span>
+		}
+
+		// Check EPackage-specific extension
+<span class="fc" id="L96">		EPackage ePackage = eClass.getEPackage();</span>
+<span class="fc" id="L97">		fileExtension = ePackageExtensions.get(ePackage);</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">		if (fileExtension != null) {</span>
+<span class="fc" id="L99">			return fileExtension;</span>
+		}
+
+		// Fall back to global extension
+<span class="fc" id="L103">		return globalFileExtension;</span>
+	}
+
+	/**
+	 * Get the output directory.
+	 * 
+	 * @return the output directory path
+	 */
+	public String getOutputDirectory() {
+<span class="fc" id="L112">		return outputDirectory;</span>
+	}
+
+	/**
+	 * Get the ResourceSet.
+	 * 
+	 * @return the ResourceSet
+	 */
+	public ResourceSet getResourceSet() {
+<span class="fc" id="L121">		return resourceSet;</span>
+	}
+
+	/**
+	 * Create a new Resource in the ResourceSet with a file URI based on the EClass.
+	 * The file name follows the pattern: {packageName}_{className}_{counter}.xmi
+	 * 
+	 * @param eClass the EClass for which to create a resource
+	 * @return the created Resource
+	 */
+	public Resource createResource(final EClass eClass) {
+<span class="fc" id="L132">		EPackage ePackage = eClass.getEPackage();</span>
+<span class="fc" id="L133">		String fileName = generateFileName(ePackage, eClass);</span>
+<span class="fc" id="L134">		URI uri = createFileURI(fileName);</span>
+		
+<span class="fc" id="L136">		return resourceSet.createResource(uri);</span>
+	}
+
+	/**
+	 * Generate a file name for the given EClass following the naming convention.
+	 * Pattern: {filePrefix}{packageName}_{className}_{counter}.{extension}
+	 * The extension is determined using hierarchical lookup: EClass -&gt; EPackage -&gt; global -&gt; default.
+	 * 
+	 * @param ePackage the EPackage
+	 * @param eClass the EClass
+	 * @return the generated file name
+	 */
+	public String generateFileName(final EPackage ePackage, final EClass eClass) {
+<span class="fc" id="L149">		String eClassName = eClass.getName();</span>
+<span class="fc" id="L150">		int counter = fileCounters.getOrDefault(eClassName, 0) + 1;</span>
+<span class="fc" id="L151">		fileCounters.put(eClassName, counter);</span>
+<span class="fc" id="L152">		String extension = getFileExtension(eClass);</span>
+
+<span class="fc" id="L154">		return String.format(&quot;%s%s_%s_%d.%s&quot;, filePrefix, ePackage.getName(), eClassName, counter, extension);</span>
+	}
+
+	/**
+	 * Create a file URI for the given file name in the output directory.
+	 * The path is normalized to avoid &quot;.&quot; and &quot;..&quot; segments and converted to an absolute path.
+	 * 
+	 * @param fileName the file name (including extension)
+	 * @return the file URI
+	 */
+	public URI createFileURI(final String fileName) {
+<span class="fc" id="L165">		Path filePath = Paths.get(outputDirectory, fileName);</span>
+<span class="fc" id="L166">		return URI.createFileURI(filePath.toAbsolutePath()</span>
+<span class="fc" id="L167">				.normalize() // &quot;avoid &quot;.&quot; and &quot;..&quot;</span>
+<span class="fc" id="L168">				.toString());</span>
+	}
+
+	/**
+	 * Reset the file counters. Useful when starting a new generation cycle.
+	 */
+	public void resetCounters() {
+<span class="fc" id="L175">		fileCounters.clear();</span>
+<span class="fc" id="L176">	}</span>
+
+	/**
+	 * Get the current counter value for a specific EClass name.
+	 * 
+	 * @param eClassName the name of the EClass
+	 * @return the current counter value, or 0 if not yet set
+	 */
+	public int getCounter(final String eClassName) {
+<span class="fc" id="L185">		return fileCounters.getOrDefault(eClassName, 0);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

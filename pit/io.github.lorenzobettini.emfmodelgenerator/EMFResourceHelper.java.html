@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>EMFResourceHelper.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package io.github.lorenzobettini.emfmodelgenerator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.nio.file.Path;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.nio.file.Paths;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.HashMap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Map;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.common.util.URI;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.ecore.EClass;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.ecore.EPackage;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.ecore.resource.Resource;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.ecore.resource.ResourceSet;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Helper class for managing EMF resources in a given ResourceSet,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * including resource creation with proper naming schemes and output directory management.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public final class EMFResourceHelper {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;private static final String DEFAULT_FILE_EXTENSION = &#34;xmi&#34;;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;private final String outputDirectory;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;private final Map&#60;String, Integer&#62; fileCounters = new HashMap&#60;&#62;();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;private final ResourceSet resourceSet;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;private String filePrefix = &#34;&#34;;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;private String globalFileExtension = DEFAULT_FILE_EXTENSION;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;private final Map&#60;EClass, String&#62; eClassExtensions = new HashMap&#60;&#62;();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;private final Map&#60;EPackage, String&#62; ePackageExtensions = new HashMap&#60;&#62;();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Create a new EMFResourceHelper with a specific ResourceSet and output directory.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param resourceSet the ResourceSet to use for creating resources</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param outputDirectory the directory where XMI files will be created</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;public EMFResourceHelper(final ResourceSet resourceSet, final String outputDirectory) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;this.resourceSet = resourceSet;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;this.outputDirectory = outputDirectory;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Set a prefix to be added to all generated file names.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param string</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public void setFilePrefix(String string) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;this.filePrefix = string;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Set the global file extension to be used for all generated files</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * when no specific extension is defined for an EClass or EPackage.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param extension the file extension (without the dot)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public void setGlobalFileExtension(String extension) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;this.globalFileExtension = extension;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Set a custom file extension for a specific EClass.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * This takes precedence over EPackage and global extensions.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param eClass the EClass</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param extension the file extension (without the dot)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public void setFileExtensionForEClass(EClass eClass, String extension) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;eClassExtensions.put(eClass, extension);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Set a custom file extension for all EClasses in a specific EPackage.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * This takes precedence over the global extension but is overridden by EClass-specific extensions.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param ePackage the EPackage</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param extension the file extension (without the dot)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_76'/>
+76
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_76'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_77'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public void setFileExtensionForEPackage(EPackage ePackage, String extension) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_78'/>
+78
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_78'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;ePackageExtensions.put(ePackage, extension);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_80'/>
+80
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_80'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Get the file extension for a given EClass, using the hierarchical lookup:</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_83'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * EClass-specific -&#62; EPackage-specific -&#62; global -&#62; default.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_85'/>
+85
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_85'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param eClass the EClass</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the file extension (without the dot)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_88'/>
+88
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_88'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public String getFileExtension(EClass eClass) {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;// Check EClass-specific extension</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_90'/>
+90
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_90'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;var fileExtension = eClassExtensions.get(eClass);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_91'/>
+91
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_91'>1</a>
+<span>
+1. getFileExtension : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;if (fileExtension != null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_92'/>
+92
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_92'>1</a>
+<span>
+1. getFileExtension : replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getFileExtension &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;&#9;return fileExtension;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_93'/>
+93
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_93'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_95'/>
+95
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_95'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;// Check EPackage-specific extension</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_96'/>
+96
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_96'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;EPackage ePackage = eClass.getEPackage();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;fileExtension = ePackageExtensions.get(ePackage);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_98'/>
+98
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_98'>1</a>
+<span>
+1. getFileExtension : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;if (fileExtension != null) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_99'/>
+99
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_99'>1</a>
+<span>
+1. getFileExtension : replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getFileExtension &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;&#9;return fileExtension;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_100'/>
+100
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_100'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_102'/>
+102
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_102'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;// Fall back to global extension</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_103'/>
+103
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_103'>1</a>
+<span>
+1. getFileExtension : replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getFileExtension &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return globalFileExtension;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_104'/>
+104
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_104'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_105'/>
+105
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_105'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_106'/>
+106
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_106'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Get the output directory.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_108'/>
+108
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_108'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the output directory path</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_110'/>
+110
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_110'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public String getOutputDirectory() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_112'/>
+112
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_112'>1</a>
+<span>
+1. getOutputDirectory : replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getOutputDirectory &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return outputDirectory;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_113'/>
+113
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_113'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_115'/>
+115
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_115'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_116'/>
+116
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_116'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Get the ResourceSet.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_118'/>
+118
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_118'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the ResourceSet</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_120'/>
+120
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_120'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public ResourceSet getResourceSet() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_121'/>
+121
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_121'>1</a>
+<span>
+1. getResourceSet : replaced return value with null for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getResourceSet &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return resourceSet;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_122'/>
+122
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_122'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_123'/>
+123
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_123'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_125'/>
+125
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_125'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Create a new Resource in the ResourceSet with a file URI based on the EClass.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * The file name follows the pattern: {packageName}_{className}_{counter}.xmi</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_127'/>
+127
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_127'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_128'/>
+128
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_128'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param eClass the EClass for which to create a resource</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_129'/>
+129
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_129'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the created Resource</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_130'/>
+130
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_130'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_131'/>
+131
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_131'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public Resource createResource(final EClass eClass) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_132'/>
+132
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_132'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;EPackage ePackage = eClass.getEPackage();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_133'/>
+133
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_133'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;String fileName = generateFileName(ePackage, eClass);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_134'/>
+134
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_134'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;URI uri = createFileURI(fileName);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_135'/>
+135
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_135'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_136'/>
+136
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_136'>1</a>
+<span>
+1. createResource : replaced return value with null for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::createResource &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return resourceSet.createResource(uri);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_137'/>
+137
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_137'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_138'/>
+138
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_138'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_139'/>
+139
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_139'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_140'/>
+140
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_140'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Generate a file name for the given EClass following the naming convention.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_141'/>
+141
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_141'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Pattern: {filePrefix}{packageName}_{className}_{counter}.{extension}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_142'/>
+142
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_142'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * The extension is determined using hierarchical lookup: EClass -&#62; EPackage -&#62; global -&#62; default.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_143'/>
+143
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_143'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_144'/>
+144
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_144'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param ePackage the EPackage</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_145'/>
+145
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_145'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param eClass the EClass</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_146'/>
+146
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_146'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the generated file name</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_147'/>
+147
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_147'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_148'/>
+148
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_148'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public String generateFileName(final EPackage ePackage, final EClass eClass) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_149'/>
+149
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_149'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;String eClassName = eClass.getName();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_150'/>
+150
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_150'>1</a>
+<span>
+1. generateFileName : Replaced integer addition with subtraction &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;int counter = fileCounters.getOrDefault(eClassName, 0) + 1;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_151'/>
+151
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_151'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;fileCounters.put(eClassName, counter);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_152'/>
+152
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_152'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;String extension = getFileExtension(eClass);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_153'/>
+153
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_153'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_154'/>
+154
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_154'>1</a>
+<span>
+1. generateFileName : replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::generateFileName &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return String.format(&#34;%s%s_%s_%d.%s&#34;, filePrefix, ePackage.getName(), eClassName, counter, extension);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_155'/>
+155
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_155'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_156'/>
+156
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_156'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_157'/>
+157
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_157'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_158'/>
+158
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_158'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Create a file URI for the given file name in the output directory.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_159'/>
+159
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_159'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * The path is normalized to avoid &#34;.&#34; and &#34;..&#34; segments and converted to an absolute path.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_160'/>
+160
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_160'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_161'/>
+161
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_161'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param fileName the file name (including extension)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_162'/>
+162
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_162'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the file URI</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_163'/>
+163
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_163'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_164'/>
+164
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_164'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public URI createFileURI(final String fileName) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_165'/>
+165
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_165'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;Path filePath = Paths.get(outputDirectory, fileName);</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_166'/>
+166
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_166'>1</a>
+<span>
+1. createFileURI : replaced return value with null for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::createFileURI &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return URI.createFileURI(filePath.toAbsolutePath()</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_167'/>
+167
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_167'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;&#9;&#9;.normalize() // &#34;avoid &#34;.&#34; and &#34;..&#34;</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_168'/>
+168
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_168'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;&#9;&#9;&#9;.toString());</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_169'/>
+169
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_169'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_170'/>
+170
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_170'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_171'/>
+171
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_171'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_172'/>
+172
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_172'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Reset the file counters. Useful when starting a new generation cycle.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_173'/>
+173
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_173'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_174'/>
+174
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_174'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public void resetCounters() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_175'/>
+175
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_175'>1</a>
+<span>
+1. resetCounters : removed call to java/util/Map::clear &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;fileCounters.clear();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_176'/>
+176
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_176'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_177'/>
+177
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_177'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_178'/>
+178
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_178'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_179'/>
+179
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_179'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Get the current counter value for a specific EClass name.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_180'/>
+180
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_180'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_181'/>
+181
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_181'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param eClassName the name of the EClass</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_182'/>
+182
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_182'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the current counter value, or 0 if not yet set</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_183'/>
+183
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_183'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_184'/>
+184
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_184'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public int getCounter(final String eClassName) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_185'/>
+185
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_185'>1</a>
+<span>
+1. getCounter : replaced int return with 0 for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getCounter &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return fileCounters.getOrDefault(eClassName, 0);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_186'/>
+186
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_186'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@137d04d8_187'/>
+187
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_187'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_91'>91</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_91'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getFileExtension<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetDefaultFileExtension()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_92'>92</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_92'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getFileExtension<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetFileExtensionForEClass()]</span></span> replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getFileExtension &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_98'>98</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_98'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getFileExtension<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetDefaultFileExtension()]</span></span> negated conditional &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_99'>99</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_99'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getFileExtension<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetFileExtensionForEPackage()]</span></span> replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getFileExtension &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_103'>103</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_103'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getFileExtension<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetDefaultFileExtension()]</span></span> replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getFileExtension &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_112'>112</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_112'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getOutputDirectory<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldAllowCustomOutputDirectory()]</span></span> replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getOutputDirectory &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_121'>121</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_121'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getResourceSet<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldReturnConfiguredResourceSet()]</span></span> replaced return value with null for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getResourceSet &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_136'>136</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_136'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>createResource<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateResourceWithEClassSpecificExtension()]</span></span> replaced return value with null for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::createResource &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_150'>150</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_150'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>generateFileName<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGenerateFileNameWithCounter()]</span></span> Replaced integer addition with subtraction &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_154'>154</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_154'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>generateFileName<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGenerateFileNameWithCounter()]</span></span> replaced return value with &#34;&#34; for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::generateFileName &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_166'>166</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_166'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>createFileURI<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateFileURIInOutputDirectory()]</span></span> replaced return value with null for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::createFileURI &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_175'>175</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_175'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>resetCounters<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldResetCounters()]</span></span> removed call to java/util/Map::clear &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@137d04d8_185'>185</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@137d04d8_185'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getCounter<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetCounterValue()]</span></span> replaced int return with 0 for io/github/lorenzobettini/emfmodelgenerator/EMFResourceHelper::getCounter &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetDefaultFileExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetGlobalFileExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetFileExtensionForEPackage()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGenerateFileNameWithCounter()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldPrioritizeEPackageExtensionOverGlobal()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldIncrementCounterOnSubsequentCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldMaintainCountersAcrossDifferentExtensions()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldUseGlobalFileExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldResetCounters()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldMaintainSeparateCountersForDifferentEClasses()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldUseCustomExtensionWithFilePrefix()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGenerateFileNameWithPrefix()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldUseEPackageFileExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetCounterValue()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldPrioritizeEClassExtensionOverEPackage()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldUseProvidedResourceSet()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateMultipleResourcesWithIncrementingCounters()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateResourceWithCustomExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateResourceWithGeneratedName()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateResourceWithEPackageSpecificExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldFollowCompleteHierarchy()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldAddCreatedResourceToResourceSet()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithProgrammaticPackageNotPreRegistered()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetInstantiableSubclassSelectorStrategy()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFileExtensionForEPackage()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testOutputDirectoryConfiguration()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSaveWithOptions()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetEnumLiteralSelectorStrategy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSaveSkipsEcoreFiles()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageWithSingleEClass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFunctionForAttribute()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageSkipsAbstractClasses()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetGlobalFileExtension()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackageSkipsAbstractClass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromSimpleEClass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackage()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEClassWithNoSubclasses()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGeneratorWithExternalResourceSet()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetCrossReferenceCandidateSelectorStrategy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromClassInNestedSubpackage()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetMaxDepth()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromWithCrossPackageHierarchyUsingNsURI()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testReferenceToNonContainedType()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromClassInNestedSubpackageWithSchemaLocation()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetAttributeMaxCountFor()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetAttributeMultiValuedCount()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackageFindsEClassNotFirst()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithDifferentDataTypes()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:shouldAllowCustomSettersAndGenerateValidXMI()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomFunctionForBookAuthorsCrossReference()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testReferenceToNonContainedTypeMulti()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSkipAbstractAndInterfaceReferences()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testNodeDoesNotReferToItself()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFileExtensionHierarchy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromWithCrossPackageHierarchyUsingFileURI()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFunctionForContainmentReference()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomStrategyForBookAuthorsCrossReference()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromAbstractEClassWithConcreteSubclasses()] (14 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageFindsEClassesNotFirst()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:shouldPreventSelfReferencesWhenAllowCyclePolicyReturnsFalse()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetNonContainmentReferenceMultiValuedCount()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryWithSchemaLocationSeveralResources()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testTaskManagerWithEnumsAndSchemaLocation()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomContainmentsAcrossResourcesWithCustomSetter()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAttributeValue_FullCoverage()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithNestedContainmentAndCrossReferencesMultipleFiles()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetContainmentReferenceMultiValuedCount()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGraphimprovedWithSchemaLocation2()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetNonContainmentReferenceMaxCountFor()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testMutualDependenciesWithSchemaLocationMultipleInstances()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGraphimprovedWithSchemaLocation()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSingleAndMultiReferencesOfTheSameType()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageWithManyEClasses()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithNestedContainmentAndCrossReferences()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testWarehouse()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:shouldAllowSelectiveSelfReferencesInGraph()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromMultipleEClasses()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testMutualDependenciesWithSchemaLocation()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomContainmentsAcrossResourcesWithCustomFunction()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testLoadEcoreModelAndUnload()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageWithMultipleEClasses()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithNonUniqueReferences()] (12 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithReferences()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryWithSchemaLocation()] (16 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testDeepHierarchyWithSingleReferenceWithMultiOpposite()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackageWithNonEClassFirst()] (21 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFeatureMapSetter()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEClassWithMultipleSubclasses()] (30 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetGroupMemberSelectorStrategy()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFeatureMapMaxCountFor()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFunctionForFeatureMapGroupMember()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testEXTLibraryWithSchemaLocation()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFeatureMapDefaultMaxCount()] (23 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldPrioritizeEClassExtensionOverGlobal()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldUseEClassFileExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateResourceWithEClassSpecificExtension()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFileExtensionForEClass()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldAllowCustomOutputDirectory()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldReturnConfiguredOutputDirectory()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldGetFileExtensionForEClass()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldReturnZeroForUnusedClassName()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateFileURIInOutputDirectory()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldCreateFileURIWithCustomOutputDirectory()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFResourceHelperTest]/[method:shouldReturnConfiguredResourceSet()] (0 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.30.0 <a href='https://github.com/sponsors/hcoles'>support</a>
+
+</body>
+</html>

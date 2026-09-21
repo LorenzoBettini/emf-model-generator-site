@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMFCandidateSelectorStrategy.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EMF Model Generator</a> &gt; <a href="index.source.html" class="el_package">io.github.lorenzobettini.emfmodelgenerator</a> &gt; <span class="el_source">EMFCandidateSelectorStrategy.java</span></div><h1>EMFCandidateSelectorStrategy.java</h1><pre class="source lang-java linenums">package io.github.lorenzobettini.emfmodelgenerator;
+
+import org.eclipse.emf.ecore.ENamedElement;
+import org.eclipse.emf.ecore.EObject;
+
+/**
+ * Strategy interface for selecting EMF EObject candidates of a specified type.
+ * @param &lt;K&gt; the type of ENamedElement used as key (e.g., EClassifier, EAttribute)
+ * @param &lt;V&gt; the type of EObject to be selected
+ */
+public interface EMFCandidateSelectorStrategy&lt;K extends ENamedElement, V extends EObject&gt; {
+
+	/**
+	 * Get the next assignable candidate for the specified type.
+	 * 
+	 * @param context the EObject whose resource set will be scanned for candidates
+	 * @param type    the type of candidate to select
+	 * @return the next candidate, or null if no candidates are available
+	 */
+	V getNextCandidate(EObject context, K type);
+
+	/**
+	 * Check if there are any candidates available for the specified type.
+	 * 
+	 * @param context the EObject providing the resource set context
+	 * @param type    the type to check candidates for
+	 * @return true if there are candidates available, false otherwise
+	 */
+	boolean hasCandidates(EObject context, K type);
+
+	/**
+	 * Reset the internal state of the candidate selector.
+	 * The default implementation does nothing.
+	 */
+	default void reset() {
+		// Default implementation does nothing
+<span class="fc" id="L37">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

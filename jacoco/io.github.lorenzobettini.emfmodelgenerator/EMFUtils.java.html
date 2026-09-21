@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMFUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EMF Model Generator</a> &gt; <a href="index.source.html" class="el_package">io.github.lorenzobettini.emfmodelgenerator</a> &gt; <span class="el_source">EMFUtils.java</span></div><h1>EMFUtils.java</h1><pre class="source lang-java linenums">package io.github.lorenzobettini.emfmodelgenerator;
+
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.ExtendedMetaData;
+
+/**
+ * Utility class for EMF models: validation, checks, and other utility methods.
+ */
+public final class EMFUtils {
+
+	private EMFUtils() {
+		// Utility class, prevent instantiation
+	}
+
+	/**
+	 * Check if a resource is an Ecore resource.
+	 * A resource is considered an Ecore resource if it is not empty and its first content
+	 * element is an EPackage.
+	 *
+	 * @param resource the resource to check
+	 * @return true if the resource is an Ecore resource, false otherwise
+	 */
+	public static boolean isEcoreResource(final Resource resource) {
+<span class="fc bfc" id="L38" title="All 4 branches covered.">		return !resource.getContents().isEmpty() &amp;&amp; resource.getContents().get(0) instanceof EPackage;</span>
+	}
+
+	/**
+	 * Check if an EClass can be instantiated.
+	 * An EClass can be instantiated if it is neither abstract nor an interface.
+	 *
+	 * @param eClass the EClass to check (must not be null)
+	 * @return true if the EClass can be instantiated, false otherwise
+	 */
+	public static boolean canBeInstantiated(final EClass eClass) {
+<span class="fc bfc" id="L49" title="All 4 branches covered.">		return !eClass.isAbstract() &amp;&amp; !eClass.isInterface();</span>
+	}
+
+	/**
+	 * Check if an EReference is valid for processing.
+	 * A reference is valid if it is changeable, not derived, and not a container reference.
+	 *
+	 * @param reference the EReference to check
+	 * @return true if the reference is valid for processing, false otherwise
+	 */
+	public static boolean isValidReference(final EReference reference) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		return isValidCommon(reference)</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">				&amp;&amp; !reference.isContainer();</span>
+	}
+
+	/**
+	 * Check if an EAttribute is valid for processing.
+	 * An attribute is valid if it is changeable, not derived, and not a feature map.
+	 * Feature maps require special handling and should not be processed as regular attributes.
+	 *
+	 * @param attribute the EAttribute to check
+	 * @return true if the attribute is valid for processing, false otherwise
+	 */
+	public static boolean isValidAttribute(final EAttribute attribute) {
+<span class="fc bfc" id="L73" title="All 4 branches covered.">		return isValidCommon(attribute) &amp;&amp; !isFeatureMap(attribute);</span>
+	}
+
+	/**
+	 * Check if an EStructuralFeature is a feature map.
+	 * A feature map is an attribute with type EFeatureMapEntry.
+	 *
+	 * @param feature the EStructuralFeature to check
+	 * @return true if the feature is a feature map, false otherwise
+	 */
+	public static boolean isFeatureMap(final EStructuralFeature feature) {
+<span class="fc bfc" id="L84" title="All 2 branches covered.">		return feature instanceof EAttribute attribute &amp;&amp;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">				attribute.getEAttributeType() == EcorePackage.Literals.EFEATURE_MAP_ENTRY;</span>
+	}
+
+	private static boolean isValidCommon(final EStructuralFeature feature) {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		return feature != null </span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">				&amp;&amp; feature.isChangeable() </span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">				&amp;&amp; !feature.isDerived();</span>
+	}
+
+	/**
+	 * Get the value of a multi-valued feature as a list of EObjects.
+	 * 
+	 * @param instance the EObject instance
+	 * @param feature the multi-valued EStructuralFeature
+	 * @return the list of EObjects for the feature
+	 */
+	public static List&lt;EObject&gt; getAsEObjectsList(EObject instance, EStructuralFeature feature) {
+		@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L103">		var list = (List&lt;EObject&gt;) instance.eGet(feature);</span>
+<span class="fc" id="L104">		return list;</span>
+	}
+
+	/**
+	 * Get the value of a multi-valued feature as a list.
+	 *
+	 * @param instance the EObject instance
+	 * @param feature the multi-valued EStructuralFeature
+	 * @return the list of values for the feature
+	 */
+	public static List&lt;Object&gt; getAsList(EObject instance, EStructuralFeature feature) {
+		@SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L116">		var list = (List&lt;Object&gt;) instance.eGet(feature);</span>
+<span class="fc" id="L117">		return list;</span>
+	}
+
+	/**
+	 * Calculate the effective count of values to generate for a multi-valued feature.
+	 * This respects both the lower and upper bounds of the feature.
+	 * 
+	 * &lt;p&gt;The method returns a count that satisfies the following constraints:
+	 * &lt;ul&gt;
+	 * &lt;li&gt;If the feature has an upper bound (not -1), the count will not exceed it&lt;/li&gt;
+	 * &lt;li&gt;If the feature has a lower bound, the count will be at least that value&lt;/li&gt;
+	 * &lt;li&gt;If both bounds are set, the count will be within the range [lowerBound, upperBound]&lt;/li&gt;
+	 * &lt;/ul&gt;
+	 * &lt;/p&gt;
+	 * 
+	 * &lt;p&gt;Examples:
+	 * &lt;ul&gt;
+	 * &lt;li&gt;defaultCount=5, lowerBound=0, upperBound=3 → returns 3&lt;/li&gt;
+	 * &lt;li&gt;defaultCount=2, lowerBound=5, upperBound=-1 → returns 5&lt;/li&gt;
+	 * &lt;li&gt;defaultCount=10, lowerBound=2, upperBound=4 → returns 4&lt;/li&gt;
+	 * &lt;/ul&gt;
+	 * &lt;/p&gt;
+	 * 
+	 * @param feature the feature to calculate the count for
+	 * @param defaultCount the default count to use if bounds do not restrict it
+	 * @return the number of values to generate, respecting the feature's bounds
+	 */
+	public static int getEffectiveCount(final EStructuralFeature feature, final int defaultCount) {
+<span class="fc" id="L145">		final int lowerBound = feature.getLowerBound();</span>
+<span class="fc" id="L146">		final int upperBound = feature.getUpperBound();</span>
+		
+<span class="fc" id="L148">		int count = defaultCount;</span>
+		
+		// Respect upper bound if it's set (not -1 for unbounded)
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (upperBound &gt; 0) {</span>
+<span class="fc" id="L152">			count = Math.min(count, upperBound);</span>
+		}
+		
+		// Respect lower bound
+<span class="fc" id="L156">		count = Math.max(count, lowerBound);</span>
+		
+<span class="fc" id="L158">		return count;</span>
+	}
+
+	/**
+	 * Finds all instantiable subclasses of the given EClass by scanning the EMF global
+	 * package registry. This includes the EClass itself if it is instantiable (not
+	 * abstract and not an interface). 
+	 * 
+	 * &lt;p&gt;
+	 * This method uses the global {@link EPackage.Registry#INSTANCE} to find all registered
+	 * EPackages and scans their contents for subclasses, including all nested subpackages
+	 * recursively. This approach works even when EClasses are in different resources or
+	 * not in a resource set.
+	 * &lt;/p&gt;
+	 * 
+	 * &lt;p&gt;
+	 * The method identifies subclasses based on both direct inheritance and conceptual
+	 * identity (i.e., same conceptual ID, {@link #conceptualId(EClass)}). This allows it to find
+	 * subclasses for which the object identity is not the same due to different resource loading contexts.
+	 * For example, when the inheritance hierarchy spans multiple resources or when EClasses are
+	 * loaded in different resource sets (the Ecores use file-based URIs).
+	 * &lt;/p&gt;
+	 * 
+	 * &lt;p&gt;
+	 * For example, if C extends B and B extends A (all instantiable), calling this
+	 * method with A will return a collection containing [A, B, C].
+	 * &lt;/p&gt;
+	 * 
+	 * @param eClass the EClass for which to find subclasses
+	 * @return a list of all instantiable subclasses in the hierarchy, including the
+	 *         EClass itself if instantiable
+	 */
+	public static List&lt;EClass&gt; findAllInstantiableSubclasses(final EClass eClass) {
+<span class="fc" id="L191">		final Set&lt;EClass&gt; result = new LinkedHashSet&lt;&gt;();</span>
+
+		// First, add the EClass itself if it's instantiable
+<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (canBeInstantiated(eClass)) {</span>
+<span class="fc" id="L195">			result.add(eClass);</span>
+		}
+
+<span class="fc" id="L198">		var conceptualId = conceptualId(eClass);</span>
+
+		// Iterate over all registered EPackages in the global registry
+		// Sort keys to ensure deterministic order
+<span class="fc" id="L202">		final var registry = EPackage.Registry.INSTANCE;</span>
+<span class="fc" id="L203">		registry.keySet().stream()</span>
+<span class="fc" id="L204">			.sorted()</span>
+<span class="fc" id="L205">			.forEach(nsURI -&gt; {</span>
+<span class="fc" id="L206">				var ePackage = registry.getEPackage(nsURI);</span>
+				// Scan the EPackage's resource for subclasses
+<span class="fc" id="L208">				scanResourceForSubclasses(ePackage, eClass, conceptualId, result);</span>
+<span class="fc" id="L209">			});</span>
+
+<span class="fc" id="L211">		return List.copyOf(result);</span>
+	}
+
+	/**
+	 * Helper method to scan an EPackage's EClasses for subclasses of the given EClass.
+	 * This method recursively scans all subpackages.
+	 * 
+	 * @param ePackage the EPackage to scan
+	 * @param eClass the base EClass
+	 * @param conceptualId the conceptual ID of the base EClass
+	 * @param result the set to add found subclasses to
+	 */
+	private static void scanResourceForSubclasses(final EPackage ePackage, final EClass eClass, 
+			String conceptualId, final Set&lt;EClass&gt; result) {
+<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
+			// Check if this candidate is a subclass of the given eClass
+			// isSuperTypeOf returns true if eClass is a supertype of candidate (or they are equal)
+			// We need to exclude the eClass itself since we already added it
+			// We also check conceptual identity to catch cases where object identity differs
+			// due to different resource loading contexts
+<span class="fc bfc" id="L231" title="All 4 branches covered.">			if (classifier instanceof final EClass candidate &amp;&amp;</span>
+					candidate != eClass &amp;&amp;
+<span class="fc bfc" id="L233" title="All 2 branches covered.">					canBeInstantiated(candidate)) {</span>
+<span class="fc" id="L234">				var allSuperTypes = candidate.getEAllSuperTypes();</span>
+<span class="fc" id="L235">				if (allSuperTypes.stream()</span>
+<span class="fc bfc" id="L236" title="All 4 branches covered.">						.anyMatch(superType -&gt; superType == eClass ||</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">								conceptualId(superType).equals(conceptualId))) {</span>
+<span class="fc" id="L238">					result.add(candidate);</span>
+				}
+			}
+<span class="fc" id="L241">		}</span>
+		
+		// Recursively scan subpackages
+<span class="fc bfc" id="L244" title="All 2 branches covered.">		for (var subPackage : ePackage.getESubpackages()) {</span>
+<span class="fc" id="L245">			scanResourceForSubclasses(subPackage, eClass, conceptualId, result);</span>
+<span class="fc" id="L246">		}</span>
+<span class="fc" id="L247">	}</span>
+
+	/**
+	 * Get the conceptual ID of an EClass, defined as &quot;EPackageNsURI::EClassName&quot;.
+	 * 
+	 * @param eClass the EClass for which to compute the conceptual ID
+	 * @return the conceptual ID
+	 */
+	private static String conceptualId(EClass eClass) {
+<span class="fc" id="L256">		return String.format(&quot;%s::%s&quot;, eClass.getEPackage().getNsURI(), eClass.getName());</span>
+	}
+
+	/**
+	 * Find all instances of the given EClass (or its subclasses) based on the
+	 * context EObject's containment situation.
+	 * 
+	 * &lt;p&gt;
+	 * This method scans for instances based on where the context EObject is stored:
+	 * &lt;/p&gt;
+	 * &lt;ul&gt;
+	 * &lt;li&gt;&lt;b&gt;Context in a resource set&lt;/b&gt;: Scans all non-Ecore resources in the
+	 * resource set. Ecore resources (metamodel definitions whose first content is
+	 * an EPackage) are skipped.&lt;/li&gt;
+	 * &lt;li&gt;&lt;b&gt;Context in a single resource (not in a resource set)&lt;/b&gt;: Scans only
+	 * that resource's contents.&lt;/li&gt;
+	 * &lt;li&gt;&lt;b&gt;Context not in a resource&lt;/b&gt;: Scans the root container's (obtained via
+	 * {@link EcoreUtil#getRootContainer(EObject)}) direct and indirect contents.&lt;/li&gt;
+	 * &lt;/ul&gt;
+	 * 
+	 * &lt;p&gt;
+	 * When the context is in a resource set, this method scans the resource set
+	 * where the context EObject is stored, not the resource set of the EClass.
+	 * This is important because EObjects (model instances) and their EClasses
+	 * (metamodel) can be stored in different resource sets, which is a common
+	 * pattern in EMF.
+	 * &lt;/p&gt;
+	 * 
+	 * @param context the EObject that defines the search scope
+	 * @param eClass  the EClass to search instances for (including subclass
+	 *                instances)
+	 * @return a list of all EObjects in the context's scope that are instances of
+	 *         the given EClass
+	 */
+	public static List&lt;EObject&gt; findAllAssignableInstances(final EObject context, final EClass eClass) {
+<span class="fc" id="L291">		final Set&lt;EObject&gt; result = new LinkedHashSet&lt;&gt;();</span>
+
+<span class="fc" id="L293">		final Resource contextResource = context.eResource();</span>
+
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		if (contextResource == null) {</span>
+			// Context not in a resource: scan the root container's contents
+<span class="fc" id="L297">			scanEObjectRootContainerContents(context, eClass, result);</span>
+		} else {
+<span class="fc" id="L299">			final ResourceSet resourceSet = contextResource.getResourceSet();</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">			if (resourceSet == null) {</span>
+				// Context in a single resource (not in a resource set): scan only that resource
+<span class="fc" id="L302">				scanResource(contextResource, eClass, result);</span>
+			} else {
+				// Context in a resource set: scan all non-Ecore resources
+<span class="fc bfc" id="L305" title="All 2 branches covered.">				for (Resource resource : resourceSet.getResources()) {</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">					if (isEcoreResource(resource)) {</span>
+<span class="fc" id="L307">						continue;</span>
+					}
+<span class="fc" id="L309">					scanResource(resource, eClass, result);</span>
+<span class="fc" id="L310">				}</span>
+			}
+		}
+
+<span class="fc" id="L314">		return List.copyOf(result);</span>
+	}
+
+	/**
+	 * Scan a resource for instances of the given EClass.
+	 * 
+	 * @param resource the resource to scan
+	 * @param eClass   the EClass to search instances for
+	 * @param result   the set to add found instances to
+	 */
+	private static void scanResource(final Resource resource, final EClass eClass, final Set&lt;EObject&gt; result) {
+<span class="fc" id="L325">		scanIterator(EcoreUtil.getAllContents(resource, true), eClass, result);</span>
+<span class="fc" id="L326">	}</span>
+
+	/**
+	 * Scan the root container of an EObject and its contents for instances of the given EClass.
+	 * This method retrieves the root container of the context (using EcoreUtil.getRootContainer)
+	 * and then scans its entire containment tree.
+	 * 
+	 * @param context the EObject whose root container will be scanned
+	 * @param eClass  the EClass to search instances for
+	 * @param result  the set to add found instances to
+	 */
+	private static void scanEObjectRootContainerContents(final EObject context, final EClass eClass, final Set&lt;EObject&gt; result) {
+<span class="fc" id="L338">		final EObject rootContainer = EcoreUtil.getRootContainer(context);</span>
+		// Check the root container itself
+<span class="fc" id="L340">		addIfInstance(rootContainer, eClass, result);</span>
+		// Iterate through all contents of the root container
+<span class="fc" id="L342">		scanIterator(EcoreUtil.getAllContents(rootContainer, true), eClass, result);</span>
+<span class="fc" id="L343">	}</span>
+
+	/**
+	 * Add an EObject to the result set if it is an instance of the given EClass.
+	 * 
+	 * @param candidate the EObject to check
+	 * @param eClass    the EClass to check against
+	 * @param result    the set to add the candidate to if it matches
+	 */
+	private static void addIfInstance(final EObject candidate, final EClass eClass, final Set&lt;EObject&gt; result) {
+<span class="fc bfc" id="L353" title="All 2 branches covered.">		if (eClass.isInstance(candidate)) {</span>
+<span class="fc" id="L354">			result.add(candidate);</span>
+		}
+<span class="fc" id="L356">	}</span>
+
+	/**
+	 * Scan an iterator of EObjects and add instances of the given EClass to the result set.
+	 * 
+	 * @param iterator the iterator of EObjects to scan
+	 * @param eClass   the EClass to search instances for
+	 * @param result   the set to add found instances to
+	 */
+	private static void scanIterator(final Iterator&lt;EObject&gt; iterator, final EClass eClass, final Set&lt;EObject&gt; result) {
+<span class="fc bfc" id="L366" title="All 2 branches covered.">		while (iterator.hasNext()) {</span>
+<span class="fc" id="L367">			addIfInstance(iterator.next(), eClass, result);</span>
+		}
+<span class="fc" id="L369">	}</span>
+
+	/**
+	 * Check if it is possible to set the given value to the given reference, based on the assumption that from the type system perspective it is already possible.
+	 * 
+	 * If the reference has no opposite, then it is always possible to set the value.
+	 * 
+	 * If the value's EClass has no such opposite reference, then it is always possible to set the value.
+	 * 
+	 * If the opposite reference is single-valued, then it is possible to set the value only if the value's opposite is not set.
+	 * 
+	 * If the opposite reference is multi-valued, then it is possible to add the value only if the value's list has not already reached
+	 * the upper bound (if any).
+	 * 
+	 * @param reference
+	 * @param value
+	 * @return true if it is possible to set the value to the reference, false otherwise
+	 */
+	public static boolean canSetInThePresenceOfOppositeReference(EReference reference, EObject value) {
+<span class="fc" id="L388">		EReference opposite = reference.getEOpposite();</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">		if (opposite == null) {</span>
+<span class="fc" id="L390">			return true;</span>
+		}
+		// check whether the value's EClass has such an opposite reference
+<span class="fc bfc" id="L393" title="All 2 branches covered.">		if (!value.eClass().getEAllReferences().contains(opposite)) {</span>
+<span class="fc" id="L394">			return true;</span>
+		}
+<span class="fc bfc" id="L396" title="All 2 branches covered.">		if (opposite.isMany()) {</span>
+			// multi-valued opposite reference
+<span class="fc" id="L398">			var list = getAsList(value, opposite);</span>
+<span class="fc" id="L399">			final int upperBound = opposite.getUpperBound();</span>
+<span class="fc bfc" id="L400" title="All 4 branches covered.">			return (upperBound == -1 || list.size() &lt; upperBound);</span>
+		} else {
+			// single-valued opposite reference
+<span class="fc bfc" id="L403" title="All 2 branches covered.">			return !value.eIsSet(opposite);</span>
+		}
+	}
+
+	/**
+	 * Find all references that are part of the given feature map group.
+	 * These are references with ExtendedMetaData annotation pointing to the feature map.
+	 *
+	 * @param featureMapAttribute the feature map attribute
+	 * @return list of references that are part of the group
+	 */
+	public static List&lt;EReference&gt; findFeatureMapGroupMembers(final EAttribute featureMapAttribute) {
+<span class="fc" id="L415">		final var groupMembers = new java.util.ArrayList&lt;EReference&gt;();</span>
+<span class="fc" id="L416">		final var extendedMetaData = ExtendedMetaData.INSTANCE;</span>
+<span class="fc" id="L417">		final var eClass = featureMapAttribute.getEContainingClass();</span>
+		
+		// Iterate through all references to find group members
+<span class="fc bfc" id="L420" title="All 2 branches covered.">		for (var reference : eClass.getEAllReferences()) {</span>
+			// Check if this feature is part of the feature map group
+<span class="fc" id="L422">			final EStructuralFeature group = extendedMetaData.getGroup(reference);</span>
+<span class="fc bfc" id="L423" title="All 4 branches covered.">			if (group != null &amp;&amp; group.equals(featureMapAttribute)) {</span>
+<span class="fc" id="L424">				groupMembers.add(reference);</span>
+			}
+<span class="fc" id="L426">		}</span>
+		
+<span class="fc" id="L428">		return groupMembers;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

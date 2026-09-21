@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>EMFAbstractCachedRoundRobinCandidateSelector.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package io.github.lorenzobettini.emfmodelgenerator;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.HashMap;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.List;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Map;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.ecore.ENamedElement;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.eclipse.emf.ecore.EObject;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * Abstract base class for cached round-robin candidate selectors.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;This class provides caching functionality for round-robin candidate selectors,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * storing the computed candidate lists in an internal map to avoid redundant</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * computations. Subclasses only need to implement the {@link #compute(EObject, ENamedElement)}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * method to define how candidates are computed for a given key.&#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * &#60;p&#62;The cache is not exposed to subclasses, maintaining encapsulation and ensuring</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * that all cache operations are managed by this base class.&#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;K&#62; the type of ENamedElement used as key (e.g., EClass, EAttribute)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> * @param &#60;V&#62; the type of EObject to be selected</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>public abstract class EMFAbstractCachedRoundRobinCandidateSelector&#60;K extends ENamedElement, V extends EObject&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;&#9;extends EMFRoundRobinCandidateSelector&#60;K, V&#62; {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Internal cache storing computed candidate lists for each key.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * This cache is not exposed to subclasses.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;private final Map&#60;K, List&#60;V&#62;&#62; cache = new HashMap&#60;&#62;();</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Compute the list of candidates for the specified key.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * This method is called by {@link #getOrCompute(EObject, ENamedElement)}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * when the key is not present in the cache.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param context the EObject providing context for the computation</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param key the key for which to compute candidates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the list of candidates for the given key</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;protected abstract List&#60;V&#62; compute(EObject context, K key);</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Get or compute the list of candidates for the specified key.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * &#60;p&#62;If candidates for the given key are already cached, they are returned</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * immediately. Otherwise, the {@link #compute(EObject, ENamedElement)} method is</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * called to compute the candidates, which are then cached and returned.&#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * &#60;p&#62;Note: The context is captured by the lambda passed to computeIfAbsent,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * but the caching is based solely on the key. This means that the same cached</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * result is used regardless of which context is provided in subsequent calls</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * with the same key.&#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param context the EObject providing context</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @param key     the key for which to get candidates</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * @return the list of candidates for the given key</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;@Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;protected List&#60;V&#62; getOrCompute(final EObject context, final K key) {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_62'/>
+62
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_62'>2</a>
+<span>
+1. getOrCompute : replaced return value with Collections.emptyList for io/github/lorenzobettini/emfmodelgenerator/EMFAbstractCachedRoundRobinCandidateSelector::getOrCompute &rarr; KILLED<br/>
+2. lambda$getOrCompute$0 : replaced return value with Collections.emptyList for io/github/lorenzobettini/emfmodelgenerator/EMFAbstractCachedRoundRobinCandidateSelector::lambda$getOrCompute$0 &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;return cache.computeIfAbsent(key, k -&#62; compute(context, k));</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;/**</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * Reset all caches and state.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * &#60;p&#62;Clears both the candidates cache and the round-robin state. This is useful</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * when the model changes, ensuring that candidates are recomputed on the next call</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; * to {@link #getNextCandidate(EObject, ENamedElement)}.&#60;/p&#62;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_71'/>
+71
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_71'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9; */</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;@Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>&#9;public void reset() {</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_74'/>
+74
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_74'>1</a>
+<span>
+1. reset : removed call to io/github/lorenzobettini/emfmodelgenerator/EMFRoundRobinCandidateSelector::reset &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;super.reset();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_75'/>
+75
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_75'>1</a>
+<span>
+1. reset : removed call to java/util/Map::clear &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>&#9;&#9;cache.clear();</span></pre></td></tr>
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_76'/>
+76
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_76'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>&#9;}</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@548f4f60_77'/>
+77
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_77'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@548f4f60_62'>62</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_62'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getOrCompute<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldResetRoundRobinStateOnReset()]</span></span> replaced return value with Collections.emptyList for io/github/lorenzobettini/emfmodelgenerator/EMFAbstractCachedRoundRobinCandidateSelector::getOrCompute &rarr; KILLED</span>
+</div> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>lambda$getOrCompute$0<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldResetRoundRobinStateOnReset()]</span></span> replaced return value with Collections.emptyList for io/github/lorenzobettini/emfmodelgenerator/EMFAbstractCachedRoundRobinCandidateSelector::lambda$getOrCompute$0 &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@548f4f60_74'>74</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_74'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>reset<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldResetStateAndRecomputeCandidatesAfterReset()]</span></span> removed call to io/github/lorenzobettini/emfmodelgenerator/EMFRoundRobinCandidateSelector::reset &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@548f4f60_75'>75</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@548f4f60_75'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>reset<br/><b>Killed by : </b>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldResetCacheAndRecompute()]</span></span> removed call to java/util/Map::clear &rarr; KILLED</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldCacheCandidatesAndNotRecomputeOnSubsequentCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldResetRoundRobinStateOnReset()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldCacheIndependentlyForDifferentKeys()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldResetCacheAndRecompute()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFAbstractCachedRoundRobinCandidateSelectorTest]/[method:shouldHandleEmptyCandidatesList()] (134 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldReturnNullWhenNoCandidatesForDifferentType()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldReturnNullWhenNoCandidatesExist()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testHasCandidates_WithGroupMembers()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldReturnSingleCandidateWhenOnlyOneExists()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testHasCandidates_WithoutGroupMembers()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldCacheCandidatesAcrossCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldResetStateAndRecomputeCandidatesAfterReset()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldReturnSameSingleCandidateOnMultipleCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldReturnCandidatesInOrderTheyAreFoundInResourceSet()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldHandleInterleavedRequestsForDifferentTypes()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldHandleMultipleResetCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldWrapAroundWhenReachingEndOfCandidates()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldReturnCandidatesInRoundRobinOrder()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testGetNextCandidate_EmptyGroupMembers()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldHandleResetWithEmptyCache()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testReset_ClearsState()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldResetStateForAllTypes()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testGetNextCandidate_RoundRobinSelection()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnNullWhenOnlyInterfaceExists()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldMaintainSeparateStateForDifferentTypes()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldContinueRoundRobinAcrossMultipleCycles()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldNotSetWhenNoInstantiableSubclasses()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldRecomputeCandidatesAfterResetWhenNewElementsAdded()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldNotSetSingleValuedReferenceWhenNoExistingInstance()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnSelfWhenConcreteClassHasNoSubclasses()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testReset_ClearsCache()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnNullWhenNoInstantiableSubclassesExist()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleClassWithOnlyAbstractSubclasses()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnOnlyConcreteSubclassWhenAbstractHasOneSubclass()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEObjectCandidateSelectorTest]/[method:shouldIncludeSubclassInstances()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnSameCandidateOnMultipleCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleResetWithEmptyCache()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleMultipleInheritance()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleInterleavedRequestsForDifferentTypes()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldResetStateAndRecomputeCandidatesAfterReset()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldIncludeAllConcreteSubclassesInHierarchy()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldCacheCandidatesAcrossCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldAllowSelfReferenceWhenOverridden()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldNotAllowSelfReferenceByDefault()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testSetInstantiableSubclassSelectorStrategy()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnConsistentOrderAcrossMultipleCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testSetFeatureCreatingEObjectsCallsSetFeature()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldContinueRoundRobinAcrossMultipleCycles()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleMultipleResetCalls()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldResetStateForAllTypes()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testSetFeatureCreatingEObjectsWithMultiValuedReference()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldExcludeAbstractAndInterfaceClasses()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldWrapAroundWhenReachingEndOfCandidates()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldCacheInstantiableSubclasses()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleDiamondInheritance()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testSetFeatureCreatingEObjectsWithSingleValuedReference()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:testSetAllowCyclePolicy()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldHandleDeepInheritanceHierarchy()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldRecomputeCandidatesAfterResetWhenNewSubclassesAdded()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testSetFeatureCreatingEObjectsReturnsCreatedEObjects()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetSingleValuedReferenceWithExistingInstance()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testGetNextCandidate_SingleGroupMember()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldReturnCandidatesInRoundRobinOrder()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldResetRoundRobinSelection()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldFallBackToRoundRobinWhenCustomFunctionReturnsNullForSingleValued()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldHandleResetWithNoReferences()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinFeatureMapGroupMemberSelectorTest]/[method:testMultipleFeatureMaps_IndependentState()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFRoundRobinEClassCandidateSelectorTest]/[method:shouldMaintainSeparateStateForDifferentTypes()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testSetFeatureCreatingEObjectsClearsCreatedEObjects()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldUseRoundRobinSelectionForMultipleReferences()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstanceCreatorFeatureSetterTest]/[method:testCreateInstanceWithCustomFunctionReturningNull()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldAllowSelfReferenceForMultiValuedWhenOverridden()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldHandleAllCandidatesFilteredByOppositeReference()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldRecomputeCandidatesAfterReset()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldHandleUnboundedMultiplicity()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_WithAbstractReferenceType()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_SingleValued_ContainerIsSet()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSkipExistingInstanceWithMultiValuedOppositeAtUpperBound()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_SingleValued()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldWrapAroundInRoundRobinSelection()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_WithAbstractReferenceType()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldAllowDuplicatesForNonUniqueReferences()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldOnlyAddMissingItemsWhenSomeAlreadyPresent()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldRespectUpperBound()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldNotAllowDuplicatesForUniqueReferences()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldRespectLowerBound()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldUseRoundRobinForMultiValuedReferences()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldFallBackToRoundRobinWhenCustomFunctionReturnsInvalidCandidate()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetMultiValuedReferenceWithExistingInstances()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetDefaultMaxCount()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldMixSelfReferenceWithOthersInMultiValued()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSkipAlreadyPresentCandidatesAndContinueWithOthers()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultipleInvocations()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_SingleValued_UsesFirstSubclass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetDefaultMaxCount()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldUseMultipleValidExistingInstancesForMultiValuedReference()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldUseExistingSubclassInstances()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_WithLowerBound()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_WithOppositeReference_SingleValued()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_WithUpperBound()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_WithBothBounds()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_ContainersAreSet()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_WithCustomFunctionReturningNull_MultiValued()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_RoundRobinExactMatch()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_WithOppositeReference()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldFallBackToRoundRobinWhenCustomFunctionReturnsNullForMultiValued()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_RoundRobinWithTwoSubclasses()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_DefaultCount()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testSetGroupMemberSelectorStrategy()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_MultiValued_RoundRobinWithThreeSubclasses()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testFeatureMapMaxCountConfiguration()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testFeatureMapEntriesHaveCorrectTypes()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetAllowCyclePolicy()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testSetFeatureMapClearsCreatedEObjects()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_WithCustomFunctionReturningNull_SingleValued()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFContainmentReferenceSetterTest]/[method:testSetContainmentReference_SingleValued_WithRoundRobin()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testResetClearsGroupMemberSelectorState()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldFilterOutInvalidCrossReference()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldFilterOutInvalidContainmentReference()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testFeatureMapWithDifferentGroupMembers()] (14 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetCrossReferencesWithBookInSeparateResourceFromAuthor()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetterTest]/[method:testSetFeatureMapPopulatesFeatureMap()] (17 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldReturnCreatedObjectsAtMaxDepthForCrossReferences()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetCrossReferenceMaxCountFor()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetCrossReferenceDefaultMaxCount()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetCrossReferencesInSingleResourceWithLibraryBooksAndAuthors()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldRespectMaxDepthOne()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateGraphNodesWithDifferentOutgoingReferences()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetCrossReferencesWithBookInSeparateResourceFromLibrary()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldHitMaxDepthBranchWithHighMaxDepth()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldNotSetMultiValuedReferenceWhenNoExistingInstances()] (34 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCustomCrossReferenceSetter()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCustomContainmentReferenceSetter()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateEObjectAndPreserveContainmentReferences()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateLibraryWithContainmentReferences()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateSimpleLibraryWithCrossReferences()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetContainmentReferenceDefaultMaxCount()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateLibraryWithCrossReferences()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateDifferentEClassesIndependently()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetContainmentReferenceMaxCountFor()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCustomFunctionForContainmentReference()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldResetNonContainmentReferenceSelectorBetweenPopulations()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldRespectConfiguredContainmentReferenceMultiValuedCount()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCustomFunctionForCrossReference()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateSimpleLibraryWithMultipleBooks()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateEObjectWithComplexStructure()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetCrossReferenceCandidateSelectorStrategy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetMaxDepth()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromClassInNestedSubpackage()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateSimpleLibraryMultipleResourcesFullTextBlock()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testReferenceToNonContainedType()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromClassInNestedSubpackageWithSchemaLocation()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCombinationOfCustomSetters()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromWithCrossPackageHierarchyUsingNsURI()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:shouldAllowCustomSettersAndGenerateValidXMI()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSkipAbstractAndInterfaceReferences()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomFunctionForBookAuthorsCrossReference()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testNodeDoesNotReferToItself()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testReferenceToNonContainedTypeMulti()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFileExtensionHierarchy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromWithCrossPackageHierarchyUsingFileURI()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFunctionForContainmentReference()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomStrategyForBookAuthorsCrossReference()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:shouldPreventSelfReferencesWhenAllowCyclePolicyReturnsFalse()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryWithSchemaLocationSeveralResources()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetNonContainmentReferenceMultiValuedCount()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomContainmentsAcrossResourcesWithCustomSetter()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testTaskManagerWithEnumsAndSchemaLocation()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetContainmentReferenceMultiValuedCount()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithNestedContainmentAndCrossReferencesMultipleFiles()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGraphimprovedWithSchemaLocation2()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateSimpleLibrarySingleResourceWithFullTextBlock()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetNonContainmentReferenceMaxCountFor()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testMutualDependenciesWithSchemaLocationMultipleInstances()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGraphimprovedWithSchemaLocation()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSingleAndMultiReferencesOfTheSameType()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageWithManyEClasses()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithNestedContainmentAndCrossReferences()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateSimpleLibraryMultipleResourcesWithFullTextBlock()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testWarehouse()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:shouldAllowSelectiveSelfReferencesInGraph()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testMutualDependenciesWithSchemaLocation()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromMultipleEClasses()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryCustomContainmentsAcrossResourcesWithCustomFunction()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageWithMultipleEClasses()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithNonUniqueReferences()] (12 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithReferences()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSimpleLibraryWithSchemaLocation()] (16 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testDeepHierarchyWithSingleReferenceWithMultiOpposite()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldUseCustomFeatureMapSetter()] (10 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFeatureMapSetter()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetGroupMemberSelectorStrategy()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetFeatureMapMaxCountFor()] (12 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateFeatureMapsWithCustomMaxCount()] (15 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFeatureMapMaxCountFor()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFunctionForFeatureMapGroupMember()] (9 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testEXTLibraryWithSchemaLocation()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetGroupMemberSelectorStrategy()] (23 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateFeatureMaps()] (27 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFeatureMapDefaultMaxCount()] (23 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetterTest]/[method:shouldSetCrossReferencesAcrossMultipleResources()] (58 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetFeatureMapDefaultMaxCount()] (40 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testFunctionForFeatureMapGroupMember()] (83 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCustomAttributeSetter()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldRespectMaxDepthZero()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldFilterOutInvalidAttribute()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldAllowCustomFunctionForAttribute()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetInstantiableSubclassSelectorStrategy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetAttributeMaxCountFor()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateSimpleEObjectWithAttributes()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldPopulateEObjectWithAttributesAndPrintStructure()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetAttributeDefaultMaxCount()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithProgrammaticPackageNotPreRegistered()] (0 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:testSetEnumLiteralSelectorStrategy()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetInstantiableSubclassSelectorStrategy()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFileExtensionForEPackage()] (1 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testOutputDirectoryConfiguration()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSaveWithOptions()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetEnumLiteralSelectorStrategy()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSaveSkipsEcoreFiles()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetFileExtensionForEClass()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageWithSingleEClass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testFunctionForAttribute()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageSkipsAbstractClasses()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetGlobalFileExtension()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackageSkipsAbstractClass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromSimpleEClass()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackage()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEClassWithNoSubclasses()] (2 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFInstancePopulatorTest]/[method:shouldHandleAllDataTypes()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGeneratorWithExternalResourceSet()] (7 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetAttributeMaxCountFor()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testSetAttributeMultiValuedCount()] (5 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackageFindsEClassNotFirst()] (4 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateWithDifferentDataTypes()] (3 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromAbstractEClassWithConcreteSubclasses()] (14 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEPackageFindsEClassesNotFirst()] (8 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAttributeValue_FullCoverage()] (6 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testLoadEcoreModelAndUnload()] (11 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateFromEPackageWithNonEClassFirst()] (21 ms)</li><li>io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest.[engine:junit-jupiter]/[class:io.github.lorenzobettini.emfmodelgenerator.EMFModelGeneratorTest]/[method:testGenerateAllFromEClassWithMultipleSubclasses()] (30 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.30.0 <a href='https://github.com/sponsors/hcoles'>support</a>
+
+</body>
+</html>

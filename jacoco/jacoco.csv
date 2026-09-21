@@ -1,0 +1,22 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFInstanceCreatorFeatureSetter,0,71,0,6,0,21,0,7,0,4
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinFeatureMapGroupMemberSelector,0,6,0,0,0,2,0,2,0,2
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFAttributeSetter,0,559,0,120,0,97,0,89,0,29
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFResourceHelper,0,183,0,4,0,43,0,15,0,13
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinCandidateSelector,0,64,0,4,0,14,0,6,0,4
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFModelGenerator,0,562,0,44,0,119,0,47,0,25
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFCandidateSelectorStrategy,0,1,0,0,0,1,0,1,0,1
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFCrossReferenceSetter,0,198,0,38,0,55,0,31,0,12
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFAttributeSetter.CounterKey,0,9,0,0,0,1,0,1,0,1
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinEEnumLiteralCandidateSelector,0,6,0,0,0,2,0,2,0,2
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFInstancePopulator,0,361,0,28,0,96,0,47,0,33
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFFeatureMapSetter,0,74,0,4,0,19,0,8,0,6
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFUtils,0,396,0,76,0,91,0,59,0,21
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinEClassCandidateSelector,0,6,0,0,0,2,0,2,0,2
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFPrettyPrinter,0,629,0,50,0,131,0,39,0,14
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFResourceSetHelper,0,38,0,0,0,15,0,5,0,5
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFResourceSetHelper.new XMIResourceFactoryImpl() {...},0,21,0,0,0,4,0,2,0,2
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFContainmentReferenceSetter,0,59,0,6,0,16,0,7,0,4
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFConfigurableFeatureSetter,0,95,0,14,0,26,0,15,0,8
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFAbstractCachedRoundRobinCandidateSelector,0,28,0,0,0,6,0,4,0,4
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinEObjectCandidateSelector,0,7,0,0,0,2,0,2,0,2

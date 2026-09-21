@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMFResourceSetHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EMF Model Generator</a> &gt; <a href="index.source.html" class="el_package">io.github.lorenzobettini.emfmodelgenerator</a> &gt; <span class="el_source">EMFResourceSetHelper.java</span></div><h1>EMFResourceSetHelper.java</h1><pre class="source lang-java linenums">package io.github.lorenzobettini.emfmodelgenerator;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+
+/**
+ * Helper class for creating and configuring EMF ResourceSets.
+ * This class centralizes the logic for setting up ResourceSets with proper
+ * resource factories and save options.
+ */
+public class EMFResourceSetHelper {
+
+	private static final int DEFAULT_LINE_WIDTH = 10;
+
+	private EMFResourceSetHelper() {
+		// Utility class, prevent instantiation
+	}
+
+	/**
+	 * Creates a new ResourceSet configured with XMI resource factory and save options.
+	 * The XMI resources will be saved with a line width of 10 for better readability
+	 * on smaller screens.
+	 *
+	 * @return a newly configured ResourceSet
+	 */
+	public static ResourceSet createResourceSet() {
+<span class="fc" id="L32">		return createResourceSet(DEFAULT_LINE_WIDTH);</span>
+	}
+
+	/**
+	 * Creates a new ResourceSet configured with XMI resource factory and custom line width.
+	 *
+	 * @param lineWidth the line width to use when saving XMI resources
+	 * @return a newly configured ResourceSet
+	 */
+	public static ResourceSet createResourceSet(int lineWidth) {
+<span class="fc" id="L42">		ResourceSet resourceSet = new ResourceSetImpl();</span>
+<span class="fc" id="L43">		configureResourceSet(resourceSet, lineWidth);</span>
+<span class="fc" id="L44">		return resourceSet;</span>
+	}
+
+	/**
+	 * Configures an existing ResourceSet with XMI resource factory and save options.
+	 * The XMI resources will be saved with a line width of 10 for better readability
+	 * on smaller screens.
+	 *
+	 * @param resourceSet the ResourceSet to configure
+	 */
+	public static void configureResourceSet(ResourceSet resourceSet) {
+<span class="fc" id="L55">		configureResourceSet(resourceSet, DEFAULT_LINE_WIDTH);</span>
+<span class="fc" id="L56">	}</span>
+
+	/**
+	 * Configures an existing ResourceSet with XMI resource factory and custom line width.
+	 *
+	 * @param resourceSet the ResourceSet to configure
+	 * @param lineWidth the line width to use when saving XMI resources
+	 */
+	public static void configureResourceSet(ResourceSet resourceSet, int lineWidth) {
+		// Create a custom XMI resource factory that sets line width
+<span class="fc" id="L66">		Resource.Factory factory = new XMIResourceFactoryImpl() {</span>
+			@Override
+			public Resource createResource(URI uri) {
+<span class="fc" id="L69">				var resource = new XMIResourceImpl(uri);</span>
+				// this simulates the behavior of the
+				// &quot;Sample Reflective Ecore Model Editor&quot; when saving
+<span class="fc" id="L72">				resource.getDefaultSaveOptions().put(XMLResource.OPTION_LINE_WIDTH, lineWidth);</span>
+<span class="fc" id="L73">				return resource;</span>
+			}
+		};
+
+		// Register for both xmi extension and wildcard
+<span class="fc" id="L78">		resourceSet.getResourceFactoryRegistry()</span>
+<span class="fc" id="L79">			.getExtensionToFactoryMap()</span>
+<span class="fc" id="L80">			.put(&quot;xmi&quot;, factory);</span>
+<span class="fc" id="L81">		resourceSet.getResourceFactoryRegistry()</span>
+<span class="fc" id="L82">			.getExtensionToFactoryMap()</span>
+<span class="fc" id="L83">			.put(&quot;*&quot;, factory);</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * Gets the default line width used for XMI resource formatting.
+	 *
+	 * @return the default line width
+	 */
+	public static int getDefaultLineWidth() {
+<span class="fc" id="L92">		return DEFAULT_LINE_WIDTH;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
