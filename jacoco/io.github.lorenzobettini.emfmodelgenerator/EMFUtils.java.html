@@ -127,7 +127,6 @@ public final class EMFUtils {
 	 * &lt;li&gt;If the feature has a lower bound, the count will be at least that value&lt;/li&gt;
 	 * &lt;li&gt;If both bounds are set, the count will be within the range [lowerBound, upperBound]&lt;/li&gt;
 	 * &lt;/ul&gt;
-	 * &lt;/p&gt;
 	 * 
 	 * &lt;p&gt;Examples:
 	 * &lt;ul&gt;
@@ -135,27 +134,26 @@ public final class EMFUtils {
 	 * &lt;li&gt;defaultCount=2, lowerBound=5, upperBound=-1 → returns 5&lt;/li&gt;
 	 * &lt;li&gt;defaultCount=10, lowerBound=2, upperBound=4 → returns 4&lt;/li&gt;
 	 * &lt;/ul&gt;
-	 * &lt;/p&gt;
 	 * 
 	 * @param feature the feature to calculate the count for
 	 * @param defaultCount the default count to use if bounds do not restrict it
 	 * @return the number of values to generate, respecting the feature's bounds
 	 */
 	public static int getEffectiveCount(final EStructuralFeature feature, final int defaultCount) {
-<span class="fc" id="L145">		final int lowerBound = feature.getLowerBound();</span>
-<span class="fc" id="L146">		final int upperBound = feature.getUpperBound();</span>
+<span class="fc" id="L143">		final int lowerBound = feature.getLowerBound();</span>
+<span class="fc" id="L144">		final int upperBound = feature.getUpperBound();</span>
 		
-<span class="fc" id="L148">		int count = defaultCount;</span>
+<span class="fc" id="L146">		int count = defaultCount;</span>
 		
 		// Respect upper bound if it's set (not -1 for unbounded)
-<span class="fc bfc" id="L151" title="All 2 branches covered.">		if (upperBound &gt; 0) {</span>
-<span class="fc" id="L152">			count = Math.min(count, upperBound);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">		if (upperBound &gt; 0) {</span>
+<span class="fc" id="L150">			count = Math.min(count, upperBound);</span>
 		}
 		
 		// Respect lower bound
-<span class="fc" id="L156">		count = Math.max(count, lowerBound);</span>
+<span class="fc" id="L154">		count = Math.max(count, lowerBound);</span>
 		
-<span class="fc" id="L158">		return count;</span>
+<span class="fc" id="L156">		return count;</span>
 	}
 
 	/**
@@ -188,27 +186,27 @@ public final class EMFUtils {
 	 *         EClass itself if instantiable
 	 */
 	public static List&lt;EClass&gt; findAllInstantiableSubclasses(final EClass eClass) {
-<span class="fc" id="L191">		final Set&lt;EClass&gt; result = new LinkedHashSet&lt;&gt;();</span>
+<span class="fc" id="L189">		final Set&lt;EClass&gt; result = new LinkedHashSet&lt;&gt;();</span>
 
 		// First, add the EClass itself if it's instantiable
-<span class="fc bfc" id="L194" title="All 2 branches covered.">		if (canBeInstantiated(eClass)) {</span>
-<span class="fc" id="L195">			result.add(eClass);</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">		if (canBeInstantiated(eClass)) {</span>
+<span class="fc" id="L193">			result.add(eClass);</span>
 		}
 
-<span class="fc" id="L198">		var conceptualId = conceptualId(eClass);</span>
+<span class="fc" id="L196">		var conceptualId = conceptualId(eClass);</span>
 
 		// Iterate over all registered EPackages in the global registry
 		// Sort keys to ensure deterministic order
-<span class="fc" id="L202">		final var registry = EPackage.Registry.INSTANCE;</span>
-<span class="fc" id="L203">		registry.keySet().stream()</span>
-<span class="fc" id="L204">			.sorted()</span>
-<span class="fc" id="L205">			.forEach(nsURI -&gt; {</span>
-<span class="fc" id="L206">				var ePackage = registry.getEPackage(nsURI);</span>
+<span class="fc" id="L200">		final var registry = EPackage.Registry.INSTANCE;</span>
+<span class="fc" id="L201">		registry.keySet().stream()</span>
+<span class="fc" id="L202">			.sorted()</span>
+<span class="fc" id="L203">			.forEach(nsURI -&gt; {</span>
+<span class="fc" id="L204">				var ePackage = registry.getEPackage(nsURI);</span>
 				// Scan the EPackage's resource for subclasses
-<span class="fc" id="L208">				scanResourceForSubclasses(ePackage, eClass, conceptualId, result);</span>
-<span class="fc" id="L209">			});</span>
+<span class="fc" id="L206">				scanResourceForSubclasses(ePackage, eClass, conceptualId, result);</span>
+<span class="fc" id="L207">			});</span>
 
-<span class="fc" id="L211">		return List.copyOf(result);</span>
+<span class="fc" id="L209">		return List.copyOf(result);</span>
 	}
 
 	/**
@@ -222,29 +220,29 @@ public final class EMFUtils {
 	 */
 	private static void scanResourceForSubclasses(final EPackage ePackage, final EClass eClass, 
 			String conceptualId, final Set&lt;EClass&gt; result) {
-<span class="fc bfc" id="L225" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
 			// Check if this candidate is a subclass of the given eClass
 			// isSuperTypeOf returns true if eClass is a supertype of candidate (or they are equal)
 			// We need to exclude the eClass itself since we already added it
 			// We also check conceptual identity to catch cases where object identity differs
 			// due to different resource loading contexts
-<span class="fc bfc" id="L231" title="All 4 branches covered.">			if (classifier instanceof final EClass candidate &amp;&amp;</span>
+<span class="fc bfc" id="L229" title="All 4 branches covered.">			if (classifier instanceof final EClass candidate &amp;&amp;</span>
 					candidate != eClass &amp;&amp;
-<span class="fc bfc" id="L233" title="All 2 branches covered.">					canBeInstantiated(candidate)) {</span>
-<span class="fc" id="L234">				var allSuperTypes = candidate.getEAllSuperTypes();</span>
-<span class="fc" id="L235">				if (allSuperTypes.stream()</span>
-<span class="fc bfc" id="L236" title="All 4 branches covered.">						.anyMatch(superType -&gt; superType == eClass ||</span>
-<span class="fc bfc" id="L237" title="All 2 branches covered.">								conceptualId(superType).equals(conceptualId))) {</span>
-<span class="fc" id="L238">					result.add(candidate);</span>
+<span class="fc bfc" id="L231" title="All 2 branches covered.">					canBeInstantiated(candidate)) {</span>
+<span class="fc" id="L232">				var allSuperTypes = candidate.getEAllSuperTypes();</span>
+<span class="fc" id="L233">				if (allSuperTypes.stream()</span>
+<span class="fc bfc" id="L234" title="All 4 branches covered.">						.anyMatch(superType -&gt; superType == eClass ||</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">								conceptualId(superType).equals(conceptualId))) {</span>
+<span class="fc" id="L236">					result.add(candidate);</span>
 				}
 			}
-<span class="fc" id="L241">		}</span>
+<span class="fc" id="L239">		}</span>
 		
 		// Recursively scan subpackages
-<span class="fc bfc" id="L244" title="All 2 branches covered.">		for (var subPackage : ePackage.getESubpackages()) {</span>
-<span class="fc" id="L245">			scanResourceForSubclasses(subPackage, eClass, conceptualId, result);</span>
-<span class="fc" id="L246">		}</span>
-<span class="fc" id="L247">	}</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">		for (var subPackage : ePackage.getESubpackages()) {</span>
+<span class="fc" id="L243">			scanResourceForSubclasses(subPackage, eClass, conceptualId, result);</span>
+<span class="fc" id="L244">		}</span>
+<span class="fc" id="L245">	}</span>
 
 	/**
 	 * Get the conceptual ID of an EClass, defined as &quot;EPackageNsURI::EClassName&quot;.
@@ -253,7 +251,7 @@ public final class EMFUtils {
 	 * @return the conceptual ID
 	 */
 	private static String conceptualId(EClass eClass) {
-<span class="fc" id="L256">		return String.format(&quot;%s::%s&quot;, eClass.getEPackage().getNsURI(), eClass.getName());</span>
+<span class="fc" id="L254">		return String.format(&quot;%s::%s&quot;, eClass.getEPackage().getNsURI(), eClass.getName());</span>
 	}
 
 	/**
@@ -288,30 +286,30 @@ public final class EMFUtils {
 	 *         the given EClass
 	 */
 	public static List&lt;EObject&gt; findAllAssignableInstances(final EObject context, final EClass eClass) {
-<span class="fc" id="L291">		final Set&lt;EObject&gt; result = new LinkedHashSet&lt;&gt;();</span>
+<span class="fc" id="L289">		final Set&lt;EObject&gt; result = new LinkedHashSet&lt;&gt;();</span>
 
-<span class="fc" id="L293">		final Resource contextResource = context.eResource();</span>
+<span class="fc" id="L291">		final Resource contextResource = context.eResource();</span>
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">		if (contextResource == null) {</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">		if (contextResource == null) {</span>
 			// Context not in a resource: scan the root container's contents
-<span class="fc" id="L297">			scanEObjectRootContainerContents(context, eClass, result);</span>
+<span class="fc" id="L295">			scanEObjectRootContainerContents(context, eClass, result);</span>
 		} else {
-<span class="fc" id="L299">			final ResourceSet resourceSet = contextResource.getResourceSet();</span>
-<span class="fc bfc" id="L300" title="All 2 branches covered.">			if (resourceSet == null) {</span>
+<span class="fc" id="L297">			final ResourceSet resourceSet = contextResource.getResourceSet();</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">			if (resourceSet == null) {</span>
 				// Context in a single resource (not in a resource set): scan only that resource
-<span class="fc" id="L302">				scanResource(contextResource, eClass, result);</span>
+<span class="fc" id="L300">				scanResource(contextResource, eClass, result);</span>
 			} else {
 				// Context in a resource set: scan all non-Ecore resources
-<span class="fc bfc" id="L305" title="All 2 branches covered.">				for (Resource resource : resourceSet.getResources()) {</span>
-<span class="fc bfc" id="L306" title="All 2 branches covered.">					if (isEcoreResource(resource)) {</span>
-<span class="fc" id="L307">						continue;</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">				for (Resource resource : resourceSet.getResources()) {</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">					if (isEcoreResource(resource)) {</span>
+<span class="fc" id="L305">						continue;</span>
 					}
-<span class="fc" id="L309">					scanResource(resource, eClass, result);</span>
-<span class="fc" id="L310">				}</span>
+<span class="fc" id="L307">					scanResource(resource, eClass, result);</span>
+<span class="fc" id="L308">				}</span>
 			}
 		}
 
-<span class="fc" id="L314">		return List.copyOf(result);</span>
+<span class="fc" id="L312">		return List.copyOf(result);</span>
 	}
 
 	/**
@@ -322,8 +320,8 @@ public final class EMFUtils {
 	 * @param result   the set to add found instances to
 	 */
 	private static void scanResource(final Resource resource, final EClass eClass, final Set&lt;EObject&gt; result) {
-<span class="fc" id="L325">		scanIterator(EcoreUtil.getAllContents(resource, true), eClass, result);</span>
-<span class="fc" id="L326">	}</span>
+<span class="fc" id="L323">		scanIterator(EcoreUtil.getAllContents(resource, true), eClass, result);</span>
+<span class="fc" id="L324">	}</span>
 
 	/**
 	 * Scan the root container of an EObject and its contents for instances of the given EClass.
@@ -335,12 +333,12 @@ public final class EMFUtils {
 	 * @param result  the set to add found instances to
 	 */
 	private static void scanEObjectRootContainerContents(final EObject context, final EClass eClass, final Set&lt;EObject&gt; result) {
-<span class="fc" id="L338">		final EObject rootContainer = EcoreUtil.getRootContainer(context);</span>
+<span class="fc" id="L336">		final EObject rootContainer = EcoreUtil.getRootContainer(context);</span>
 		// Check the root container itself
-<span class="fc" id="L340">		addIfInstance(rootContainer, eClass, result);</span>
+<span class="fc" id="L338">		addIfInstance(rootContainer, eClass, result);</span>
 		// Iterate through all contents of the root container
-<span class="fc" id="L342">		scanIterator(EcoreUtil.getAllContents(rootContainer, true), eClass, result);</span>
-<span class="fc" id="L343">	}</span>
+<span class="fc" id="L340">		scanIterator(EcoreUtil.getAllContents(rootContainer, true), eClass, result);</span>
+<span class="fc" id="L341">	}</span>
 
 	/**
 	 * Add an EObject to the result set if it is an instance of the given EClass.
@@ -350,10 +348,10 @@ public final class EMFUtils {
 	 * @param result    the set to add the candidate to if it matches
 	 */
 	private static void addIfInstance(final EObject candidate, final EClass eClass, final Set&lt;EObject&gt; result) {
-<span class="fc bfc" id="L353" title="All 2 branches covered.">		if (eClass.isInstance(candidate)) {</span>
-<span class="fc" id="L354">			result.add(candidate);</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">		if (eClass.isInstance(candidate)) {</span>
+<span class="fc" id="L352">			result.add(candidate);</span>
 		}
-<span class="fc" id="L356">	}</span>
+<span class="fc" id="L354">	}</span>
 
 	/**
 	 * Scan an iterator of EObjects and add instances of the given EClass to the result set.
@@ -363,10 +361,10 @@ public final class EMFUtils {
 	 * @param result   the set to add found instances to
 	 */
 	private static void scanIterator(final Iterator&lt;EObject&gt; iterator, final EClass eClass, final Set&lt;EObject&gt; result) {
-<span class="fc bfc" id="L366" title="All 2 branches covered.">		while (iterator.hasNext()) {</span>
-<span class="fc" id="L367">			addIfInstance(iterator.next(), eClass, result);</span>
+<span class="fc bfc" id="L364" title="All 2 branches covered.">		while (iterator.hasNext()) {</span>
+<span class="fc" id="L365">			addIfInstance(iterator.next(), eClass, result);</span>
 		}
-<span class="fc" id="L369">	}</span>
+<span class="fc" id="L367">	}</span>
 
 	/**
 	 * Check if it is possible to set the given value to the given reference, based on the assumption that from the type system perspective it is already possible.
@@ -385,22 +383,22 @@ public final class EMFUtils {
 	 * @return true if it is possible to set the value to the reference, false otherwise
 	 */
 	public static boolean canSetInThePresenceOfOppositeReference(EReference reference, EObject value) {
-<span class="fc" id="L388">		EReference opposite = reference.getEOpposite();</span>
-<span class="fc bfc" id="L389" title="All 2 branches covered.">		if (opposite == null) {</span>
-<span class="fc" id="L390">			return true;</span>
+<span class="fc" id="L386">		EReference opposite = reference.getEOpposite();</span>
+<span class="fc bfc" id="L387" title="All 2 branches covered.">		if (opposite == null) {</span>
+<span class="fc" id="L388">			return true;</span>
 		}
 		// check whether the value's EClass has such an opposite reference
-<span class="fc bfc" id="L393" title="All 2 branches covered.">		if (!value.eClass().getEAllReferences().contains(opposite)) {</span>
-<span class="fc" id="L394">			return true;</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">		if (!value.eClass().getEAllReferences().contains(opposite)) {</span>
+<span class="fc" id="L392">			return true;</span>
 		}
-<span class="fc bfc" id="L396" title="All 2 branches covered.">		if (opposite.isMany()) {</span>
+<span class="fc bfc" id="L394" title="All 2 branches covered.">		if (opposite.isMany()) {</span>
 			// multi-valued opposite reference
-<span class="fc" id="L398">			var list = getAsList(value, opposite);</span>
-<span class="fc" id="L399">			final int upperBound = opposite.getUpperBound();</span>
-<span class="fc bfc" id="L400" title="All 4 branches covered.">			return (upperBound == -1 || list.size() &lt; upperBound);</span>
+<span class="fc" id="L396">			var list = getAsList(value, opposite);</span>
+<span class="fc" id="L397">			final int upperBound = opposite.getUpperBound();</span>
+<span class="fc bfc" id="L398" title="All 4 branches covered.">			return (upperBound == -1 || list.size() &lt; upperBound);</span>
 		} else {
 			// single-valued opposite reference
-<span class="fc bfc" id="L403" title="All 2 branches covered.">			return !value.eIsSet(opposite);</span>
+<span class="fc bfc" id="L401" title="All 2 branches covered.">			return !value.eIsSet(opposite);</span>
 		}
 	}
 
@@ -412,20 +410,20 @@ public final class EMFUtils {
 	 * @return list of references that are part of the group
 	 */
 	public static List&lt;EReference&gt; findFeatureMapGroupMembers(final EAttribute featureMapAttribute) {
-<span class="fc" id="L415">		final var groupMembers = new java.util.ArrayList&lt;EReference&gt;();</span>
-<span class="fc" id="L416">		final var extendedMetaData = ExtendedMetaData.INSTANCE;</span>
-<span class="fc" id="L417">		final var eClass = featureMapAttribute.getEContainingClass();</span>
+<span class="fc" id="L413">		final var groupMembers = new java.util.ArrayList&lt;EReference&gt;();</span>
+<span class="fc" id="L414">		final var extendedMetaData = ExtendedMetaData.INSTANCE;</span>
+<span class="fc" id="L415">		final var eClass = featureMapAttribute.getEContainingClass();</span>
 		
 		// Iterate through all references to find group members
-<span class="fc bfc" id="L420" title="All 2 branches covered.">		for (var reference : eClass.getEAllReferences()) {</span>
+<span class="fc bfc" id="L418" title="All 2 branches covered.">		for (var reference : eClass.getEAllReferences()) {</span>
 			// Check if this feature is part of the feature map group
-<span class="fc" id="L422">			final EStructuralFeature group = extendedMetaData.getGroup(reference);</span>
-<span class="fc bfc" id="L423" title="All 4 branches covered.">			if (group != null &amp;&amp; group.equals(featureMapAttribute)) {</span>
-<span class="fc" id="L424">				groupMembers.add(reference);</span>
+<span class="fc" id="L420">			final EStructuralFeature group = extendedMetaData.getGroup(reference);</span>
+<span class="fc bfc" id="L421" title="All 4 branches covered.">			if (group != null &amp;&amp; group.equals(featureMapAttribute)) {</span>
+<span class="fc" id="L422">				groupMembers.add(reference);</span>
 			}
-<span class="fc" id="L426">		}</span>
+<span class="fc" id="L424">		}</span>
 		
-<span class="fc" id="L428">		return groupMembers;</span>
+<span class="fc" id="L426">		return groupMembers;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

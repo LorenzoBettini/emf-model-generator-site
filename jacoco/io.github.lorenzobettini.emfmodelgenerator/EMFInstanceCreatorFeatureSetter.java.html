@@ -57,34 +57,41 @@ public abstract class EMFInstanceCreatorFeatureSetter&lt;T extends EStructuralFe
 	}
 
 	/**
-	 * Create an instance of the given type for the specified owner and reference.
-	 * 
-	 * If a custom function is defined for the reference, it is used to create the instance.
-	 * Otherwise, an instantiable subclass of the type is selected using the configured strategy,
-	 * and a new EObject of that subclass is created.
-	 * If no instantiable subclass is available, null is returned.
-	 * 
-	 * @param owner     the EObject owning the reference
+	 * Creates an instance of the given type for the specified owner and reference.
+	 *
+	 * &lt;p&gt;If a custom function is defined for the reference, it is invoked first.
+	 * A non-null object returned by the function is used only if it is not already
+	 * contained by another object. Reusing an already-contained object could make
+	 * EMF move it from its current container. In that case, or if the function
+	 * returns {@code null}, the default creation strategy is used instead.&lt;/p&gt;
+	 *
+	 * &lt;p&gt;The default strategy selects an instantiable subclass of the requested
+	 * type using the configured strategy and creates a new {@link EObject} of that
+	 * subclass. If no instantiable subclass is available, {@code null} is
+	 * returned.&lt;/p&gt;
+	 *
+	 * @param owner the EObject owning the reference
 	 * @param reference the reference for which to create an instance
-	 * @param type      the EClass of the instance to create
-	 * @return the created EObject, or null if no instantiable subclass is available
+	 * @param type the EClass of the instance to create
+	 * @return the created or selected EObject, or {@code null} if no suitable
+	 *         instance can be obtained
 	 */
 	protected EObject createInstance(EObject owner, EReference reference, EClass type) {
-<span class="fc" id="L73">		var function = getFunctionFor(reference);</span>
-<span class="fc bfc" id="L74" title="All 2 branches covered.">		if (function != null) {</span>
-<span class="fc" id="L75">			final EObject instance = function.apply(owner);</span>
-<span class="fc bfc" id="L76" title="All 2 branches covered.">			if (instance != null) {</span>
-<span class="fc" id="L77">				createdEObjects.add(instance);</span>
-<span class="fc" id="L78">				return instance;</span>
+<span class="fc" id="L80">		var function = getFunctionFor(reference);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">		if (function != null) {</span>
+<span class="fc" id="L82">			final EObject instance = function.apply(owner);</span>
+<span class="fc bfc" id="L83" title="All 4 branches covered.">			if (instance != null &amp;&amp; instance.eContainer() == null) {</span>
+<span class="fc" id="L84">				createdEObjects.add(instance);</span>
+<span class="fc" id="L85">				return instance;</span>
 			}
 		}
-<span class="fc" id="L81">		var instantiableSubClass = instantiableSubclassSelectorStrategy.getNextCandidate(owner, type);</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">		if (instantiableSubClass == null) {</span>
-<span class="fc" id="L83">			return null;</span>
+<span class="fc" id="L88">		var instantiableSubClass = instantiableSubclassSelectorStrategy.getNextCandidate(owner, type);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">		if (instantiableSubClass == null) {</span>
+<span class="fc" id="L90">			return null;</span>
 		}
-<span class="fc" id="L85">		final EObject instance = EcoreUtil.create(instantiableSubClass);</span>
-<span class="fc" id="L86">		createdEObjects.add(instance);</span>
-<span class="fc" id="L87">		return instance;</span>
+<span class="fc" id="L92">		final EObject instance = EcoreUtil.create(instantiableSubClass);</span>
+<span class="fc" id="L93">		createdEObjects.add(instance);</span>
+<span class="fc" id="L94">		return instance;</span>
 	}
 
 }

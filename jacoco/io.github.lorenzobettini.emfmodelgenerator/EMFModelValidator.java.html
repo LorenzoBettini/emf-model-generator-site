@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EMFModelValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">EMF Model Generator</a> &gt; <a href="index.source.html" class="el_package">io.github.lorenzobettini.emfmodelgenerator</a> &gt; <span class="el_source">EMFModelValidator.java</span></div><h1>EMFModelValidator.java</h1><pre class="source lang-java linenums">package io.github.lorenzobettini.emfmodelgenerator;
+
+import java.util.Collection;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+
+/**
+ * Validates generated EMF model roots.
+ *
+ * &lt;p&gt;Implementations may own resources and release them from {@link #close()}.&lt;/p&gt;
+ */
+public interface EMFModelValidator extends AutoCloseable {
+
+	/**
+	 * Factory for validators used by an {@link EMFModelGenerator}.
+	 *
+	 * &lt;p&gt;The generator supplies its exact {@link ResourceSet} as validation context.
+	 * Implementations that depend on resource-set-local state may use it; validators that
+	 * do not require such context may ignore it. The model roots to validate are supplied
+	 * separately through {@link #validate(EObject)} or {@link #validateAll(Collection)}.&lt;/p&gt;
+	 */
+	@FunctionalInterface
+	interface Factory {
+		/**
+		 * Creates a validator.
+		 *
+		 * @param resourceSet the generator's non-null resource set, available as context
+		 *        for validators that need resource-set-local state
+		 * @return a non-null validator
+		 */
+		EMFModelValidator create(ResourceSet resourceSet);
+	}
+
+	/**
+	 * Creates a validator using standard EMF validation.
+	 *
+	 * @return a standard EMF validator
+	 */
+	static EMFModelValidator standard() {
+<span class="fc" id="L40">		return new EMFStandardModelValidator();</span>
+	}
+
+	/**
+	 * Validates one model root.
+	 *
+	 * @param root the root to validate
+	 * @return a non-null validation result
+	 */
+	EMFValidationResult validate(EObject root);
+
+	/**
+	 * Validates every supplied model root.
+	 *
+	 * @param roots the roots to validate
+	 * @return a non-null aggregate validation result
+	 */
+	EMFValidationResult validateAll(Collection&lt;? extends EObject&gt; roots);
+
+	/**
+	 * Validates one root and throws if it is invalid.
+	 *
+	 * @param root the non-null root to validate
+	 * @throws EMFValidationException if validation is not valid
+	 */
+	default void validateOrThrow(final EObject root) {
+<span class="fc" id="L66">		var result = validate(root);</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">		if (!result.isValid()) {</span>
+<span class="fc" id="L68">			throw new EMFValidationException(result);</span>
+		}
+<span class="fc" id="L70">	}</span>
+
+	/**
+	 * Validates all roots and throws if the aggregate result is invalid.
+	 *
+	 * @param roots the non-null roots to validate
+	 * @throws EMFValidationException if validation is not valid
+	 */
+	default void validateAllOrThrow(final Collection&lt;? extends EObject&gt; roots) {
+<span class="fc" id="L79">		var result = validateAll(roots);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">		if (!result.isValid()) {</span>
+<span class="fc" id="L81">			throw new EMFValidationException(result);</span>
+		}
+<span class="fc" id="L83">	}</span>
+
+	/**
+	 * Releases implementation resources. The default implementation does nothing.
+	 */
+	@Override
+	default void close() {
+		// No resources are owned by default.
+<span class="fc" id="L91">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
