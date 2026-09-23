@@ -9,63 +9,68 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.Diagnostician;
 
+/**
+ * Standard model validator backed by the EMF {@link Diagnostician}.
+ *
+ * @author Lorenzo Bettini
+ */
 final class EMFStandardModelValidator implements EMFModelValidator {
 
-<span class="fc" id="L14">	private static final String DIAGNOSTIC_SOURCE = EMFStandardModelValidator.class.getName();</span>
+<span class="fc" id="L19">	private static final String DIAGNOSTIC_SOURCE = EMFStandardModelValidator.class.getName();</span>
 	private static final String AGGREGATE_MESSAGE = &quot;Standard EMF validation&quot;;
 
 	private final Function&lt;EObject, Diagnostic&gt; diagnosticFunction;
 
 	EMFStandardModelValidator() {
-<span class="fc" id="L20">		this(Diagnostician.INSTANCE::validate);</span>
-<span class="fc" id="L21">	}</span>
+<span class="fc" id="L25">		this(Diagnostician.INSTANCE::validate);</span>
+<span class="fc" id="L26">	}</span>
 
-<span class="fc" id="L23">	EMFStandardModelValidator(final Function&lt;EObject, Diagnostic&gt; diagnosticFunction) {</span>
-<span class="fc" id="L24">		this.diagnosticFunction = diagnosticFunction;</span>
-<span class="fc" id="L25">	}</span>
+<span class="fc" id="L28">	EMFStandardModelValidator(final Function&lt;EObject, Diagnostic&gt; diagnosticFunction) {</span>
+<span class="fc" id="L29">		this.diagnosticFunction = diagnosticFunction;</span>
+<span class="fc" id="L30">	}</span>
 
 	@Override
 	public EMFValidationResult validate(final EObject root) {
-<span class="fc" id="L29">		Objects.requireNonNull(root, &quot;root&quot;);</span>
+<span class="fc" id="L34">		Objects.requireNonNull(root, &quot;root&quot;);</span>
 		try {
-<span class="fc" id="L31">			var diagnostic = diagnosticFunction.apply(root);</span>
-<span class="fc" id="L32">			return result(diagnostic, EMFValidationKind.VALIDATION_FAILURE);</span>
-<span class="fc" id="L33">		} catch (RuntimeException exception) {</span>
-<span class="fc" id="L34">			return validatorFailure(exception);</span>
+<span class="fc" id="L36">			var diagnostic = diagnosticFunction.apply(root);</span>
+<span class="fc" id="L37">			return result(diagnostic, EMFValidationKind.VALIDATION_FAILURE);</span>
+<span class="fc" id="L38">		} catch (RuntimeException exception) {</span>
+<span class="fc" id="L39">			return validatorFailure(exception);</span>
 		}
 	}
 
 	@Override
 	public EMFValidationResult validateAll(final Collection&lt;? extends EObject&gt; roots) {
-<span class="fc" id="L40">		Objects.requireNonNull(roots, &quot;roots&quot;);</span>
-<span class="fc" id="L41">		var aggregate = new BasicDiagnostic(DIAGNOSTIC_SOURCE, 0, AGGREGATE_MESSAGE,</span>
+<span class="fc" id="L45">		Objects.requireNonNull(roots, &quot;roots&quot;);</span>
+<span class="fc" id="L46">		var aggregate = new BasicDiagnostic(DIAGNOSTIC_SOURCE, 0, AGGREGATE_MESSAGE,</span>
 				new Object[0]);
-<span class="fc" id="L43">		var validatorFailed = false;</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">		for (var root : roots) {</span>
-<span class="fc" id="L45">			var result = validate(root);</span>
-<span class="fc" id="L46">			aggregate.add(result.diagnostic());</span>
-<span class="fc bfc" id="L47" title="All 2 branches covered.">			validatorFailed |= result.kind() == EMFValidationKind.VALIDATOR_FAILURE;</span>
-<span class="fc" id="L48">		}</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">		var invalidKind = validatorFailed</span>
-<span class="fc" id="L50">				? EMFValidationKind.VALIDATOR_FAILURE</span>
-<span class="fc" id="L51">				: EMFValidationKind.VALIDATION_FAILURE;</span>
-<span class="fc" id="L52">		return result(aggregate, invalidKind);</span>
+<span class="fc" id="L48">		var validatorFailed = false;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">		for (var root : roots) {</span>
+<span class="fc" id="L50">			var result = validate(root);</span>
+<span class="fc" id="L51">			aggregate.add(result.diagnostic());</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">			validatorFailed |= result.kind() == EMFValidationKind.VALIDATOR_FAILURE;</span>
+<span class="fc" id="L53">		}</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">		var invalidKind = validatorFailed</span>
+<span class="fc" id="L55">				? EMFValidationKind.VALIDATOR_FAILURE</span>
+<span class="fc" id="L56">				: EMFValidationKind.VALIDATION_FAILURE;</span>
+<span class="fc" id="L57">		return result(aggregate, invalidKind);</span>
 	}
 
 	private static EMFValidationResult result(final Diagnostic diagnostic,
 			final EMFValidationKind invalidKind) {
-<span class="fc bfc" id="L57" title="All 2 branches covered.">		var kind = diagnostic.getSeverity() &gt;= EMFValidationResult.DEFAULT_REJECTED_SEVERITY</span>
-<span class="fc" id="L58">				? invalidKind</span>
-<span class="fc" id="L59">				: EMFValidationKind.VALID;</span>
-<span class="fc" id="L60">		return new EMFValidationResult(diagnostic,</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">		var kind = diagnostic.getSeverity() &gt;= EMFValidationResult.DEFAULT_REJECTED_SEVERITY</span>
+<span class="fc" id="L63">				? invalidKind</span>
+<span class="fc" id="L64">				: EMFValidationKind.VALID;</span>
+<span class="fc" id="L65">		return new EMFValidationResult(diagnostic,</span>
 				EMFValidationResult.DEFAULT_REJECTED_SEVERITY, kind);
 	}
 
 	private static EMFValidationResult validatorFailure(final RuntimeException exception) {
-<span class="fc" id="L65">		var diagnostic = new BasicDiagnostic(Diagnostic.ERROR, DIAGNOSTIC_SOURCE, 0,</span>
-<span class="fc" id="L66">				&quot;Standard EMF validation failed: &quot; + exception.getMessage(),</span>
+<span class="fc" id="L70">		var diagnostic = new BasicDiagnostic(Diagnostic.ERROR, DIAGNOSTIC_SOURCE, 0,</span>
+<span class="fc" id="L71">				&quot;Standard EMF validation failed: &quot; + exception.getMessage(),</span>
 				new Object[] { exception });
-<span class="fc" id="L68">		return result(diagnostic, EMFValidationKind.VALIDATOR_FAILURE);</span>
+<span class="fc" id="L73">		return result(diagnostic, EMFValidationKind.VALIDATOR_FAILURE);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

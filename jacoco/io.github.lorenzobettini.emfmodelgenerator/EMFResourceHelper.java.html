@@ -14,18 +14,32 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 /**
  * Helper class for managing EMF resources in a given ResourceSet,
  * including resource creation with proper naming schemes and output directory management.
+ *
+ * &lt;p&gt;For example, package-wide naming can be combined with a more specific class override:&lt;/p&gt;
+ * {@snippet :
+ * EMFResourceHelper helper = new EMFResourceHelper(resourceSet, &quot;output&quot;);
+ * helper.setFilePrefix(&quot;sample_&quot;);
+ * helper.setFileExtensionForEPackage(ePackage, &quot;model&quot;);
+ * helper.setFileExtensionForEClass(libraryClass, &quot;library&quot;);
+ *
+ * Resource resource = helper.createResource(libraryClass);
+ * resource.getContents().add(library);
+ * // The first resource is named sample_&lt;package&gt;_Library_1.library.
+ * }
+ *
+ * @author Lorenzo Bettini
  */
 public final class EMFResourceHelper {
 
 	private static final String DEFAULT_FILE_EXTENSION = &quot;xmi&quot;;
 
 	private final String outputDirectory;
-<span class="fc" id="L23">	private final Map&lt;String, Integer&gt; fileCounters = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L37">	private final Map&lt;String, Integer&gt; fileCounters = new HashMap&lt;&gt;();</span>
 	private final ResourceSet resourceSet;
-<span class="fc" id="L25">	private String filePrefix = &quot;&quot;;</span>
-<span class="fc" id="L26">	private String globalFileExtension = DEFAULT_FILE_EXTENSION;</span>
-<span class="fc" id="L27">	private final Map&lt;EClass, String&gt; eClassExtensions = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L28">	private final Map&lt;EPackage, String&gt; ePackageExtensions = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L39">	private String filePrefix = &quot;&quot;;</span>
+<span class="fc" id="L40">	private String globalFileExtension = DEFAULT_FILE_EXTENSION;</span>
+<span class="fc" id="L41">	private final Map&lt;EClass, String&gt; eClassExtensions = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L42">	private final Map&lt;EPackage, String&gt; ePackageExtensions = new HashMap&lt;&gt;();</span>
 
 	/**
 	 * Create a new EMFResourceHelper with a specific ResourceSet and output directory.
@@ -33,18 +47,18 @@ public final class EMFResourceHelper {
 	 * @param resourceSet the ResourceSet to use for creating resources
 	 * @param outputDirectory the directory where XMI files will be created
 	 */
-<span class="fc" id="L36">	public EMFResourceHelper(final ResourceSet resourceSet, final String outputDirectory) {</span>
-<span class="fc" id="L37">		this.resourceSet = resourceSet;</span>
-<span class="fc" id="L38">		this.outputDirectory = outputDirectory;</span>
-<span class="fc" id="L39">	}</span>
+<span class="fc" id="L50">	public EMFResourceHelper(final ResourceSet resourceSet, final String outputDirectory) {</span>
+<span class="fc" id="L51">		this.resourceSet = resourceSet;</span>
+<span class="fc" id="L52">		this.outputDirectory = outputDirectory;</span>
+<span class="fc" id="L53">	}</span>
 
 	/**
 	 * Set a prefix to be added to all generated file names.
 	 * @param string
 	 */
 	public void setFilePrefix(String string) {
-<span class="fc" id="L46">		this.filePrefix = string;</span>
-<span class="fc" id="L47">	}</span>
+<span class="fc" id="L60">		this.filePrefix = string;</span>
+<span class="fc" id="L61">	}</span>
 
 	/**
 	 * Set the global file extension to be used for all generated files
@@ -53,8 +67,8 @@ public final class EMFResourceHelper {
 	 * @param extension the file extension (without the dot)
 	 */
 	public void setGlobalFileExtension(String extension) {
-<span class="fc" id="L56">		this.globalFileExtension = extension;</span>
-<span class="fc" id="L57">	}</span>
+<span class="fc" id="L70">		this.globalFileExtension = extension;</span>
+<span class="fc" id="L71">	}</span>
 
 	/**
 	 * Set a custom file extension for a specific EClass.
@@ -64,8 +78,8 @@ public final class EMFResourceHelper {
 	 * @param extension the file extension (without the dot)
 	 */
 	public void setFileExtensionForEClass(EClass eClass, String extension) {
-<span class="fc" id="L67">		eClassExtensions.put(eClass, extension);</span>
-<span class="fc" id="L68">	}</span>
+<span class="fc" id="L81">		eClassExtensions.put(eClass, extension);</span>
+<span class="fc" id="L82">	}</span>
 
 	/**
 	 * Set a custom file extension for all EClasses in a specific EPackage.
@@ -75,8 +89,8 @@ public final class EMFResourceHelper {
 	 * @param extension the file extension (without the dot)
 	 */
 	public void setFileExtensionForEPackage(EPackage ePackage, String extension) {
-<span class="fc" id="L78">		ePackageExtensions.put(ePackage, extension);</span>
-<span class="fc" id="L79">	}</span>
+<span class="fc" id="L92">		ePackageExtensions.put(ePackage, extension);</span>
+<span class="fc" id="L93">	}</span>
 
 	/**
 	 * Get the file extension for a given EClass, using the hierarchical lookup:
@@ -87,20 +101,20 @@ public final class EMFResourceHelper {
 	 */
 	public String getFileExtension(EClass eClass) {
 		// Check EClass-specific extension
-<span class="fc" id="L90">		var fileExtension = eClassExtensions.get(eClass);</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">		if (fileExtension != null) {</span>
-<span class="fc" id="L92">			return fileExtension;</span>
+<span class="fc" id="L104">		var fileExtension = eClassExtensions.get(eClass);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		if (fileExtension != null) {</span>
+<span class="fc" id="L106">			return fileExtension;</span>
 		}
 
 		// Check EPackage-specific extension
-<span class="fc" id="L96">		EPackage ePackage = eClass.getEPackage();</span>
-<span class="fc" id="L97">		fileExtension = ePackageExtensions.get(ePackage);</span>
-<span class="fc bfc" id="L98" title="All 2 branches covered.">		if (fileExtension != null) {</span>
-<span class="fc" id="L99">			return fileExtension;</span>
+<span class="fc" id="L110">		EPackage ePackage = eClass.getEPackage();</span>
+<span class="fc" id="L111">		fileExtension = ePackageExtensions.get(ePackage);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		if (fileExtension != null) {</span>
+<span class="fc" id="L113">			return fileExtension;</span>
 		}
 
 		// Fall back to global extension
-<span class="fc" id="L103">		return globalFileExtension;</span>
+<span class="fc" id="L117">		return globalFileExtension;</span>
 	}
 
 	/**
@@ -109,7 +123,7 @@ public final class EMFResourceHelper {
 	 * @return the output directory path
 	 */
 	public String getOutputDirectory() {
-<span class="fc" id="L112">		return outputDirectory;</span>
+<span class="fc" id="L126">		return outputDirectory;</span>
 	}
 
 	/**
@@ -118,7 +132,7 @@ public final class EMFResourceHelper {
 	 * @return the ResourceSet
 	 */
 	public ResourceSet getResourceSet() {
-<span class="fc" id="L121">		return resourceSet;</span>
+<span class="fc" id="L135">		return resourceSet;</span>
 	}
 
 	/**
@@ -129,11 +143,11 @@ public final class EMFResourceHelper {
 	 * @return the created Resource
 	 */
 	public Resource createResource(final EClass eClass) {
-<span class="fc" id="L132">		EPackage ePackage = eClass.getEPackage();</span>
-<span class="fc" id="L133">		String fileName = generateFileName(ePackage, eClass);</span>
-<span class="fc" id="L134">		URI uri = createFileURI(fileName);</span>
+<span class="fc" id="L146">		EPackage ePackage = eClass.getEPackage();</span>
+<span class="fc" id="L147">		String fileName = generateFileName(ePackage, eClass);</span>
+<span class="fc" id="L148">		URI uri = createFileURI(fileName);</span>
 		
-<span class="fc" id="L136">		return resourceSet.createResource(uri);</span>
+<span class="fc" id="L150">		return resourceSet.createResource(uri);</span>
 	}
 
 	/**
@@ -146,12 +160,12 @@ public final class EMFResourceHelper {
 	 * @return the generated file name
 	 */
 	public String generateFileName(final EPackage ePackage, final EClass eClass) {
-<span class="fc" id="L149">		String eClassName = eClass.getName();</span>
-<span class="fc" id="L150">		int counter = fileCounters.getOrDefault(eClassName, 0) + 1;</span>
-<span class="fc" id="L151">		fileCounters.put(eClassName, counter);</span>
-<span class="fc" id="L152">		String extension = getFileExtension(eClass);</span>
+<span class="fc" id="L163">		String eClassName = eClass.getName();</span>
+<span class="fc" id="L164">		int counter = fileCounters.getOrDefault(eClassName, 0) + 1;</span>
+<span class="fc" id="L165">		fileCounters.put(eClassName, counter);</span>
+<span class="fc" id="L166">		String extension = getFileExtension(eClass);</span>
 
-<span class="fc" id="L154">		return String.format(&quot;%s%s_%s_%d.%s&quot;, filePrefix, ePackage.getName(), eClassName, counter, extension);</span>
+<span class="fc" id="L168">		return String.format(&quot;%s%s_%s_%d.%s&quot;, filePrefix, ePackage.getName(), eClassName, counter, extension);</span>
 	}
 
 	/**
@@ -162,18 +176,18 @@ public final class EMFResourceHelper {
 	 * @return the file URI
 	 */
 	public URI createFileURI(final String fileName) {
-<span class="fc" id="L165">		Path filePath = Paths.get(outputDirectory, fileName);</span>
-<span class="fc" id="L166">		return URI.createFileURI(filePath.toAbsolutePath()</span>
-<span class="fc" id="L167">				.normalize() // &quot;avoid &quot;.&quot; and &quot;..&quot;</span>
-<span class="fc" id="L168">				.toString());</span>
+<span class="fc" id="L179">		Path filePath = Paths.get(outputDirectory, fileName);</span>
+<span class="fc" id="L180">		return URI.createFileURI(filePath.toAbsolutePath()</span>
+<span class="fc" id="L181">				.normalize() // &quot;avoid &quot;.&quot; and &quot;..&quot;</span>
+<span class="fc" id="L182">				.toString());</span>
 	}
 
 	/**
 	 * Reset the file counters. Useful when starting a new generation cycle.
 	 */
 	public void resetCounters() {
-<span class="fc" id="L175">		fileCounters.clear();</span>
-<span class="fc" id="L176">	}</span>
+<span class="fc" id="L189">		fileCounters.clear();</span>
+<span class="fc" id="L190">	}</span>
 
 	/**
 	 * Get the current counter value for a specific EClass name.
@@ -182,7 +196,7 @@ public final class EMFResourceHelper {
 	 * @return the current counter value, or 0 if not yet set
 	 */
 	public int getCounter(final String eClassName) {
-<span class="fc" id="L185">		return fileCounters.getOrDefault(eClassName, 0);</span>
+<span class="fc" id="L199">		return fileCounters.getOrDefault(eClassName, 0);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

@@ -20,15 +20,17 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * @param &lt;K&gt; the type of ENamedElement used as key (e.g., EClass, EAttribute)
  * @param &lt;V&gt; the type of EObject to be selected
+ *
+ * @author Lorenzo Bettini
  */
-<span class="fc" id="L24">public abstract class EMFAbstractCachedRoundRobinCandidateSelector&lt;K extends ENamedElement, V extends EObject&gt;</span>
+<span class="fc" id="L26">public abstract class EMFAbstractCachedRoundRobinCandidateSelector&lt;K extends ENamedElement, V extends EObject&gt;</span>
 		extends EMFRoundRobinCandidateSelector&lt;K, V&gt; {
 
 	/**
 	 * Internal cache storing computed candidate lists for each key.
 	 * This cache is not exposed to subclasses.
 	 */
-<span class="fc" id="L31">	private final Map&lt;K, List&lt;V&gt;&gt; cache = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L33">	private final Map&lt;K, List&lt;V&gt;&gt; cache = new HashMap&lt;&gt;();</span>
 
 	/**
 	 * Compute the list of candidates for the specified key.
@@ -59,7 +61,7 @@ import org.eclipse.emf.ecore.EObject;
 	 */
 	@Override
 	protected List&lt;V&gt; getOrCompute(final EObject context, final K key) {
-<span class="fc" id="L62">		return cache.computeIfAbsent(key, k -&gt; compute(context, k));</span>
+<span class="fc" id="L64">		return cache.computeIfAbsent(key, k -&gt; compute(context, k));</span>
 	}
 
 	/**
@@ -71,8 +73,8 @@ import org.eclipse.emf.ecore.EObject;
 	 */
 	@Override
 	public void reset() {
-<span class="fc" id="L74">		super.reset();</span>
-<span class="fc" id="L75">		cache.clear();</span>
-<span class="fc" id="L76">	}</span>
+<span class="fc" id="L76">		super.reset();</span>
+<span class="fc" id="L77">		cache.clear();</span>
+<span class="fc" id="L78">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

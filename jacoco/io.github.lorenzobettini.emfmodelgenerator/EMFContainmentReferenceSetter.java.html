@@ -10,6 +10,8 @@ import org.eclipse.emf.ecore.EReference;
  * This class handles both single-valued and multi-valued containment references,
  * creating appropriate EObjects based on the reference's type.
  * The created EObjects are returned as a collection.
+ *
+ * @author Lorenzo Bettini
  */
 public class EMFContainmentReferenceSetter extends EMFInstanceCreatorFeatureSetter&lt;EReference&gt; {
 
@@ -23,8 +25,8 @@ public class EMFContainmentReferenceSetter extends EMFInstanceCreatorFeatureSett
 	}
 
 	public EMFContainmentReferenceSetter() {
-<span class="fc" id="L26">		super(DEFAULT_MULTI_VALUED_COUNT);</span>
-<span class="fc" id="L27">	}</span>
+<span class="fc" id="L28">		super(DEFAULT_MULTI_VALUED_COUNT);</span>
+<span class="fc" id="L29">	}</span>
 
 	/**
 	 * Set the containment reference on the given owner EObject.
@@ -38,32 +40,32 @@ public class EMFContainmentReferenceSetter extends EMFInstanceCreatorFeatureSett
 	 * @return a collection of created EObjects assigned to the containment reference
 	 */
 	public Collection&lt;EObject&gt; setContainmentReference(EObject owner, EReference reference) {
-<span class="fc" id="L41">		return setFeatureCreatingEObjects(owner, reference);</span>
+<span class="fc" id="L43">		return setFeatureCreatingEObjects(owner, reference);</span>
 	}
 
 	@Override
 	protected void setSingleFeature(EObject owner, EReference reference) {
-<span class="fc" id="L46">		var eReferenceType = reference.getEReferenceType();</span>
+<span class="fc" id="L48">		var eReferenceType = reference.getEReferenceType();</span>
 		// For single-valued references, create and set one EObject
-<span class="fc" id="L48">		final EObject created = createInstance(owner, reference, eReferenceType);</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">		if (created != null) {</span>
-<span class="fc" id="L50">			owner.eSet(reference, created);</span>
+<span class="fc" id="L50">		final EObject created = createInstance(owner, reference, eReferenceType);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">		if (created != null) {</span>
+<span class="fc" id="L52">			owner.eSet(reference, created);</span>
 		}
-<span class="fc" id="L52">	}</span>
+<span class="fc" id="L54">	}</span>
 
 	@Override
 	protected void setMultiFeature(EObject owner, EReference reference) {
-<span class="fc" id="L56">		final int count = EMFUtils.getEffectiveCount(reference, getMaxCountFor(owner, reference));</span>
-<span class="fc" id="L57">		final var list = EMFUtils.getAsList(owner, reference);</span>
-<span class="fc" id="L58">		var eReferenceType = reference.getEReferenceType();</span>
+<span class="fc" id="L58">		final int count = EMFUtils.getEffectiveCount(reference, getMaxCountFor(owner, reference));</span>
+<span class="fc" id="L59">		final var list = EMFUtils.getAsList(owner, reference);</span>
+<span class="fc" id="L60">		var eReferenceType = reference.getEReferenceType();</span>
 		// For multi-valued references, add multiple EObjects
 		// Respect upper and lower bounds
-<span class="fc bfc" id="L61" title="All 2 branches covered.">		for (int i = 0; i &lt; count; i++) {</span>
-<span class="fc" id="L62">			final EObject created = createInstance(owner, reference, eReferenceType);</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">			if (created != null) {</span>
-<span class="fc" id="L64">				list.add(created);</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">		for (int i = 0; i &lt; count; i++) {</span>
+<span class="fc" id="L64">			final EObject created = createInstance(owner, reference, eReferenceType);</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">			if (created != null) {</span>
+<span class="fc" id="L66">				list.add(created);</span>
 			}
 		}
-<span class="fc" id="L67">	}</span>
+<span class="fc" id="L69">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

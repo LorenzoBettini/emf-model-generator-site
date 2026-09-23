@@ -5,6 +5,8 @@ import java.util.Objects;
 
 /**
  * Indicates that model validation produced a non-valid result.
+ *
+ * @author Lorenzo Bettini
  */
 public final class EMFValidationException extends RuntimeException {
 
@@ -21,9 +23,9 @@ public final class EMFValidationException extends RuntimeException {
 	 * @throws IllegalArgumentException if {@code result} is valid
 	 */
 	public EMFValidationException(final EMFValidationResult result) {
-<span class="fc" id="L24">		super(messageFor(requireInvalid(result)));</span>
-<span class="fc" id="L25">		this.result = result;</span>
-<span class="fc" id="L26">	}</span>
+<span class="fc" id="L26">		super(messageFor(requireInvalid(result)));</span>
+<span class="fc" id="L27">		this.result = result;</span>
+<span class="fc" id="L28">	}</span>
 
 	/**
 	 * Returns the complete validation result.
@@ -31,24 +33,24 @@ public final class EMFValidationException extends RuntimeException {
 	 * @return the result that caused this exception
 	 */
 	public EMFValidationResult getResult() {
-<span class="fc" id="L34">		return result;</span>
+<span class="fc" id="L36">		return result;</span>
 	}
 
 	private static EMFValidationResult requireInvalid(final EMFValidationResult result) {
-<span class="fc" id="L38">		Objects.requireNonNull(result, &quot;result&quot;);</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">		if (result.isValid()) {</span>
-<span class="fc" id="L40">			throw new IllegalArgumentException(&quot;A valid result cannot cause a validation exception&quot;);</span>
+<span class="fc" id="L40">		Objects.requireNonNull(result, &quot;result&quot;);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">		if (result.isValid()) {</span>
+<span class="fc" id="L42">			throw new IllegalArgumentException(&quot;A valid result cannot cause a validation exception&quot;);</span>
 		}
-<span class="fc" id="L42">		return result;</span>
+<span class="fc" id="L44">		return result;</span>
 	}
 
 	private static String messageFor(final EMFValidationResult result) {
-<span class="fc" id="L46">		var root = result.diagnostic();</span>
-<span class="fc" id="L47">		return result.rejectedDiagnostics().stream()</span>
-<span class="fc bfc" id="L48" title="All 2 branches covered.">				.filter(diagnostic -&gt; diagnostic != root)</span>
-<span class="fc" id="L49">				.findFirst()</span>
-<span class="fc" id="L50">				.orElse(root)</span>
-<span class="fc" id="L51">				.getMessage();</span>
+<span class="fc" id="L48">		var root = result.diagnostic();</span>
+<span class="fc" id="L49">		return result.rejectedDiagnostics().stream()</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">				.filter(diagnostic -&gt; diagnostic != root)</span>
+<span class="fc" id="L51">				.findFirst()</span>
+<span class="fc" id="L52">				.orElse(root)</span>
+<span class="fc" id="L53">				.getMessage();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

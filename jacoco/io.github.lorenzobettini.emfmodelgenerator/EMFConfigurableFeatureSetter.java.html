@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * @param &lt;T2&gt; The type of EStructuralFeature (e.g., EAttribute, EReference) used for creating
  * the feature value.
  * @param &lt;V&gt; The type of value returned for the feature
+ *
+ * @author Lorenzo Bettini
  */
 public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeature, T2 extends EStructuralFeature, V&gt; {
 
@@ -30,9 +32,9 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	private Map&lt;T1, Integer&gt; featureMaxCountMap;
 	private Map&lt;T2, FeatureFunction&lt;V&gt;&gt; featureFunctionMap;
 
-<span class="fc" id="L33">	protected EMFConfigurableFeatureSetter(int defaultMaxCount) {</span>
-<span class="fc" id="L34">		this.defaultMaxCount = defaultMaxCount;</span>
-<span class="fc" id="L35">	}</span>
+<span class="fc" id="L35">	protected EMFConfigurableFeatureSetter(int defaultMaxCount) {</span>
+<span class="fc" id="L36">		this.defaultMaxCount = defaultMaxCount;</span>
+<span class="fc" id="L37">	}</span>
 
 	/**
 	 * Set the default maximum count of values to generate for multi-valued features.
@@ -42,8 +44,8 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @param defaultMaxCount the default maximum count
 	 */
 	public void setDefaultMaxCount(int defaultMaxCount) {
-<span class="fc" id="L45">		this.defaultMaxCount = defaultMaxCount;</span>
-<span class="fc" id="L46">	}</span>
+<span class="fc" id="L47">		this.defaultMaxCount = defaultMaxCount;</span>
+<span class="fc" id="L48">	}</span>
 
 	/**
 	 * Returns the maximum count of values to set for the given feature on the given
@@ -54,9 +56,9 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @return the maximum count of values to generate for the feature
 	 */
 	protected int getMaxCountFor(EObject owner, T1 feature) {
-<span class="fc bfc" id="L57" title="All 2 branches covered.">		return (featureMaxCountMap == null)</span>
-<span class="fc" id="L58">				? defaultMaxCount</span>
-<span class="fc" id="L59">				: featureMaxCountMap.getOrDefault(feature, defaultMaxCount);</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">		return (featureMaxCountMap == null)</span>
+<span class="fc" id="L60">				? defaultMaxCount</span>
+<span class="fc" id="L61">				: featureMaxCountMap.getOrDefault(feature, defaultMaxCount);</span>
 	}
 
 	/**
@@ -66,11 +68,11 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @param maxCount the maximum count of values to generate
 	 */
 	public void setMaxCountFor(T1 feature, int maxCount) {
-<span class="fc bfc" id="L69" title="All 2 branches covered.">		if (featureMaxCountMap == null) {</span>
-<span class="fc" id="L70">			featureMaxCountMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if (featureMaxCountMap == null) {</span>
+<span class="fc" id="L72">			featureMaxCountMap = new HashMap&lt;&gt;();</span>
 		}
-<span class="fc" id="L72">		featureMaxCountMap.put(feature, maxCount);</span>
-<span class="fc" id="L73">	}</span>
+<span class="fc" id="L74">		featureMaxCountMap.put(feature, maxCount);</span>
+<span class="fc" id="L75">	}</span>
 
 	/**
 	 * Returns the function associated with the given feature.
@@ -79,9 +81,9 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @return the configured function, or null if none has been set
 	 */
 	protected FeatureFunction&lt;V&gt; getFunctionFor(T2 feature) {
-<span class="fc bfc" id="L82" title="All 2 branches covered.">		return (featureFunctionMap == null)</span>
-<span class="fc" id="L83">				? null</span>
-<span class="fc" id="L84">				: featureFunctionMap.get(feature);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">		return (featureFunctionMap == null)</span>
+<span class="fc" id="L85">				? null</span>
+<span class="fc" id="L86">				: featureFunctionMap.get(feature);</span>
 	}
 
 	/**
@@ -91,11 +93,11 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @param function the function to use for generating values for the feature
 	 */
 	public void setFunctionFor(T2 feature, FeatureFunction&lt;V&gt; function) {
-<span class="fc bfc" id="L94" title="All 2 branches covered.">		if (featureFunctionMap == null) {</span>
-<span class="fc" id="L95">			featureFunctionMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (featureFunctionMap == null) {</span>
+<span class="fc" id="L97">			featureFunctionMap = new HashMap&lt;&gt;();</span>
 		}
-<span class="fc" id="L97">		featureFunctionMap.put(feature, function);</span>
-<span class="fc" id="L98">	}</span>
+<span class="fc" id="L99">		featureFunctionMap.put(feature, function);</span>
+<span class="fc" id="L100">	}</span>
 
 	/**
 	 * Determines whether the feature should be set on the given owner EObject. By
@@ -106,7 +108,7 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @return true if the feature should be set, false otherwise
 	 */
 	protected boolean shouldSetFeature(EObject owner, T1 feature) {
-<span class="fc bfc" id="L109" title="All 2 branches covered.">		return !owner.eIsSet(feature);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">		return !owner.eIsSet(feature);</span>
 	}
 
 	/**
@@ -121,16 +123,16 @@ public abstract class EMFConfigurableFeatureSetter&lt;T1 extends EStructuralFeat
 	 * @param feature the feature to set
 	 */
 	public void setFeature(EObject owner, T1 feature) {
-<span class="fc bfc" id="L124" title="All 2 branches covered.">		if (!shouldSetFeature(owner, feature)) {</span>
-<span class="fc" id="L125">			return;</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (!shouldSetFeature(owner, feature)) {</span>
+<span class="fc" id="L127">			return;</span>
 		}
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">		if (feature.isMany()) {</span>
-<span class="fc" id="L129">			setMultiFeature(owner, feature);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">		if (feature.isMany()) {</span>
+<span class="fc" id="L131">			setMultiFeature(owner, feature);</span>
 		} else {
-<span class="fc" id="L131">			setSingleFeature(owner, feature);</span>
+<span class="fc" id="L133">			setSingleFeature(owner, feature);</span>
 		}
-<span class="fc" id="L133">	}</span>
+<span class="fc" id="L135">	}</span>
 
 	/**
 	 * Set a single-valued feature on the given owner EObject.

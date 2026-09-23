@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.EObject;
  * Strategy interface for selecting EMF EObject candidates of a specified type.
  * @param &lt;K&gt; the type of ENamedElement used as key (e.g., EClassifier, EAttribute)
  * @param &lt;V&gt; the type of EObject to be selected
+ *
+ * @author Lorenzo Bettini
  */
 public interface EMFCandidateSelectorStrategy&lt;K extends ENamedElement, V extends EObject&gt; {
 
@@ -34,7 +36,7 @@ public interface EMFCandidateSelectorStrategy&lt;K extends ENamedElement, V exte
 	 */
 	default void reset() {
 		// Default implementation does nothing
-<span class="fc" id="L37">	}</span>
+<span class="fc" id="L39">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

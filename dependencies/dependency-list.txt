@@ -1,0 +1,6 @@
+The following files have been resolved:
+   org.eclipse.emf:org.eclipse.emf.ecore.xmi:jar:2.41.0:compile -- module org.eclipse.emf.ecore.xmi [auto]
+   org.eclipse.emf:org.eclipse.emf.ecore:jar:2.43.0:compile -- module org.eclipse.emf.ecore [auto]
+   org.eclipse.emf:org.eclipse.emf.common:jar:2.46.0:compile -- module org.eclipse.emf.common [auto]
+   org.eclipse.platform:org.eclipse.osgi:jar:3.23.100:compile -- module org.eclipse.osgi
+

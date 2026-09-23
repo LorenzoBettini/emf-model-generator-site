@@ -1,0 +1,5 @@
+io.github.lorenzobettini:emf-model-generator:jar:1.1.0-SNAPSHOT
+\- org.eclipse.emf:org.eclipse.emf.ecore.xmi:jar:2.41.0:compile
+   \- org.eclipse.emf:org.eclipse.emf.ecore:jar:2.43.0:compile
+      +- org.eclipse.emf:org.eclipse.emf.common:jar:2.46.0:compile
+      \- org.eclipse.platform:org.eclipse.osgi:jar:3.23.100:compile

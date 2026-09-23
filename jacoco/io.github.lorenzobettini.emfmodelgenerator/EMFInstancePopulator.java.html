@@ -16,17 +16,51 @@ import io.github.lorenzobettini.emfmodelgenerator.EMFCrossReferenceSetter.EMFCro
 import io.github.lorenzobettini.emfmodelgenerator.EMFFeatureMapSetter.EMFFeatureMapValueFunction;
 
 /**
- * Responsible for populating EMF EObjects with sample data.
+ * Populates existing EMF {@link EObject EObjects} with sample data.
  * This includes setting attribute values and populating both containment
  * and cross references, with support for configurable multi-valued
  * counts and maximum depth for recursive population.
- * Also handles feature maps, which allow heterogeneous collections.
+ * It also handles feature maps, which allow heterogeneous collections.
+ *
+ * &lt;p&gt;This class performs only the population step: callers create the root objects and, when
+ * required, put them in resources and save those resources themselves. For example, an object
+ * whose metamodel has already been loaded can be populated directly:&lt;/p&gt;
+ * {@snippet :
+ * EClass libraryClass = (EClass) ePackage.getEClassifier(&quot;Library&quot;);
+ * EObject library = EcoreUtil.create(libraryClass);
+ *
+ * EMFInstancePopulator populator = new EMFInstancePopulator();
+ * populator.populateEObjects(library);
+ * }
+ *
+ * &lt;p&gt;Population can be tailored globally and for individual structural features. Per-feature
+ * functions are useful when deterministic domain-shaped sample values are needed:&lt;/p&gt;
+ * {@snippet :
+ * EAttribute name = (EAttribute) libraryClass.getEStructuralFeature(&quot;name&quot;);
+ * EReference books = (EReference) libraryClass.getEStructuralFeature(&quot;books&quot;);
+ *
+ * EMFInstancePopulator populator = new EMFInstancePopulator();
+ * populator.functionForAttribute(name,
+ *     owner -&gt; &quot;Sample &quot; + owner.eClass().getName());
+ * populator.setContainmentReferenceMaxCountFor(books, 3);
+ * populator.setMaxDepth(2);
+ * populator.populateEObjects(library);
+ * }
+ *
+ * &lt;p&gt;When roots may refer to one another, attach them to resources in the same resource set and
+ * pass them to one {@link #populateEObjects(EObject...)} call. This lets cross-reference selection
+ * see the complete population before references are assigned.&lt;/p&gt;
+ *
+ * @see EMFModelGenerator
+ * @see EMFResourceSetHelper
+ *
+ * @author Lorenzo Bettini
  */
 public class EMFInstancePopulator {
 
 	private static final int DEFAULT_MAX_DEPTH = 5;
 
-<span class="fc" id="L29">	private int maxDepth = DEFAULT_MAX_DEPTH;</span>
+<span class="fc" id="L63">	private int maxDepth = DEFAULT_MAX_DEPTH;</span>
 
 	private EMFAttributeSetter attributeSetter;
 
@@ -40,12 +74,12 @@ public class EMFInstancePopulator {
 	 * Create a new EMFInstancePopulator with default settings.
 	 * All setter components are initialised with their default strategies.
 	 */
-<span class="fc" id="L43">	public EMFInstancePopulator() {</span>
-<span class="fc" id="L44">		this.attributeSetter = new EMFAttributeSetter();</span>
-<span class="fc" id="L45">		this.crossReferenceSetter = new EMFCrossReferenceSetter();</span>
-<span class="fc" id="L46">		this.containmentReferenceSetter = new EMFContainmentReferenceSetter();</span>
-<span class="fc" id="L47">		this.featureMapSetter = new EMFFeatureMapSetter();</span>
-<span class="fc" id="L48">	}</span>
+<span class="fc" id="L77">	public EMFInstancePopulator() {</span>
+<span class="fc" id="L78">		this.attributeSetter = new EMFAttributeSetter();</span>
+<span class="fc" id="L79">		this.crossReferenceSetter = new EMFCrossReferenceSetter();</span>
+<span class="fc" id="L80">		this.containmentReferenceSetter = new EMFContainmentReferenceSetter();</span>
+<span class="fc" id="L81">		this.featureMapSetter = new EMFFeatureMapSetter();</span>
+<span class="fc" id="L82">	}</span>
 
 	/**
 	 * Returns the attribute setter used for populating EAttribute values.
@@ -53,7 +87,7 @@ public class EMFInstancePopulator {
 	 * @return the attribute setter
 	 */
 	public EMFAttributeSetter getAttributeSetter() {
-<span class="fc" id="L56">		return attributeSetter;</span>
+<span class="fc" id="L90">		return attributeSetter;</span>
 	}
 
 	/**
@@ -62,7 +96,7 @@ public class EMFInstancePopulator {
 	 * @return the cross-reference setter
 	 */
 	public EMFCrossReferenceSetter getCrossReferenceSetter() {
-<span class="fc" id="L65">		return crossReferenceSetter;</span>
+<span class="fc" id="L99">		return crossReferenceSetter;</span>
 	}
 
 	/**
@@ -71,7 +105,7 @@ public class EMFInstancePopulator {
 	 * @return the containment reference setter
 	 */
 	public EMFContainmentReferenceSetter getContainmentReferenceSetter() {
-<span class="fc" id="L74">		return containmentReferenceSetter;</span>
+<span class="fc" id="L108">		return containmentReferenceSetter;</span>
 	}
 
 	/**
@@ -80,7 +114,7 @@ public class EMFInstancePopulator {
 	 * @return the feature map setter
 	 */
 	public EMFFeatureMapSetter getFeatureMapSetter() {
-<span class="fc" id="L83">		return featureMapSetter;</span>
+<span class="fc" id="L117">		return featureMapSetter;</span>
 	}
 
 	/**
@@ -89,8 +123,8 @@ public class EMFInstancePopulator {
 	 * @param attributeSetter the attribute setter to use
 	 */
 	public void setAttributeSetter(EMFAttributeSetter attributeSetter) {
-<span class="fc" id="L92">		this.attributeSetter = attributeSetter;</span>
-<span class="fc" id="L93">	}</span>
+<span class="fc" id="L126">		this.attributeSetter = attributeSetter;</span>
+<span class="fc" id="L127">	}</span>
 
 	/**
 	 * Replace the cross-reference setter.
@@ -98,8 +132,8 @@ public class EMFInstancePopulator {
 	 * @param crossReferenceSetter the cross-reference setter to use
 	 */
 	public void setCrossReferenceSetter(EMFCrossReferenceSetter crossReferenceSetter) {
-<span class="fc" id="L101">		this.crossReferenceSetter = crossReferenceSetter;</span>
-<span class="fc" id="L102">	}</span>
+<span class="fc" id="L135">		this.crossReferenceSetter = crossReferenceSetter;</span>
+<span class="fc" id="L136">	}</span>
 
 	/**
 	 * Replace the containment reference setter.
@@ -107,8 +141,8 @@ public class EMFInstancePopulator {
 	 * @param containmentReferenceSetter the containment reference setter to use
 	 */
 	public void setContainmentReferenceSetter(EMFContainmentReferenceSetter containmentReferenceSetter) {
-<span class="fc" id="L110">		this.containmentReferenceSetter = containmentReferenceSetter;</span>
-<span class="fc" id="L111">	}</span>
+<span class="fc" id="L144">		this.containmentReferenceSetter = containmentReferenceSetter;</span>
+<span class="fc" id="L145">	}</span>
 
 	/**
 	 * Replace the feature map setter.
@@ -116,30 +150,42 @@ public class EMFInstancePopulator {
 	 * @param featureMapSetter the feature map setter to use
 	 */
 	public void setFeatureMapSetter(EMFFeatureMapSetter featureMapSetter) {
-<span class="fc" id="L119">		this.featureMapSetter = featureMapSetter;</span>
-<span class="fc" id="L120">	}</span>
+<span class="fc" id="L153">		this.featureMapSetter = featureMapSetter;</span>
+<span class="fc" id="L154">	}</span>
 
 	/**
 	 * Set a custom function for generating values for the given EAttribute.
+	 * For example, a name can be derived from the owning object's class:
+	 * {@snippet :
+	 * populator.functionForAttribute(nameAttribute,
+	 *     owner -&gt; &quot;Sample &quot; + owner.eClass().getName());
+	 * }
 	 * 
 	 * @param attribute the EAttribute for which to set the function
 	 * @param function  the function to generate values for the attribute
 	 */
 	public void functionForAttribute(EAttribute attribute,
 			EMFAttributeValueFunction function) {
-<span class="fc" id="L130">		attributeSetter.setFunctionFor(attribute, function);</span>
-<span class="fc" id="L131">	}</span>
+<span class="fc" id="L169">		attributeSetter.setFunctionFor(attribute, function);</span>
+<span class="fc" id="L170">	}</span>
 
 	/**
 	 * Set a custom function for generating values for the given cross EReference.
+	 * Returning {@code null} delegates that invocation to the default candidate selection:
+	 * {@snippet :
+	 * populator.functionForCrossReference(authorReference, book -&gt; {
+	 *     EObject preferredAuthor = findPreferredAuthor(book);
+	 *     return preferredAuthor; // null means: use the default candidate
+	 * });
+	 * }
 	 * 
 	 * @param reference the cross EReference for which to set the function
 	 * @param function  the function to generate values for the cross reference
 	 */
 	public void functionForCrossReference(EReference reference,
 			EMFCrossReferenceValueFunction function) {
-<span class="fc" id="L141">		crossReferenceSetter.setFunctionFor(reference, function);</span>
-<span class="fc" id="L142">	}</span>
+<span class="fc" id="L187">		crossReferenceSetter.setFunctionFor(reference, function);</span>
+<span class="fc" id="L188">	}</span>
 
 	/**
 	 * Set a custom function for generating values for the given containment EReference.
@@ -149,8 +195,8 @@ public class EMFInstancePopulator {
 	 */
 	public void functionForContainmentReference(EReference reference,
 			EMFContainmentReferenceValueFunction function) {
-<span class="fc" id="L152">		containmentReferenceSetter.setFunctionFor(reference, function);</span>
-<span class="fc" id="L153">	}</span>
+<span class="fc" id="L198">		containmentReferenceSetter.setFunctionFor(reference, function);</span>
+<span class="fc" id="L199">	}</span>
 
 	/**
 	 * Set a custom function for generating values for the given feature map group member.
@@ -160,8 +206,8 @@ public class EMFInstancePopulator {
 	 */
 	public void functionForFeatureMapGroupMember(EReference groupMember,
 			EMFFeatureMapValueFunction function) {
-<span class="fc" id="L163">		featureMapSetter.setFunctionFor(groupMember, function);</span>
-<span class="fc" id="L164">	}</span>
+<span class="fc" id="L209">		featureMapSetter.setFunctionFor(groupMember, function);</span>
+<span class="fc" id="L210">	}</span>
 
 	/**
 	 * Set the strategy for selecting instantiable subclasses when creating instances
@@ -170,8 +216,8 @@ public class EMFInstancePopulator {
 	 * @param strategy the candidate selector strategy
 	 */
 	public void setInstantiableSubclassSelectorStrategy(EMFCandidateSelectorStrategy&lt;EClass, EClass&gt; strategy) {
-<span class="fc" id="L173">		containmentReferenceSetter.setInstantiableSubclassSelectorStrategy(strategy);</span>
-<span class="fc" id="L174">	}</span>
+<span class="fc" id="L219">		containmentReferenceSetter.setInstantiableSubclassSelectorStrategy(strategy);</span>
+<span class="fc" id="L220">	}</span>
 
 	/**
 	 * Set the strategy for selecting candidate EObjects for cross-references.
@@ -179,8 +225,8 @@ public class EMFInstancePopulator {
 	 * @param strategy the candidate selector strategy
 	 */
 	public void setCrossReferenceCandidateSelectorStrategy(EMFCandidateSelectorStrategy&lt;EClass, EObject&gt; strategy) {
-<span class="fc" id="L182">		crossReferenceSetter.setCandidateSelectorStrategy(strategy);</span>
-<span class="fc" id="L183">	}</span>
+<span class="fc" id="L228">		crossReferenceSetter.setCandidateSelectorStrategy(strategy);</span>
+<span class="fc" id="L229">	}</span>
 
 	/**
 	 * Set the strategy for selecting enum literals when generating enum attribute values.
@@ -188,8 +234,8 @@ public class EMFInstancePopulator {
 	 * @param strategy the candidate selector strategy
 	 */
 	public void setEnumLiteralSelectorStrategy(EMFCandidateSelectorStrategy&lt;EEnum, EEnumLiteral&gt; strategy) {
-<span class="fc" id="L191">		attributeSetter.setEnumLiteralSelectorStrategy(strategy);</span>
-<span class="fc" id="L192">	}</span>
+<span class="fc" id="L237">		attributeSetter.setEnumLiteralSelectorStrategy(strategy);</span>
+<span class="fc" id="L238">	}</span>
 
 	/**
 	 * Set the strategy for selecting feature map group members when populating feature maps.
@@ -197,8 +243,8 @@ public class EMFInstancePopulator {
 	 * @param strategy the candidate selector strategy
 	 */
 	public void setGroupMemberSelectorStrategy(EMFCandidateSelectorStrategy&lt;EAttribute, EReference&gt; strategy) {
-<span class="fc" id="L200">		featureMapSetter.setGroupMemberSelectorStrategy(strategy);</span>
-<span class="fc" id="L201">	}</span>
+<span class="fc" id="L246">		featureMapSetter.setGroupMemberSelectorStrategy(strategy);</span>
+<span class="fc" id="L247">	}</span>
 
 	/**
 	 * Set the policy for determining whether direct self-references are allowed in cross references.
@@ -206,18 +252,21 @@ public class EMFInstancePopulator {
 	 * @param policy the self-reference policy to use
 	 */
 	public void setSelfReferencePolicy(EMFCrossReferenceSetter.SelfReferencePolicy policy) {
-<span class="fc" id="L209">		crossReferenceSetter.setSelfReferencePolicy(policy);</span>
-<span class="fc" id="L210">	}</span>
+<span class="fc" id="L255">		crossReferenceSetter.setSelfReferencePolicy(policy);</span>
+<span class="fc" id="L256">	}</span>
 
 	/**
 	 * Set the maximum recursion depth for populating containment references.
 	 * Attributes are always populated regardless of depth.
+	 * A root is at depth {@code 0}; with a maximum depth of {@code 1}, its direct
+	 * contained objects are created and have their attributes populated, but their
+	 * containment references are not expanded.
 	 *
 	 * @param maxDepth the maximum depth
 	 */
 	public void setMaxDepth(final int maxDepth) {
-<span class="fc" id="L219">		this.maxDepth = maxDepth;</span>
-<span class="fc" id="L220">	}</span>
+<span class="fc" id="L268">		this.maxDepth = maxDepth;</span>
+<span class="fc" id="L269">	}</span>
 
 	/**
 	 * Set the default maximum number of values generated for multi-valued attributes.
@@ -225,8 +274,8 @@ public class EMFInstancePopulator {
 	 * @param count the default maximum count
 	 */
 	public void setAttributeDefaultMaxCount(int count) {
-<span class="fc" id="L228">		attributeSetter.setDefaultMaxCount(count);</span>
-<span class="fc" id="L229">	}</span>
+<span class="fc" id="L277">		attributeSetter.setDefaultMaxCount(count);</span>
+<span class="fc" id="L278">	}</span>
 
 	/**
 	 * Set the default maximum number of values generated for multi-valued cross references.
@@ -234,8 +283,8 @@ public class EMFInstancePopulator {
 	 * @param count the default maximum count
 	 */
 	public void setCrossReferenceDefaultMaxCount(int count) {
-<span class="fc" id="L237">		crossReferenceSetter.setDefaultMaxCount(count);</span>
-<span class="fc" id="L238">	}</span>
+<span class="fc" id="L286">		crossReferenceSetter.setDefaultMaxCount(count);</span>
+<span class="fc" id="L287">	}</span>
 
 	/**
 	 * Set the default maximum number of values generated for multi-valued containment references.
@@ -243,8 +292,8 @@ public class EMFInstancePopulator {
 	 * @param count the default maximum count
 	 */
 	public void setContainmentReferenceDefaultMaxCount(int count) {
-<span class="fc" id="L246">		containmentReferenceSetter.setDefaultMaxCount(count);</span>
-<span class="fc" id="L247">	}</span>
+<span class="fc" id="L295">		containmentReferenceSetter.setDefaultMaxCount(count);</span>
+<span class="fc" id="L296">	}</span>
 
 	/**
 	 * Set the maximum number of values generated for the given multi-valued attribute.
@@ -253,8 +302,8 @@ public class EMFInstancePopulator {
 	 * @param count     the maximum count
 	 */
 	public void setAttributeMaxCountFor(EAttribute attribute, int count) {
-<span class="fc" id="L256">		attributeSetter.setMaxCountFor(attribute, count);</span>
-<span class="fc" id="L257">	}</span>
+<span class="fc" id="L305">		attributeSetter.setMaxCountFor(attribute, count);</span>
+<span class="fc" id="L306">	}</span>
 
 	/**
 	 * Set the maximum number of values generated for the given multi-valued cross reference.
@@ -263,8 +312,8 @@ public class EMFInstancePopulator {
 	 * @param count     the maximum count
 	 */
 	public void setCrossReferenceMaxCountFor(EReference reference, int count) {
-<span class="fc" id="L266">		crossReferenceSetter.setMaxCountFor(reference, count);</span>
-<span class="fc" id="L267">	}</span>
+<span class="fc" id="L315">		crossReferenceSetter.setMaxCountFor(reference, count);</span>
+<span class="fc" id="L316">	}</span>
 
 	/**
 	 * Set the maximum number of values generated for the given multi-valued containment reference.
@@ -273,8 +322,8 @@ public class EMFInstancePopulator {
 	 * @param count     the maximum count
 	 */
 	public void setContainmentReferenceMaxCountFor(EReference reference, int count) {
-<span class="fc" id="L276">		containmentReferenceSetter.setMaxCountFor(reference, count);</span>
-<span class="fc" id="L277">	}</span>
+<span class="fc" id="L325">		containmentReferenceSetter.setMaxCountFor(reference, count);</span>
+<span class="fc" id="L326">	}</span>
 
 	/**
 	 * Set the default maximum number of entries generated for feature maps.
@@ -282,8 +331,8 @@ public class EMFInstancePopulator {
 	 * @param count the default maximum count
 	 */
 	public void setFeatureMapDefaultMaxCount(int count) {
-<span class="fc" id="L285">		featureMapSetter.setDefaultMaxCount(count);</span>
-<span class="fc" id="L286">	}</span>
+<span class="fc" id="L334">		featureMapSetter.setDefaultMaxCount(count);</span>
+<span class="fc" id="L335">	}</span>
 
 	/**
 	 * Set the maximum number of entries generated for the given feature map attribute.
@@ -292,36 +341,50 @@ public class EMFInstancePopulator {
 	 * @param count               the maximum count
 	 */
 	public void setFeatureMapMaxCountFor(EAttribute featureMapAttribute, int count) {
-<span class="fc" id="L295">		featureMapSetter.setMaxCountFor(featureMapAttribute, count);</span>
-<span class="fc" id="L296">	}</span>
+<span class="fc" id="L344">		featureMapSetter.setMaxCountFor(featureMapAttribute, count);</span>
+<span class="fc" id="L345">	}</span>
 
 	/**
 	 * Populate the given EObjects with sample data.
 	 * This includes setting attribute values and populating both containment
 	 * and cross references, up to the configured maximum depth.
 	 *
+	 * &lt;p&gt;All roots are populated before cross-references are assigned. Supply related roots together
+	 * so that each one can be selected as a cross-reference candidate for the others:&lt;/p&gt;
+	 * {@snippet :
+	 * EObject book = EcoreUtil.create(bookClass);
+	 * EObject author = EcoreUtil.create(authorClass);
+	 * bookResource.getContents().add(book);
+	 * authorResource.getContents().add(author);
+	 *
+	 * EMFInstancePopulator populator = new EMFInstancePopulator();
+	 * populator.populateEObjects(book, author);
+	 * }
+	 * The resources in this example must belong to the same {@code ResourceSet}. Objects created
+	 * through containment during the call are recursively populated as well.
+	 *
 	 * @param rootInstances the EObjects to populate
 	 */
 	public void populateEObjects(EObject... rootInstances) {
-<span class="fc" id="L306">		var createdEObjects = new ArrayList&lt;EObject&gt;();</span>
-<span class="fc bfc" id="L307" title="All 2 branches covered.">		for (var root : rootInstances) {</span>
-<span class="fc" id="L308">			createdEObjects.addAll(populateEObject(root, 0));</span>
+<span class="fc" id="L369">		var createdEObjects = new ArrayList&lt;EObject&gt;();</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">		for (var root : rootInstances) {</span>
+<span class="fc" id="L371">			createdEObjects.addAll(populateEObject(root, 0));</span>
 		}
 
 		// reset cross reference setter state
 		// so that candidates for cross-references are recomputed
-<span class="fc" id="L313">		crossReferenceSetter.reset();</span>
+<span class="fc" id="L376">		crossReferenceSetter.reset();</span>
 
 		// after having populated all containments up to max depth, populate cross references
 		// for all root instances...
-<span class="fc bfc" id="L317" title="All 2 branches covered.">		for (var root : rootInstances) {</span>
-<span class="fc" id="L318">			populateCrossReferences(root);</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">		for (var root : rootInstances) {</span>
+<span class="fc" id="L381">			populateCrossReferences(root);</span>
 		}
 		// ... and for all created EObjects
-<span class="fc bfc" id="L321" title="All 2 branches covered.">		for (var createdEObject : createdEObjects) {</span>
-<span class="fc" id="L322">			populateCrossReferences(createdEObject);</span>
-<span class="fc" id="L323">		}</span>
-<span class="fc" id="L324">	}</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">		for (var createdEObject : createdEObjects) {</span>
+<span class="fc" id="L385">			populateCrossReferences(createdEObject);</span>
+<span class="fc" id="L386">		}</span>
+<span class="fc" id="L387">	}</span>
 
 	/**
 	 * Recursively populate the given EObject up to the configured maximum depth.
@@ -331,53 +394,53 @@ public class EMFInstancePopulator {
 	 * @return the list of created EObjects during population
 	 */
 	private Collection&lt;EObject&gt; populateEObject(EObject eObject, int depth) {
-<span class="fc" id="L334">		var createdEObjects = new ArrayList&lt;EObject&gt;();</span>
+<span class="fc" id="L397">		var createdEObjects = new ArrayList&lt;EObject&gt;();</span>
 		// attributes are populated always
-<span class="fc" id="L336">		populateAttributes(eObject);</span>
-<span class="fc bfc" id="L337" title="All 2 branches covered.">		if (depth &lt; maxDepth) {</span>
-<span class="fc" id="L338">			populateFeatureMaps(eObject, createdEObjects);</span>
-<span class="fc" id="L339">			populateContainmentReferences(eObject, createdEObjects);</span>
+<span class="fc" id="L399">		populateAttributes(eObject);</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">		if (depth &lt; maxDepth) {</span>
+<span class="fc" id="L401">			populateFeatureMaps(eObject, createdEObjects);</span>
+<span class="fc" id="L402">			populateContainmentReferences(eObject, createdEObjects);</span>
 			// recursively populate created EObjects
-<span class="fc" id="L341">			var recursiveCreatedEObjects = new ArrayList&lt;EObject&gt;();</span>
-<span class="fc bfc" id="L342" title="All 2 branches covered.">			for (var createdEObject : createdEObjects) {</span>
-<span class="fc" id="L343">				recursiveCreatedEObjects.addAll(populateEObject(createdEObject, depth + 1));</span>
-<span class="fc" id="L344">			}</span>
-<span class="fc" id="L345">			createdEObjects.addAll(recursiveCreatedEObjects);</span>
+<span class="fc" id="L404">			var recursiveCreatedEObjects = new ArrayList&lt;EObject&gt;();</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">			for (var createdEObject : createdEObjects) {</span>
+<span class="fc" id="L406">				recursiveCreatedEObjects.addAll(populateEObject(createdEObject, depth + 1));</span>
+<span class="fc" id="L407">			}</span>
+<span class="fc" id="L408">			createdEObjects.addAll(recursiveCreatedEObjects);</span>
 		}
-<span class="fc" id="L347">		return createdEObjects;</span>
+<span class="fc" id="L410">		return createdEObjects;</span>
 	}
 
 	private void populateAttributes(EObject eObject) {
-<span class="fc bfc" id="L351" title="All 2 branches covered.">		for (var attribute : eObject.eClass().getEAllAttributes()) {</span>
-<span class="fc bfc" id="L352" title="All 2 branches covered.">			if (EMFUtils.isValidAttribute(attribute)) {</span>
-<span class="fc" id="L353">				attributeSetter.setAttribute(eObject, attribute);</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">		for (var attribute : eObject.eClass().getEAllAttributes()) {</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">			if (EMFUtils.isValidAttribute(attribute)) {</span>
+<span class="fc" id="L416">				attributeSetter.setAttribute(eObject, attribute);</span>
 			}
-<span class="fc" id="L355">		}</span>
-<span class="fc" id="L356">	}</span>
+<span class="fc" id="L418">		}</span>
+<span class="fc" id="L419">	}</span>
 
 	private void populateFeatureMaps(EObject eObject, Collection&lt;EObject&gt; createdEObjects) {
-<span class="fc bfc" id="L359" title="All 2 branches covered.">		for (var attribute : eObject.eClass().getEAllAttributes()) {</span>
-<span class="fc bfc" id="L360" title="All 2 branches covered.">			if (EMFUtils.isFeatureMap(attribute)) {</span>
-<span class="fc" id="L361">				createdEObjects.addAll(featureMapSetter.setFeatureMap(eObject, attribute));</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">		for (var attribute : eObject.eClass().getEAllAttributes()) {</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">			if (EMFUtils.isFeatureMap(attribute)) {</span>
+<span class="fc" id="L424">				createdEObjects.addAll(featureMapSetter.setFeatureMap(eObject, attribute));</span>
 			}
-<span class="fc" id="L363">		}</span>
-<span class="fc" id="L364">	}</span>
+<span class="fc" id="L426">		}</span>
+<span class="fc" id="L427">	}</span>
 
 	private void populateContainmentReferences(EObject eObject, Collection&lt;EObject&gt; createdEObjects) {
-<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (var reference : eObject.eClass().getEAllContainments()) {</span>
-<span class="fc bfc" id="L368" title="All 2 branches covered.">			if (EMFUtils.isValidReference(reference)) {</span>
-<span class="fc" id="L369">				createdEObjects.addAll(containmentReferenceSetter.setContainmentReference(eObject, reference));</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">		for (var reference : eObject.eClass().getEAllContainments()) {</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">			if (EMFUtils.isValidReference(reference)) {</span>
+<span class="fc" id="L432">				createdEObjects.addAll(containmentReferenceSetter.setContainmentReference(eObject, reference));</span>
 			}
-<span class="fc" id="L371">		}</span>
-<span class="fc" id="L372">	}</span>
+<span class="fc" id="L434">		}</span>
+<span class="fc" id="L435">	}</span>
 
 	private void populateCrossReferences(EObject eObject) {
-<span class="fc bfc" id="L375" title="All 2 branches covered.">		for (var reference : eObject.eClass().getEAllReferences()) {</span>
-<span class="fc bfc" id="L376" title="All 4 branches covered.">			if (!reference.isContainment() &amp;&amp; EMFUtils.isValidReference(reference)) {</span>
-<span class="fc" id="L377">				crossReferenceSetter.setCrossReference(eObject, reference);</span>
+<span class="fc bfc" id="L438" title="All 2 branches covered.">		for (var reference : eObject.eClass().getEAllReferences()) {</span>
+<span class="fc bfc" id="L439" title="All 4 branches covered.">			if (!reference.isContainment() &amp;&amp; EMFUtils.isValidReference(reference)) {</span>
+<span class="fc" id="L440">				crossReferenceSetter.setCrossReference(eObject, reference);</span>
 			}
-<span class="fc" id="L379">		}</span>
-<span class="fc" id="L380">	}</span>
+<span class="fc" id="L442">		}</span>
+<span class="fc" id="L443">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

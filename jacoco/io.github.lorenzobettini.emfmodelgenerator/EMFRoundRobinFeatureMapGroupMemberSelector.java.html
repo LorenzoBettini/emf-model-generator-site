@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EReference;
  * available group members.&lt;/p&gt;
  * 
  * &lt;p&gt;Example:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * EMFRoundRobinFeatureMapGroupMemberSelector selector = new EMFRoundRobinFeatureMapGroupMemberSelector();
  * 
  * // First call returns first group member (e.g., sections)
@@ -30,14 +30,16 @@ import org.eclipse.emf.ecore.EReference;
  * 
  * // If no group members available, returns null
  * EReference noMember = selector.getNextCandidate(context, emptyFeatureMap); // returns null
- * }&lt;/pre&gt;
+ * }
+ *
+ * @author Lorenzo Bettini
  */
-<span class="fc" id="L35">public class EMFRoundRobinFeatureMapGroupMemberSelector extends EMFAbstractCachedRoundRobinCandidateSelector&lt;EAttribute, EReference&gt; {</span>
+<span class="fc" id="L37">public class EMFRoundRobinFeatureMapGroupMemberSelector extends EMFAbstractCachedRoundRobinCandidateSelector&lt;EAttribute, EReference&gt; {</span>
 
 	@Override
 	protected List&lt;EReference&gt; compute(final EObject context, final EAttribute key) {
 		// Context is not needed for finding feature map group members
-<span class="fc" id="L40">		return EMFUtils.findFeatureMapGroupMembers(key);</span>
+<span class="fc" id="L42">		return EMFUtils.findFeatureMapGroupMembers(key);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * available EClasses.&lt;/p&gt;
  * 
  * &lt;p&gt;Example:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * EMFRoundRobinEClassCandidateSelector selector = new EMFRoundRobinEClassCandidateSelector();
  * 
  * // First call for BaseClass returns SubClass1
@@ -25,14 +25,16 @@ import org.eclipse.emf.ecore.EObject;
  * 
  * // If no candidates available, returns null
  * EClass noCandidate = selector.getNextCandidate(context, unknownClass); // returns null
- * }&lt;/pre&gt;
+ * }
+ *
+ * @author Lorenzo Bettini
  */
-<span class="fc" id="L30">public class EMFRoundRobinEClassCandidateSelector extends EMFAbstractCachedRoundRobinCandidateSelector&lt;EClass, EClass&gt; {</span>
+<span class="fc" id="L32">public class EMFRoundRobinEClassCandidateSelector extends EMFAbstractCachedRoundRobinCandidateSelector&lt;EClass, EClass&gt; {</span>
 
 	@Override
 	protected List&lt;EClass&gt; compute(final EObject context, final EClass key) {
 		// Context is not needed for finding instantiable subclasses
-<span class="fc" id="L35">		return EMFUtils.findAllInstantiableSubclasses(key);</span>
+<span class="fc" id="L37">		return EMFUtils.findAllInstantiableSubclasses(key);</span>
 	}
 
 }

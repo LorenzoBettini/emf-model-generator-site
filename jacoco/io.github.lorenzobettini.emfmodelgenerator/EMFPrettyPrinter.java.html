@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * while cross-references to objects in different resources include the resource name.
  * 
  * &lt;p&gt;Example output for same-resource reference:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * Library
  *   name: &quot;City Library&quot;
  *   books (1):
@@ -29,10 +29,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  *   authors (1):
  *     [0] Author
  *       name: &quot;Orwell&quot;
- * }&lt;/pre&gt;
+ * }
  * 
  * &lt;p&gt;Example output for cross-resource reference:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * Library
  *   name: &quot;Central Library&quot;
  *   books (1):
@@ -40,9 +40,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  *       title: &quot;Brave New World&quot;
  *       authors (opposite) (1):
  *         [0] -&gt; Author (other_Library.xmi &gt; authors[0])
- * }&lt;/pre&gt;
+ * }
+ *
+ * @author Lorenzo Bettini
  */
-<span class="fc" id="L45">public class EMFPrettyPrinter {</span>
+<span class="fc" id="L47">public class EMFPrettyPrinter {</span>
 
 	private static final String INDENT = &quot;  &quot;;
 	private static final String OPPOSITE_MARKER = &quot; (opposite)&quot;;
@@ -54,9 +56,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 	 * @return the pretty-printed string representation
 	 */
 	public String prettyPrint(final EObject eObject) {
-<span class="fc" id="L57">		final var sb = new StringBuilder();</span>
-<span class="fc" id="L58">		printEObject(eObject, sb, 0);</span>
-<span class="fc" id="L59">		return sb.toString();</span>
+<span class="fc" id="L59">		final var sb = new StringBuilder();</span>
+<span class="fc" id="L60">		printEObject(eObject, sb, 0);</span>
+<span class="fc" id="L61">		return sb.toString();</span>
 	}
 
 	/**
@@ -66,12 +68,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 	 * @return the pretty-printed string representation
 	 */
 	public String prettyPrint(final Resource resource) {
-<span class="fc" id="L69">		final var sb = new StringBuilder();</span>
-<span class="fc" id="L70">		sb.append(&quot;Resource: &quot;).append(getResourceName(resource)).append(&quot;\n&quot;);</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">		for (final EObject root : resource.getContents()) {</span>
-<span class="fc" id="L72">			printEObject(root, sb, 1);</span>
-<span class="fc" id="L73">		}</span>
-<span class="fc" id="L74">		return sb.toString();</span>
+<span class="fc" id="L71">		final var sb = new StringBuilder();</span>
+<span class="fc" id="L72">		sb.append(&quot;Resource: &quot;).append(getResourceName(resource)).append(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		for (final EObject root : resource.getContents()) {</span>
+<span class="fc" id="L74">			printEObject(root, sb, 1);</span>
+<span class="fc" id="L75">		}</span>
+<span class="fc" id="L76">		return sb.toString();</span>
 	}
 
 	/**
@@ -81,187 +83,187 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 	 * @return the pretty-printed string representation
 	 */
 	public String prettyPrint(final ResourceSet resourceSet) {
-<span class="fc" id="L84">		final var sb = new StringBuilder();</span>
-<span class="fc bfc" id="L85" title="All 2 branches covered.">		for (final Resource resource : resourceSet.getResources()) {</span>
-<span class="fc" id="L86">			sb.append(&quot;Resource: &quot;).append(getResourceName(resource)).append(&quot;\n&quot;);</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">			for (final EObject root : resource.getContents()) {</span>
-<span class="fc" id="L88">				printEObject(root, sb, 1);</span>
-<span class="fc" id="L89">			}</span>
-<span class="fc" id="L90">		}</span>
-<span class="fc" id="L91">		return sb.toString();</span>
+<span class="fc" id="L86">		final var sb = new StringBuilder();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		for (final Resource resource : resourceSet.getResources()) {</span>
+<span class="fc" id="L88">			sb.append(&quot;Resource: &quot;).append(getResourceName(resource)).append(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">			for (final EObject root : resource.getContents()) {</span>
+<span class="fc" id="L90">				printEObject(root, sb, 1);</span>
+<span class="fc" id="L91">			}</span>
+<span class="fc" id="L92">		}</span>
+<span class="fc" id="L93">		return sb.toString();</span>
 	}
 
 	private void printEObject(final EObject eObject, final StringBuilder sb, final int depth) {
-<span class="fc" id="L95">		indent(sb, depth);</span>
-<span class="fc" id="L96">		sb.append(eObject.eClass().getName());</span>
-<span class="fc" id="L97">		sb.append(&quot;\n&quot;);</span>
+<span class="fc" id="L97">		indent(sb, depth);</span>
+<span class="fc" id="L98">		sb.append(eObject.eClass().getName());</span>
+<span class="fc" id="L99">		sb.append(&quot;\n&quot;);</span>
 
-<span class="fc bfc" id="L99" title="All 2 branches covered.">		for (final EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">			if (!eObject.eIsSet(feature)) {</span>
-<span class="fc" id="L101">				continue;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">		for (final EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">			if (!eObject.eIsSet(feature)) {</span>
+<span class="fc" id="L103">				continue;</span>
 			}
 
-<span class="fc bfc" id="L104" title="All 2 branches covered.">			if (feature instanceof EAttribute attribute) {</span>
-<span class="fc" id="L105">				printAttribute(eObject, attribute, sb, depth + 1);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">			if (feature instanceof EAttribute attribute) {</span>
+<span class="fc" id="L107">				printAttribute(eObject, attribute, sb, depth + 1);</span>
 			} else {
-<span class="fc" id="L107">				final var ref = (EReference) feature;</span>
-<span class="fc bfc" id="L108" title="All 2 branches covered.">				if (ref.isContainment()) {</span>
-<span class="fc" id="L109">					printContainmentReference(eObject, ref, sb, depth + 1);</span>
+<span class="fc" id="L109">				final var ref = (EReference) feature;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">				if (ref.isContainment()) {</span>
+<span class="fc" id="L111">					printContainmentReference(eObject, ref, sb, depth + 1);</span>
 				} else {
-<span class="fc" id="L111">					printCrossReference(eObject, ref, sb, depth + 1);</span>
+<span class="fc" id="L113">					printCrossReference(eObject, ref, sb, depth + 1);</span>
 				}
 			}
-<span class="fc" id="L114">		}</span>
-<span class="fc" id="L115">	}</span>
+<span class="fc" id="L116">		}</span>
+<span class="fc" id="L117">	}</span>
 
 	private void printAttribute(final EObject eObject, final EAttribute attribute, final StringBuilder sb, final int depth) {
-<span class="fc" id="L118">		final var value = eObject.eGet(attribute);</span>
+<span class="fc" id="L120">		final var value = eObject.eGet(attribute);</span>
 		
-<span class="fc bfc" id="L120" title="All 2 branches covered.">		if (attribute.isMany()) {</span>
-<span class="fc" id="L121">			final var values = (List&lt;?&gt;) value;</span>
-<span class="fc" id="L122">			indent(sb, depth);</span>
-<span class="fc" id="L123">			sb.append(attribute.getName()).append(&quot; (&quot;).append(values.size()).append(&quot;):&quot;);</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">			for (final Object val : values) {</span>
-<span class="fc" id="L125">				sb.append(&quot;\n&quot;);</span>
-<span class="fc" id="L126">				indent(sb, depth + 1);</span>
-<span class="fc" id="L127">				sb.append(formatValue(val));</span>
-<span class="fc" id="L128">			}</span>
-<span class="fc" id="L129">			sb.append(&quot;\n&quot;);</span>
-<span class="fc" id="L130">		} else {</span>
-<span class="fc" id="L131">			indent(sb, depth);</span>
-<span class="fc" id="L132">			sb.append(attribute.getName()).append(&quot;: &quot;).append(formatValue(value)).append(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		if (attribute.isMany()) {</span>
+<span class="fc" id="L123">			final var values = (List&lt;?&gt;) value;</span>
+<span class="fc" id="L124">			indent(sb, depth);</span>
+<span class="fc" id="L125">			sb.append(attribute.getName()).append(&quot; (&quot;).append(values.size()).append(&quot;):&quot;);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">			for (final Object val : values) {</span>
+<span class="fc" id="L127">				sb.append(&quot;\n&quot;);</span>
+<span class="fc" id="L128">				indent(sb, depth + 1);</span>
+<span class="fc" id="L129">				sb.append(formatValue(val));</span>
+<span class="fc" id="L130">			}</span>
+<span class="fc" id="L131">			sb.append(&quot;\n&quot;);</span>
+<span class="fc" id="L132">		} else {</span>
+<span class="fc" id="L133">			indent(sb, depth);</span>
+<span class="fc" id="L134">			sb.append(attribute.getName()).append(&quot;: &quot;).append(formatValue(value)).append(&quot;\n&quot;);</span>
 		}
-<span class="fc" id="L134">	}</span>
+<span class="fc" id="L136">	}</span>
 
 	private void printContainmentReference(final EObject eObject, final EReference reference, final StringBuilder sb, final int depth) {
-<span class="fc" id="L137">		final var value = eObject.eGet(reference);</span>
+<span class="fc" id="L139">		final var value = eObject.eGet(reference);</span>
 		
-<span class="fc bfc" id="L139" title="All 2 branches covered.">		if (reference.isMany()) {</span>
-<span class="fc" id="L140">			final var values = (List&lt;?&gt;) value;</span>
-<span class="fc" id="L141">			indent(sb, depth);</span>
-<span class="fc" id="L142">			sb.append(reference.getName());</span>
-<span class="fc" id="L143">			sb.append(&quot; (&quot;).append(values.size()).append(&quot;):\n&quot;);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">		if (reference.isMany()) {</span>
+<span class="fc" id="L142">			final var values = (List&lt;?&gt;) value;</span>
+<span class="fc" id="L143">			indent(sb, depth);</span>
+<span class="fc" id="L144">			sb.append(reference.getName());</span>
+<span class="fc" id="L145">			sb.append(&quot; (&quot;).append(values.size()).append(&quot;):\n&quot;);</span>
 			
-<span class="fc bfc" id="L145" title="All 2 branches covered.">			for (int i = 0; i &lt; values.size(); i++) {</span>
-<span class="fc" id="L146">				indent(sb, depth + 1);</span>
-<span class="fc" id="L147">				sb.append(&quot;[&quot;).append(i).append(&quot;] &quot;);</span>
-<span class="fc" id="L148">				final var containedObject = (EObject) values.get(i);</span>
-<span class="fc" id="L149">				sb.append(containedObject.eClass().getName()).append(&quot;\n&quot;);</span>
-<span class="fc" id="L150">				printFeaturesOfEObject(containedObject, sb, depth + 2);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">			for (int i = 0; i &lt; values.size(); i++) {</span>
+<span class="fc" id="L148">				indent(sb, depth + 1);</span>
+<span class="fc" id="L149">				sb.append(&quot;[&quot;).append(i).append(&quot;] &quot;);</span>
+<span class="fc" id="L150">				final var containedObject = (EObject) values.get(i);</span>
+<span class="fc" id="L151">				sb.append(containedObject.eClass().getName()).append(&quot;\n&quot;);</span>
+<span class="fc" id="L152">				printFeaturesOfEObject(containedObject, sb, depth + 2);</span>
 			}
-<span class="fc" id="L152">		} else {</span>
-<span class="fc" id="L153">			indent(sb, depth);</span>
-<span class="fc" id="L154">			sb.append(reference.getName());</span>
-<span class="fc" id="L155">			sb.append(&quot;:\n&quot;);</span>
-<span class="fc" id="L156">			indent(sb, depth + 1);</span>
-<span class="fc" id="L157">			final var containedObject = (EObject) value;</span>
-<span class="fc" id="L158">			sb.append(containedObject.eClass().getName()).append(&quot;\n&quot;);</span>
-<span class="fc" id="L159">			printFeaturesOfEObject(containedObject, sb, depth + 2);</span>
+<span class="fc" id="L154">		} else {</span>
+<span class="fc" id="L155">			indent(sb, depth);</span>
+<span class="fc" id="L156">			sb.append(reference.getName());</span>
+<span class="fc" id="L157">			sb.append(&quot;:\n&quot;);</span>
+<span class="fc" id="L158">			indent(sb, depth + 1);</span>
+<span class="fc" id="L159">			final var containedObject = (EObject) value;</span>
+<span class="fc" id="L160">			sb.append(containedObject.eClass().getName()).append(&quot;\n&quot;);</span>
+<span class="fc" id="L161">			printFeaturesOfEObject(containedObject, sb, depth + 2);</span>
 		}
-<span class="fc" id="L161">	}</span>
+<span class="fc" id="L163">	}</span>
 
 	private void printCrossReference(final EObject eObject, final EReference reference, final StringBuilder sb, final int depth) {
-<span class="fc" id="L164">		final var value = eObject.eGet(reference);</span>
+<span class="fc" id="L166">		final var value = eObject.eGet(reference);</span>
 		
-<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (reference.isMany()) {</span>
-<span class="fc" id="L167">			final var values = (List&lt;?&gt;) value;</span>
-<span class="fc" id="L168">			indent(sb, depth);</span>
-<span class="fc" id="L169">			sb.append(reference.getName());</span>
-<span class="fc bfc" id="L170" title="All 2 branches covered.">			if (reference.getEOpposite() != null) {</span>
-<span class="fc" id="L171">				sb.append(OPPOSITE_MARKER);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		if (reference.isMany()) {</span>
+<span class="fc" id="L169">			final var values = (List&lt;?&gt;) value;</span>
+<span class="fc" id="L170">			indent(sb, depth);</span>
+<span class="fc" id="L171">			sb.append(reference.getName());</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">			if (reference.getEOpposite() != null) {</span>
+<span class="fc" id="L173">				sb.append(OPPOSITE_MARKER);</span>
 			}
-<span class="fc" id="L173">			sb.append(&quot; (&quot;).append(values.size()).append(&quot;):\n&quot;);</span>
+<span class="fc" id="L175">			sb.append(&quot; (&quot;).append(values.size()).append(&quot;):\n&quot;);</span>
 			
-<span class="fc bfc" id="L175" title="All 2 branches covered.">			for (int i = 0; i &lt; values.size(); i++) {</span>
-<span class="fc" id="L176">				final var referencedObject = (EObject) values.get(i);</span>
-<span class="fc" id="L177">				indent(sb, depth + 1);</span>
-<span class="fc" id="L178">				sb.append(&quot;[&quot;).append(i).append(&quot;] -&gt; &quot;);</span>
-<span class="fc" id="L179">				sb.append(formatCrossReference(eObject, referencedObject)).append(&quot;\n&quot;);</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">			for (int i = 0; i &lt; values.size(); i++) {</span>
+<span class="fc" id="L178">				final var referencedObject = (EObject) values.get(i);</span>
+<span class="fc" id="L179">				indent(sb, depth + 1);</span>
+<span class="fc" id="L180">				sb.append(&quot;[&quot;).append(i).append(&quot;] -&gt; &quot;);</span>
+<span class="fc" id="L181">				sb.append(formatCrossReference(eObject, referencedObject)).append(&quot;\n&quot;);</span>
 			}
-<span class="fc" id="L181">		} else {</span>
-<span class="fc" id="L182">			indent(sb, depth);</span>
-<span class="fc" id="L183">			sb.append(reference.getName());</span>
-<span class="fc" id="L184">			sb.append(&quot; -&gt; &quot;);</span>
-<span class="fc" id="L185">			final var referencedObject = (EObject) value;</span>
-<span class="fc" id="L186">			sb.append(formatCrossReference(eObject, referencedObject)).append(&quot;\n&quot;);</span>
+<span class="fc" id="L183">		} else {</span>
+<span class="fc" id="L184">			indent(sb, depth);</span>
+<span class="fc" id="L185">			sb.append(reference.getName());</span>
+<span class="fc" id="L186">			sb.append(&quot; -&gt; &quot;);</span>
+<span class="fc" id="L187">			final var referencedObject = (EObject) value;</span>
+<span class="fc" id="L188">			sb.append(formatCrossReference(eObject, referencedObject)).append(&quot;\n&quot;);</span>
 		}
-<span class="fc" id="L188">	}</span>
+<span class="fc" id="L190">	}</span>
 
 	private void printFeaturesOfEObject(final EObject eObject, final StringBuilder sb, final int depth) {
-<span class="fc bfc" id="L191" title="All 2 branches covered.">		for (final EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">			if (!eObject.eIsSet(feature)) {</span>
-<span class="fc" id="L193">				continue;</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		for (final EStructuralFeature feature : eObject.eClass().getEAllStructuralFeatures()) {</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">			if (!eObject.eIsSet(feature)) {</span>
+<span class="fc" id="L195">				continue;</span>
 			}
 
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			if (feature instanceof EAttribute attribute) {</span>
-<span class="fc" id="L197">				printAttribute(eObject, attribute, sb, depth);</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">			if (feature instanceof EAttribute attribute) {</span>
+<span class="fc" id="L199">				printAttribute(eObject, attribute, sb, depth);</span>
 			} else {
-<span class="fc" id="L199">				final var ref = (EReference) feature;</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">				if (ref.isContainment()) {</span>
-<span class="fc" id="L201">					printContainmentReference(eObject, ref, sb, depth);</span>
+<span class="fc" id="L201">				final var ref = (EReference) feature;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">				if (ref.isContainment()) {</span>
+<span class="fc" id="L203">					printContainmentReference(eObject, ref, sb, depth);</span>
 				} else {
-<span class="fc" id="L203">					printCrossReference(eObject, ref, sb, depth);</span>
+<span class="fc" id="L205">					printCrossReference(eObject, ref, sb, depth);</span>
 				}
 			}
-<span class="fc" id="L206">		}</span>
-<span class="fc" id="L207">	}</span>
+<span class="fc" id="L208">		}</span>
+<span class="fc" id="L209">	}</span>
 
 	private String formatCrossReference(final EObject contextObject, final EObject referencedObject) {
-<span class="fc" id="L210">		final var sb = new StringBuilder();</span>
-<span class="fc" id="L211">		sb.append(referencedObject.eClass().getName());</span>
-<span class="fc" id="L212">		sb.append(&quot; (&quot;);</span>
-<span class="fc bfc" id="L213" title="All 2 branches covered.">		final var sameResource = contextObject.eResource() == referencedObject.eResource();</span>
-<span class="fc" id="L214">		sb.append(getContainmentPath(referencedObject, sameResource));</span>
-<span class="fc" id="L215">		sb.append(&quot;)&quot;);</span>
-<span class="fc" id="L216">		return sb.toString();</span>
+<span class="fc" id="L212">		final var sb = new StringBuilder();</span>
+<span class="fc" id="L213">		sb.append(referencedObject.eClass().getName());</span>
+<span class="fc" id="L214">		sb.append(&quot; (&quot;);</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		final var sameResource = contextObject.eResource() == referencedObject.eResource();</span>
+<span class="fc" id="L216">		sb.append(getContainmentPath(referencedObject, sameResource));</span>
+<span class="fc" id="L217">		sb.append(&quot;)&quot;);</span>
+<span class="fc" id="L218">		return sb.toString();</span>
 	}
 
 	private String getContainmentPath(final EObject eObject, final boolean sameResource) {
-<span class="fc" id="L220">		final var pathElements = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L222">		final var pathElements = new ArrayList&lt;String&gt;();</span>
 		
 		// Add resource name if the object is in a different resource
-<span class="fc bfc" id="L223" title="All 4 branches covered.">		if (!sameResource &amp;&amp; eObject.eResource() != null) {</span>
-<span class="fc" id="L224">			pathElements.add(getResourceName(eObject.eResource()));</span>
+<span class="fc bfc" id="L225" title="All 4 branches covered.">		if (!sameResource &amp;&amp; eObject.eResource() != null) {</span>
+<span class="fc" id="L226">			pathElements.add(getResourceName(eObject.eResource()));</span>
 		}
 		
 		// Build containment path by walking up the eContainer chain
-<span class="fc" id="L228">		final var pathParts = new ArrayList&lt;String&gt;();</span>
-<span class="fc" id="L229">		var current = eObject;</span>
+<span class="fc" id="L230">		final var pathParts = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L231">		var current = eObject;</span>
 		
-<span class="fc bfc" id="L231" title="All 2 branches covered.">		while (current.eContainmentFeature() != null) {</span>
-<span class="fc" id="L232">			final var feature = current.eContainmentFeature();</span>
-<span class="fc" id="L233">			final var parent = current.eContainer();</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		while (current.eContainmentFeature() != null) {</span>
+<span class="fc" id="L234">			final var feature = current.eContainmentFeature();</span>
+<span class="fc" id="L235">			final var parent = current.eContainer();</span>
 			
-<span class="fc bfc" id="L235" title="All 2 branches covered.">			if (feature.isMany()) {</span>
-<span class="fc" id="L236">				final var siblings = (EList&lt;?&gt;) parent.eGet(feature);</span>
-<span class="fc" id="L237">				final var index = siblings.indexOf(current);</span>
-<span class="fc" id="L238">				pathParts.add(0, feature.getName() + &quot;[&quot; + index + &quot;]&quot;);</span>
-<span class="fc" id="L239">			} else {</span>
-<span class="fc" id="L240">				pathParts.add(0, feature.getName());</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">			if (feature.isMany()) {</span>
+<span class="fc" id="L238">				final var siblings = (EList&lt;?&gt;) parent.eGet(feature);</span>
+<span class="fc" id="L239">				final var index = siblings.indexOf(current);</span>
+<span class="fc" id="L240">				pathParts.add(0, feature.getName() + &quot;[&quot; + index + &quot;]&quot;);</span>
+<span class="fc" id="L241">			} else {</span>
+<span class="fc" id="L242">				pathParts.add(0, feature.getName());</span>
 			}
 			
-<span class="fc" id="L243">			current = parent;</span>
-<span class="fc" id="L244">		}</span>
+<span class="fc" id="L245">			current = parent;</span>
+<span class="fc" id="L246">		}</span>
 		
-<span class="fc" id="L246">		pathElements.addAll(pathParts);</span>
-<span class="fc" id="L247">		return String.join(&quot; &gt; &quot;, pathElements);</span>
+<span class="fc" id="L248">		pathElements.addAll(pathParts);</span>
+<span class="fc" id="L249">		return String.join(&quot; &gt; &quot;, pathElements);</span>
 	}
 
 	private String getResourceName(final Resource resource) {
-<span class="fc" id="L251">		return resource.getURI().lastSegment();</span>
+<span class="fc" id="L253">		return resource.getURI().lastSegment();</span>
 	}
 
 	private String formatValue(final Object value) {
-<span class="fc bfc" id="L255" title="All 2 branches covered.">		if (value instanceof String) {</span>
-<span class="fc" id="L256">			return &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">		if (value instanceof String) {</span>
+<span class="fc" id="L258">			return &quot;\&quot;&quot; + value + &quot;\&quot;&quot;;</span>
 		}
-<span class="fc" id="L258">		return String.valueOf(value);</span>
+<span class="fc" id="L260">		return String.valueOf(value);</span>
 	}
 
 	private void indent(final StringBuilder sb, final int depth) {
-<span class="fc bfc" id="L262" title="All 2 branches covered.">		for (int i = 0; i &lt; depth; i++) {</span>
-<span class="fc" id="L263">			sb.append(INDENT);</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">		for (int i = 0; i &lt; depth; i++) {</span>
+<span class="fc" id="L265">			sb.append(INDENT);</span>
 		}
-<span class="fc" id="L265">	}</span>
+<span class="fc" id="L267">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

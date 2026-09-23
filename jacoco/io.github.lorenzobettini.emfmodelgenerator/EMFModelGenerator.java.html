@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
  * with support for automatic attribute population, reference handling, and XMI serialization.
  * 
  * &lt;p&gt;&lt;b&gt;Basic Usage:&lt;/b&gt;
- * &lt;pre&gt;{@code
+ * {@snippet :
  * EMFModelGenerator generator = new EMFModelGenerator();
  * EPackage ePackage = generator.loadEcoreModel(&quot;model.ecore&quot;);
  * EClass personClass = (EClass) ePackage.getEClassifier(&quot;Person&quot;);
@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
  * generator.save();
  * 
  * generator.unloadEcoreModels(); // Clean up
- * }&lt;/pre&gt;
+ * }
  * 
  * &lt;p&gt;&lt;b&gt;Loading Ecore Models:&lt;/b&gt; Use {@link #loadEcoreModel(String)} to load Ecore files.
  * This automatically registers the resource factory and package registry entries.
@@ -60,61 +60,63 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
  * available. In particular, a required non-containment reference can remain unset when the
  * generated population has no assignable target. Use {@link #validate()} to inspect and handle the
  * validation result:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * generator.generateFrom(personClass);
  * EMFValidationResult result = generator.validate();
  * if (!result.isValid()) {
  *     result.rejectedDiagnostics().forEach(diagnostic -&gt;
  *         System.err.println(diagnostic.getMessage()));
  * }
- * }&lt;/pre&gt;
+ * }
  * Alternatively, use {@link #validateOrThrow()} when an invalid candidate should stop the
  * workflow:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * generator.generateFrom(personClass);
  * generator.validateOrThrow();
- * }&lt;/pre&gt;
+ * }
  * Validation before saving is optional and disabled by default. Enabling it prevents any resource
  * from being serialized when validation fails:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * generator.enableValidationBeforeSave();
  * generator.save();
- * }&lt;/pre&gt;
+ * }
  * A custom implementation can be supplied through {@link EMFModelValidator.Factory}:
- * &lt;pre&gt;{@code
+ * {@snippet :
  * EMFModelValidator.Factory factory = resourceSet -&gt;
  *     new MyProjectModelValidator(resourceSet);
  * EMFValidationResult customResult = generator.validate(factory);
  * generator.enableValidationBeforeSave(factory);
- * }&lt;/pre&gt;
+ * }
  * 
  * @see #loadEcoreModel(String)
  * @see #unloadEcoreModels()
  * @see #generateFrom(EClass)
  * @see #save()
+ *
+ * @author Lorenzo Bettini
  */
 public class EMFModelGenerator {
 
-<span class="fc" id="L98">	private static final EMFModelValidator.Factory STANDARD_VALIDATOR_FACTORY =</span>
-<span class="fc" id="L99">			ignored -&gt; EMFModelValidator.standard();</span>
+<span class="fc" id="L100">	private static final EMFModelValidator.Factory STANDARD_VALIDATOR_FACTORY =</span>
+<span class="fc" id="L101">			ignored -&gt; EMFModelValidator.standard();</span>
 
-<span class="fc" id="L101">	private String outputDirectory = &quot;target/test-output&quot;;</span>
+<span class="fc" id="L103">	private String outputDirectory = &quot;target/test-output&quot;;</span>
 	private final ResourceSet sharedResourceSet;
 	private EMFResourceHelper resourceHelper;
-<span class="fc" id="L104">	private EMFInstancePopulator instancePopulator = new EMFInstancePopulator();</span>
-<span class="fc" id="L105">	private int numberOfInstances = 1;</span>
-<span class="fc" id="L106">	private final List&lt;Resource&gt; loadedEcoreResources = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L107">	private final List&lt;String&gt; loadedEcoreNsURIs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L106">	private EMFInstancePopulator instancePopulator = new EMFInstancePopulator();</span>
+<span class="fc" id="L107">	private int numberOfInstances = 1;</span>
+<span class="fc" id="L108">	private final List&lt;Resource&gt; loadedEcoreResources = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L109">	private final List&lt;String&gt; loadedEcoreNsURIs = new ArrayList&lt;&gt;();</span>
 	private EMFModelValidator.Factory validationBeforeSaveFactory;
 
 	/**
 	 * Create a new EMFModelGenerator with default settings.
 	 * A new ResourceSet will be created and reused for all generation calls.
 	 */
-<span class="fc" id="L114">	public EMFModelGenerator() {</span>
-<span class="fc" id="L115">		this.sharedResourceSet = EMFResourceSetHelper.createResourceSet();</span>
-<span class="fc" id="L116">		this.resourceHelper = new EMFResourceHelper(sharedResourceSet, outputDirectory);</span>
-<span class="fc" id="L117">	}</span>
+<span class="fc" id="L116">	public EMFModelGenerator() {</span>
+<span class="fc" id="L117">		this.sharedResourceSet = EMFResourceSetHelper.createResourceSet();</span>
+<span class="fc" id="L118">		this.resourceHelper = new EMFResourceHelper(sharedResourceSet, outputDirectory);</span>
+<span class="fc" id="L119">	}</span>
 
 	/**
 	 * Create a new EMFModelGenerator with an external ResourceSet.
@@ -125,7 +127,7 @@ public class EMFModelGenerator {
 	 * which will automatically register the EcoreResourceFactoryImpl if needed.
 	 * 
 	 * &lt;p&gt;Example usage:
-	 * &lt;pre&gt;{@code
+	 * {@snippet :
 	 * ResourceSet resourceSet = new ResourceSetImpl();
 	 * resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
 	 *     .put(&quot;xmi&quot;, new XMIResourceFactoryImpl());
@@ -147,28 +149,28 @@ public class EMFModelGenerator {
 	 * generator.save(); // Saves all generated resources
 	 * 
 	 * generator.unloadEcoreModels(); // Clean up
-	 * }&lt;/pre&gt;
+	 * }
 	 * 
 	 * @param resourceSet the ResourceSet to use for all generations
 	 */
-<span class="fc" id="L154">	public EMFModelGenerator(final ResourceSet resourceSet) {</span>
-<span class="fc" id="L155">		this.sharedResourceSet = resourceSet;</span>
-<span class="fc" id="L156">		this.resourceHelper = new EMFResourceHelper(sharedResourceSet, outputDirectory);</span>
-<span class="fc" id="L157">	}</span>
+<span class="fc" id="L156">	public EMFModelGenerator(final ResourceSet resourceSet) {</span>
+<span class="fc" id="L157">		this.sharedResourceSet = resourceSet;</span>
+<span class="fc" id="L158">		this.resourceHelper = new EMFResourceHelper(sharedResourceSet, outputDirectory);</span>
+<span class="fc" id="L159">	}</span>
 
 	public void setOutputDirectory(String outputDirectory) {
-<span class="fc" id="L160">		this.outputDirectory = outputDirectory;</span>
+<span class="fc" id="L162">		this.outputDirectory = outputDirectory;</span>
 		// Recreate resource helper with new output directory
-<span class="fc" id="L162">		this.resourceHelper = new EMFResourceHelper(sharedResourceSet, outputDirectory);</span>
-<span class="fc" id="L163">	}</span>
+<span class="fc" id="L164">		this.resourceHelper = new EMFResourceHelper(sharedResourceSet, outputDirectory);</span>
+<span class="fc" id="L165">	}</span>
 
 	/**
 	 * Set a prefix to be added to all generated file names.
 	 * @param filePrefix
 	 */
 	public void setFilePrefix(String filePrefix) {
-<span class="fc" id="L170">		resourceHelper.setFilePrefix(filePrefix);</span>
-<span class="fc" id="L171">	}</span>
+<span class="fc" id="L172">		resourceHelper.setFilePrefix(filePrefix);</span>
+<span class="fc" id="L173">	}</span>
 
 	/**
 	 * Set the global file extension to be used for all generated files
@@ -177,8 +179,8 @@ public class EMFModelGenerator {
 	 * @param extension the file extension (without the dot)
 	 */
 	public void setGlobalFileExtension(String extension) {
-<span class="fc" id="L180">		resourceHelper.setGlobalFileExtension(extension);</span>
-<span class="fc" id="L181">	}</span>
+<span class="fc" id="L182">		resourceHelper.setGlobalFileExtension(extension);</span>
+<span class="fc" id="L183">	}</span>
 
 	/**
 	 * Set a custom file extension for a specific EClass.
@@ -188,8 +190,8 @@ public class EMFModelGenerator {
 	 * @param extension the file extension (without the dot)
 	 */
 	public void setFileExtensionForEClass(EClass eClass, String extension) {
-<span class="fc" id="L191">		resourceHelper.setFileExtensionForEClass(eClass, extension);</span>
-<span class="fc" id="L192">	}</span>
+<span class="fc" id="L193">		resourceHelper.setFileExtensionForEClass(eClass, extension);</span>
+<span class="fc" id="L194">	}</span>
 
 	/**
 	 * Set a custom file extension for all EClasses in a specific EPackage.
@@ -199,16 +201,16 @@ public class EMFModelGenerator {
 	 * @param extension the file extension (without the dot)
 	 */
 	public void setFileExtensionForEPackage(EPackage ePackage, String extension) {
-<span class="fc" id="L202">		resourceHelper.setFileExtensionForEPackage(ePackage, extension);</span>
-<span class="fc" id="L203">	}</span>
+<span class="fc" id="L204">		resourceHelper.setFileExtensionForEPackage(ePackage, extension);</span>
+<span class="fc" id="L205">	}</span>
 
 	/**
 	 * Set the number of instances to generate per EClass.
 	 * @param numberOfInstances
 	 */
 	public void setNumberOfInstances(int numberOfInstances) {
-<span class="fc" id="L210">		this.numberOfInstances = numberOfInstances;</span>
-<span class="fc" id="L211">	}</span>
+<span class="fc" id="L212">		this.numberOfInstances = numberOfInstances;</span>
+<span class="fc" id="L213">	}</span>
 
 	/**
 	 * Get the {@link EMFInstancePopulator} used to populate generated instances.
@@ -216,16 +218,16 @@ public class EMFModelGenerator {
 	 * multiplicities, depth limits, and self-reference policies.
 	 *
 	 * &lt;p&gt;Example:
-	 * &lt;pre&gt;{@code
+	 * {@snippet :
 	 * generator.getInstancePopulator().setMaxDepth(3);
 	 * generator.getInstancePopulator().setContainmentReferenceDefaultMaxCount(4);
 	 * generator.getInstancePopulator().setAttributeSetter(myCustomSetter);
-	 * }&lt;/pre&gt;
+	 * }
 	 *
 	 * @return the instance populator
 	 */
 	public final EMFInstancePopulator getInstancePopulator() {
-<span class="fc" id="L228">		return instancePopulator;</span>
+<span class="fc" id="L230">		return instancePopulator;</span>
 	}
 
 	/**
@@ -233,13 +235,13 @@ public class EMFModelGenerator {
 	 * EPackage registry. This method is idempotent and safe to call multiple times.
 	 */
 	private void registerPackage(ResourceSet rs, EPackage pkg) {
-<span class="fc" id="L236">		String nsURI = pkg.getNsURI();</span>
-<span class="fc" id="L237">		rs.getPackageRegistry().computeIfAbsent(nsURI, k -&gt; pkg);</span>
-<span class="fc" id="L238">		EPackage.Registry.INSTANCE.computeIfAbsent(nsURI, k -&gt; pkg);</span>
-<span class="fc" id="L239">	}</span>
+<span class="fc" id="L238">		String nsURI = pkg.getNsURI();</span>
+<span class="fc" id="L239">		rs.getPackageRegistry().computeIfAbsent(nsURI, k -&gt; pkg);</span>
+<span class="fc" id="L240">		EPackage.Registry.INSTANCE.computeIfAbsent(nsURI, k -&gt; pkg);</span>
+<span class="fc" id="L241">	}</span>
 
 	public String getOutputDirectory() {
-<span class="fc" id="L242">		return outputDirectory;</span>
+<span class="fc" id="L244">		return outputDirectory;</span>
 	}
 
 	/**
@@ -249,7 +251,7 @@ public class EMFModelGenerator {
 	 * @return the ResourceSet currently in use, or null if not yet initialized
 	 */
 	public ResourceSet getResourceSet() {
-<span class="fc" id="L252">		return sharedResourceSet;</span>
+<span class="fc" id="L254">		return sharedResourceSet;</span>
 	}
 
 	/**
@@ -266,14 +268,14 @@ public class EMFModelGenerator {
 	 * is a valid Ecore model.
 	 * 
 	 * &lt;p&gt;Example usage:
-	 * &lt;pre&gt;{@code
+	 * {@snippet :
 	 * EMFModelGenerator generator = new EMFModelGenerator();
 	 * EPackage myPackage = generator.loadEcoreModel(&quot;models/mymodel.ecore&quot;);
 	 * EClass myClass = (EClass) myPackage.getEClassifier(&quot;MyClass&quot;);
 	 * EObject instance = generator.generateFrom(myClass);
 	 * generator.save();
 	 * generator.unloadEcoreModels(); // Clean up
-	 * }&lt;/pre&gt;
+	 * }
 	 * 
 	 * @param ecoreFilePath the path to the Ecore file (absolute or relative)
 	 * @return the loaded EPackage
@@ -281,33 +283,33 @@ public class EMFModelGenerator {
 	 */
 	public EPackage loadEcoreModel(String ecoreFilePath) throws IOException {
 		// Register EcoreResourceFactoryImpl if not already registered
-<span class="fc" id="L284">		if (!sharedResourceSet.getResourceFactoryRegistry()</span>
-<span class="fc bfc" id="L285" title="All 2 branches covered.">				.getExtensionToFactoryMap().containsKey(&quot;ecore&quot;)) {</span>
-<span class="fc" id="L286">			sharedResourceSet.getResourceFactoryRegistry()</span>
-<span class="fc" id="L287">				.getExtensionToFactoryMap()</span>
-<span class="fc" id="L288">				.put(&quot;ecore&quot;, new EcoreResourceFactoryImpl());</span>
+<span class="fc" id="L286">		if (!sharedResourceSet.getResourceFactoryRegistry()</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">				.getExtensionToFactoryMap().containsKey(&quot;ecore&quot;)) {</span>
+<span class="fc" id="L288">			sharedResourceSet.getResourceFactoryRegistry()</span>
+<span class="fc" id="L289">				.getExtensionToFactoryMap()</span>
+<span class="fc" id="L290">				.put(&quot;ecore&quot;, new EcoreResourceFactoryImpl());</span>
 		}
 
 		// Load the Ecore file
-<span class="fc" id="L292">		File ecoreFile = new File(ecoreFilePath);</span>
-<span class="fc" id="L293">		URI uri = URI.createFileURI(ecoreFile.getAbsolutePath());</span>
+<span class="fc" id="L294">		File ecoreFile = new File(ecoreFilePath);</span>
+<span class="fc" id="L295">		URI uri = URI.createFileURI(ecoreFile.getAbsolutePath());</span>
 		Resource resource;
 		try {
-<span class="fc" id="L296">			resource = sharedResourceSet.getResource(uri, true);</span>
-<span class="fc" id="L297">		} catch (Exception e) {</span>
-<span class="fc" id="L298">			throw new IOException(&quot;Failed to load Ecore file: &quot; + ecoreFilePath, e);</span>
-<span class="fc" id="L299">		}</span>
+<span class="fc" id="L298">			resource = sharedResourceSet.getResource(uri, true);</span>
+<span class="fc" id="L299">		} catch (Exception e) {</span>
+<span class="fc" id="L300">			throw new IOException(&quot;Failed to load Ecore file: &quot; + ecoreFilePath, e);</span>
+<span class="fc" id="L301">		}</span>
 
-<span class="fc" id="L301">		final EPackage ePackage = (EPackage) resource.getContents().get(0);</span>
+<span class="fc" id="L303">		final EPackage ePackage = (EPackage) resource.getContents().get(0);</span>
 		
 		// Register the package in both the ResourceSet and global registry
-<span class="fc" id="L304">		registerPackage(sharedResourceSet, ePackage);</span>
+<span class="fc" id="L306">		registerPackage(sharedResourceSet, ePackage);</span>
 		
 		// Track for cleanup
-<span class="fc" id="L307">		loadedEcoreResources.add(resource);</span>
-<span class="fc" id="L308">		loadedEcoreNsURIs.add(ePackage.getNsURI());</span>
+<span class="fc" id="L309">		loadedEcoreResources.add(resource);</span>
+<span class="fc" id="L310">		loadedEcoreNsURIs.add(ePackage.getNsURI());</span>
 		
-<span class="fc" id="L310">		return ePackage;</span>
+<span class="fc" id="L312">		return ePackage;</span>
 	}
 
 	/**
@@ -324,126 +326,126 @@ public class EMFModelGenerator {
 	 */
 	public void unloadEcoreModels() {
 		// Unload resources from the ResourceSet
-<span class="fc bfc" id="L327" title="All 2 branches covered.">		for (Resource resource : loadedEcoreResources) {</span>
-<span class="fc" id="L328">			resource.unload();</span>
-<span class="fc" id="L329">			sharedResourceSet.getResources().remove(resource);</span>
-<span class="fc" id="L330">		}</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">		for (Resource resource : loadedEcoreResources) {</span>
+<span class="fc" id="L330">			resource.unload();</span>
+<span class="fc" id="L331">			sharedResourceSet.getResources().remove(resource);</span>
+<span class="fc" id="L332">		}</span>
 		
 		// Unregister packages from the global registry
-<span class="fc bfc" id="L333" title="All 2 branches covered.">		for (String nsURI : loadedEcoreNsURIs) {</span>
-<span class="fc" id="L334">			EPackage.Registry.INSTANCE.remove(nsURI);</span>
-<span class="fc" id="L335">		}</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">		for (String nsURI : loadedEcoreNsURIs) {</span>
+<span class="fc" id="L336">			EPackage.Registry.INSTANCE.remove(nsURI);</span>
+<span class="fc" id="L337">		}</span>
 		
 		// Clear tracking lists
-<span class="fc" id="L338">		loadedEcoreResources.clear();</span>
-<span class="fc" id="L339">		loadedEcoreNsURIs.clear();</span>
-<span class="fc" id="L340">	}</span>
+<span class="fc" id="L340">		loadedEcoreResources.clear();</span>
+<span class="fc" id="L341">		loadedEcoreNsURIs.clear();</span>
+<span class="fc" id="L342">	}</span>
 
 	public EObject generateFrom(EPackage ePackage) {
 		// Search for the first instantiable EClass in the package
-<span class="fc bfc" id="L344" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
-<span class="fc bfc" id="L345" title="All 4 branches covered.">			if (classifier instanceof EClass eClass &amp;&amp; EMFUtils.canBeInstantiated(eClass)) {</span>
-<span class="fc" id="L346">				return generate(eClass).get(0);</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
+<span class="fc bfc" id="L347" title="All 4 branches covered.">			if (classifier instanceof EClass eClass &amp;&amp; EMFUtils.canBeInstantiated(eClass)) {</span>
+<span class="fc" id="L348">				return generate(eClass).get(0);</span>
 			}
-<span class="fc" id="L348">		}</span>
+<span class="fc" id="L350">		}</span>
 		// No instantiable EClass found in the package
-<span class="fc" id="L350">		throw new IllegalArgumentException(</span>
-<span class="fc" id="L351">				&quot;No instantiable EClass found in EPackage: &quot; + ePackage.getName());</span>
+<span class="fc" id="L352">		throw new IllegalArgumentException(</span>
+<span class="fc" id="L353">				&quot;No instantiable EClass found in EPackage: &quot; + ePackage.getName());</span>
 	}
 
 	public EObject generateFrom(EClass eClass) {
-<span class="fc bfc" id="L355" title="All 2 branches covered.">		if (!EMFUtils.canBeInstantiated(eClass)) {</span>
-<span class="fc" id="L356">			throw new IllegalArgumentException(</span>
-<span class="fc" id="L357">					&quot;Cannot instantiate EClass: &quot; + eClass.getName() + </span>
-<span class="fc bfc" id="L358" title="All 2 branches covered.">					&quot; (it is &quot; + (eClass.isAbstract() ? &quot;abstract&quot; : &quot;an interface&quot;) + &quot;)&quot;);</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">		if (!EMFUtils.canBeInstantiated(eClass)) {</span>
+<span class="fc" id="L358">			throw new IllegalArgumentException(</span>
+<span class="fc" id="L359">					&quot;Cannot instantiate EClass: &quot; + eClass.getName() + </span>
+<span class="fc bfc" id="L360" title="All 2 branches covered.">					&quot; (it is &quot; + (eClass.isAbstract() ? &quot;abstract&quot; : &quot;an interface&quot;) + &quot;)&quot;);</span>
 		}
-<span class="fc" id="L360">		List&lt;EObject&gt; models = generate(eClass);</span>
-<span class="fc" id="L361">		return models.get(0);</span>
+<span class="fc" id="L362">		List&lt;EObject&gt; models = generate(eClass);</span>
+<span class="fc" id="L363">		return models.get(0);</span>
 	}
 
 	public List&lt;EObject&gt; generateFromSeveral(EClass... eClasses) {
 		// Check which EClasses cannot be instantiated
-<span class="fc" id="L366">		List&lt;String&gt; invalidClasses = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L367" title="All 2 branches covered.">		for (EClass eClass : eClasses) {</span>
-<span class="fc bfc" id="L368" title="All 2 branches covered.">			if (!EMFUtils.canBeInstantiated(eClass)) {</span>
-<span class="fc bfc" id="L369" title="All 2 branches covered.">				String reason = eClass.isAbstract() ? &quot;abstract&quot; : &quot;an interface&quot;;</span>
-<span class="fc" id="L370">				invalidClasses.add(eClass.getName() + &quot; (it is &quot; + reason + &quot;)&quot;);</span>
+<span class="fc" id="L368">		List&lt;String&gt; invalidClasses = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">		for (EClass eClass : eClasses) {</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">			if (!EMFUtils.canBeInstantiated(eClass)) {</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">				String reason = eClass.isAbstract() ? &quot;abstract&quot; : &quot;an interface&quot;;</span>
+<span class="fc" id="L372">				invalidClasses.add(eClass.getName() + &quot; (it is &quot; + reason + &quot;)&quot;);</span>
 			}
 		}
 		
 		// If any invalid classes found, throw exception
-<span class="fc bfc" id="L375" title="All 2 branches covered.">		if (!invalidClasses.isEmpty()) {</span>
-<span class="fc" id="L376">			throw new IllegalArgumentException(</span>
-<span class="fc" id="L377">					&quot;Cannot instantiate the following EClasses: &quot; + String.join(&quot;, &quot;, invalidClasses));</span>
+<span class="fc bfc" id="L377" title="All 2 branches covered.">		if (!invalidClasses.isEmpty()) {</span>
+<span class="fc" id="L378">			throw new IllegalArgumentException(</span>
+<span class="fc" id="L379">					&quot;Cannot instantiate the following EClasses: &quot; + String.join(&quot;, &quot;, invalidClasses));</span>
 		}
 		
-<span class="fc" id="L380">		return generate(eClasses);</span>
+<span class="fc" id="L382">		return generate(eClasses);</span>
 	}
 
 	public List&lt;EObject&gt; generateAllFrom(EPackage ePackage) {
 		// Collect all instantiable EClasses from the package
-<span class="fc" id="L385">		List&lt;EClass&gt; instantiableClasses = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L386" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
-<span class="fc bfc" id="L387" title="All 4 branches covered.">			if (classifier instanceof EClass eClass &amp;&amp; EMFUtils.canBeInstantiated(eClass)) {</span>
-<span class="fc" id="L388">				instantiableClasses.add(eClass);</span>
+<span class="fc" id="L387">		List&lt;EClass&gt; instantiableClasses = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L388" title="All 2 branches covered.">		for (var classifier : ePackage.getEClassifiers()) {</span>
+<span class="fc bfc" id="L389" title="All 4 branches covered.">			if (classifier instanceof EClass eClass &amp;&amp; EMFUtils.canBeInstantiated(eClass)) {</span>
+<span class="fc" id="L390">				instantiableClasses.add(eClass);</span>
 			}
-<span class="fc" id="L390">		}</span>
+<span class="fc" id="L392">		}</span>
 		
 		// If no instantiable classes found, throw exception
-<span class="fc bfc" id="L393" title="All 2 branches covered.">		if (instantiableClasses.isEmpty()) {</span>
-<span class="fc" id="L394">			throw new IllegalArgumentException(</span>
-<span class="fc" id="L395">					&quot;No instantiable EClass found in EPackage: &quot; + ePackage.getName());</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">		if (instantiableClasses.isEmpty()) {</span>
+<span class="fc" id="L396">			throw new IllegalArgumentException(</span>
+<span class="fc" id="L397">					&quot;No instantiable EClass found in EPackage: &quot; + ePackage.getName());</span>
 		}
 		
 		// Generate instances for all instantiable classes
-<span class="fc" id="L399">		return generate(instantiableClasses.toArray(new EClass[0]));</span>
+<span class="fc" id="L401">		return generate(instantiableClasses.toArray(new EClass[0]));</span>
 	}
 
 	public List&lt;EObject&gt; generateAllFrom(EClass eClass) {
 		// Find all instantiable subclasses (including the EClass itself if instantiable)
-<span class="fc" id="L404">		var instantiableSubclasses = EMFUtils.findAllInstantiableSubclasses(eClass);</span>
+<span class="fc" id="L406">		var instantiableSubclasses = EMFUtils.findAllInstantiableSubclasses(eClass);</span>
 		
 		// If no instantiable classes found, throw exception
-<span class="fc bfc" id="L407" title="All 2 branches covered.">		if (instantiableSubclasses.isEmpty()) {</span>
-<span class="fc" id="L408">			throw new IllegalArgumentException(</span>
-<span class="fc" id="L409">					&quot;No instantiable EClass found for EClass: &quot; + eClass.getName());</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">		if (instantiableSubclasses.isEmpty()) {</span>
+<span class="fc" id="L410">			throw new IllegalArgumentException(</span>
+<span class="fc" id="L411">					&quot;No instantiable EClass found for EClass: &quot; + eClass.getName());</span>
 		}
 		
 		// Generate instances for all instantiable subclasses
-<span class="fc" id="L413">		return generate(instantiableSubclasses.toArray(new EClass[0]));</span>
+<span class="fc" id="L415">		return generate(instantiableSubclasses.toArray(new EClass[0]));</span>
 	}
 
 	private List&lt;EObject&gt; generate(EClass... eClasses) {
 		// Register all involved packages in the shared ResourceSet and globally
-<span class="fc bfc" id="L418" title="All 2 branches covered.">		for (EClass eClass : eClasses) {</span>
-<span class="fc" id="L419">			EPackage pkg = eClass.getEPackage();</span>
-<span class="fc" id="L420">			registerPackage(sharedResourceSet, pkg);</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">		for (EClass eClass : eClasses) {</span>
+<span class="fc" id="L421">			EPackage pkg = eClass.getEPackage();</span>
+<span class="fc" id="L422">			registerPackage(sharedResourceSet, pkg);</span>
 		}
 
 		// Generate instances for each EClass using the shared ResourceSet
-<span class="fc" id="L424">		List&lt;EObject&gt; generatedModels = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L425" title="All 2 branches covered.">		for (EClass eClass : eClasses) {</span>
-<span class="fc bfc" id="L426" title="All 2 branches covered.">			for (int i = 0; i &lt; numberOfInstances; i++) {</span>
-<span class="fc" id="L427">				EObject model = generateModel(eClass);</span>
-<span class="fc" id="L428">				generatedModels.add(model);</span>
+<span class="fc" id="L426">		List&lt;EObject&gt; generatedModels = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">		for (EClass eClass : eClasses) {</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">			for (int i = 0; i &lt; numberOfInstances; i++) {</span>
+<span class="fc" id="L429">				EObject model = generateModel(eClass);</span>
+<span class="fc" id="L430">				generatedModels.add(model);</span>
 			}
 		}
 
 		// populate all generated models together to set attributes and references correctly
-<span class="fc" id="L433">		instancePopulator.populateEObjects(generatedModels.toArray(new EObject[0]));</span>
+<span class="fc" id="L435">		instancePopulator.populateEObjects(generatedModels.toArray(new EObject[0]));</span>
 
-<span class="fc" id="L435">		return generatedModels;</span>
+<span class="fc" id="L437">		return generatedModels;</span>
 	}
 
 	private EObject generateModel(EClass eClass) {
 		// Create resource using helper
-<span class="fc" id="L440">		Resource resource = resourceHelper.createResource(eClass);</span>
+<span class="fc" id="L442">		Resource resource = resourceHelper.createResource(eClass);</span>
 
 		// Create root instance and add it to the resource
-<span class="fc" id="L443">		EObject rootInstance = EcoreUtil.create(eClass);</span>
-<span class="fc" id="L444">		resource.getContents().add(rootInstance);</span>
+<span class="fc" id="L445">		EObject rootInstance = EcoreUtil.create(eClass);</span>
+<span class="fc" id="L446">		resource.getContents().add(rootInstance);</span>
 
-<span class="fc" id="L446">		return rootInstance;</span>
+<span class="fc" id="L448">		return rootInstance;</span>
 	}
 
 	/**
@@ -456,7 +458,7 @@ public class EMFModelGenerator {
 	 * @return the aggregate validation result
 	 */
 	public EMFValidationResult validate() {
-<span class="fc" id="L459">		return validate(STANDARD_VALIDATOR_FACTORY);</span>
+<span class="fc" id="L461">		return validate(STANDARD_VALIDATOR_FACTORY);</span>
 	}
 
 	/**
@@ -471,10 +473,10 @@ public class EMFModelGenerator {
 	 * @throws NullPointerException if the factory, validator, or result is {@code null}
 	 */
 	public EMFValidationResult validate(final EMFModelValidator.Factory validatorFactory) {
-<span class="fc" id="L474">		Objects.requireNonNull(validatorFactory, &quot;validatorFactory&quot;);</span>
-<span class="fc" id="L475">		try (var validator = Objects.requireNonNull(validatorFactory.create(sharedResourceSet),</span>
+<span class="fc" id="L476">		Objects.requireNonNull(validatorFactory, &quot;validatorFactory&quot;);</span>
+<span class="fc" id="L477">		try (var validator = Objects.requireNonNull(validatorFactory.create(sharedResourceSet),</span>
 				&quot;Validator factory returned null&quot;)) {
-<span class="fc" id="L477">			return Objects.requireNonNull(validator.validateAll(modelRoots()),</span>
+<span class="fc" id="L479">			return Objects.requireNonNull(validator.validateAll(modelRoots()),</span>
 					&quot;Validator returned a null result&quot;);
 		}
 	}
@@ -485,8 +487,8 @@ public class EMFModelGenerator {
 	 * @throws EMFValidationException if validation is not valid
 	 */
 	public void validateOrThrow() {
-<span class="fc" id="L488">		validateOrThrow(STANDARD_VALIDATOR_FACTORY);</span>
-<span class="fc" id="L489">	}</span>
+<span class="fc" id="L490">		validateOrThrow(STANDARD_VALIDATOR_FACTORY);</span>
+<span class="fc" id="L491">	}</span>
 
 	/**
 	 * Validates all model roots with a custom validator and throws when invalid.
@@ -496,22 +498,22 @@ public class EMFModelGenerator {
 	 * @throws EMFValidationException if validation is not valid
 	 */
 	public void validateOrThrow(final EMFModelValidator.Factory validatorFactory) {
-<span class="fc" id="L499">		var result = validate(validatorFactory);</span>
-<span class="fc bfc" id="L500" title="All 2 branches covered.">		if (!result.isValid()) {</span>
-<span class="fc" id="L501">			throw new EMFValidationException(result);</span>
+<span class="fc" id="L501">		var result = validate(validatorFactory);</span>
+<span class="fc bfc" id="L502" title="All 2 branches covered.">		if (!result.isValid()) {</span>
+<span class="fc" id="L503">			throw new EMFValidationException(result);</span>
 		}
-<span class="fc" id="L503">	}</span>
+<span class="fc" id="L505">	}</span>
 
 	private Collection&lt;Resource&gt; modelResources() {
-<span class="fc" id="L506">		return sharedResourceSet.getResources().stream()</span>
-<span class="fc bfc" id="L507" title="All 2 branches covered.">				.filter(resource -&gt; !EMFUtils.isEcoreResource(resource))</span>
-<span class="fc" id="L508">				.toList();</span>
+<span class="fc" id="L508">		return sharedResourceSet.getResources().stream()</span>
+<span class="fc bfc" id="L509" title="All 2 branches covered.">				.filter(resource -&gt; !EMFUtils.isEcoreResource(resource))</span>
+<span class="fc" id="L510">				.toList();</span>
 	}
 
 	private List&lt;EObject&gt; modelRoots() {
-<span class="fc" id="L512">		return modelResources().stream()</span>
-<span class="fc" id="L513">				.flatMap(resource -&gt; resource.getContents().stream())</span>
-<span class="fc" id="L514">				.toList();</span>
+<span class="fc" id="L514">		return modelResources().stream()</span>
+<span class="fc" id="L515">				.flatMap(resource -&gt; resource.getContents().stream())</span>
+<span class="fc" id="L516">				.toList();</span>
 	}
 
 	/**
@@ -522,8 +524,8 @@ public class EMFModelGenerator {
 	 * Validation before saving is disabled by default.&lt;/p&gt;
 	 */
 	public void enableValidationBeforeSave() {
-<span class="fc" id="L525">		enableValidationBeforeSave(STANDARD_VALIDATOR_FACTORY);</span>
-<span class="fc" id="L526">	}</span>
+<span class="fc" id="L527">		enableValidationBeforeSave(STANDARD_VALIDATOR_FACTORY);</span>
+<span class="fc" id="L528">	}</span>
 
 	/**
 	 * Enables validation with a custom validator factory before each save operation.
@@ -532,15 +534,15 @@ public class EMFModelGenerator {
 	 * @throws NullPointerException if {@code validatorFactory} is {@code null}
 	 */
 	public void enableValidationBeforeSave(final EMFModelValidator.Factory validatorFactory) {
-<span class="fc" id="L535">		validationBeforeSaveFactory = Objects.requireNonNull(validatorFactory, &quot;validatorFactory&quot;);</span>
-<span class="fc" id="L536">	}</span>
+<span class="fc" id="L537">		validationBeforeSaveFactory = Objects.requireNonNull(validatorFactory, &quot;validatorFactory&quot;);</span>
+<span class="fc" id="L538">	}</span>
 
 	/**
 	 * Disables validation before saving, restoring the default save behavior.
 	 */
 	public void disableValidationBeforeSave() {
-<span class="fc" id="L542">		validationBeforeSaveFactory = null;</span>
-<span class="fc" id="L543">	}</span>
+<span class="fc" id="L544">		validationBeforeSaveFactory = null;</span>
+<span class="fc" id="L545">	}</span>
 
 	/**
 	 * Reports whether validation before saving is enabled.
@@ -548,7 +550,7 @@ public class EMFModelGenerator {
 	 * @return {@code true} when subsequent saves validate before serialization
 	 */
 	public boolean isValidationBeforeSaveEnabled() {
-<span class="fc bfc" id="L551" title="All 2 branches covered.">		return validationBeforeSaveFactory != null;</span>
+<span class="fc bfc" id="L553" title="All 2 branches covered.">		return validationBeforeSaveFactory != null;</span>
 	}
 
 	/**
@@ -561,8 +563,8 @@ public class EMFModelGenerator {
 		and the generated model fails validation
 	 */
 	public void save() throws IOException {
-<span class="fc" id="L564">		save(null);</span>
-<span class="fc" id="L565">	}</span>
+<span class="fc" id="L566">		save(null);</span>
+<span class="fc" id="L567">	}</span>
 
 	/**
 	 * Save all generated models to XMI files with custom options.
@@ -570,11 +572,11 @@ public class EMFModelGenerator {
 	 * Ecore files are automatically skipped.
 	 * 
 	 * &lt;p&gt;Example usage with schemaLocation:
-	 * &lt;pre&gt;{@code
+	 * {@snippet :
 	 * Map&lt;Object, Object&gt; options = new HashMap&lt;&gt;();
 	 * options.put(XMLResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
 	 * generator.save(options);
-	 * }&lt;/pre&gt;
+	 * }
 	 *
 	 * @param options the save options to pass to EMF resources, or null for default options
 	 * @throws IOException if the files cannot be written
@@ -582,18 +584,18 @@ public class EMFModelGenerator {
 		and the generated model fails validation
 	 */
 	public void save(final Map&lt;Object, Object&gt; options) throws IOException {
-<span class="fc bfc" id="L585" title="All 2 branches covered.">		if (validationBeforeSaveFactory != null) {</span>
-<span class="fc" id="L586">			validateOrThrow(validationBeforeSaveFactory);</span>
+<span class="fc bfc" id="L587" title="All 2 branches covered.">		if (validationBeforeSaveFactory != null) {</span>
+<span class="fc" id="L588">			validateOrThrow(validationBeforeSaveFactory);</span>
 		}
 
 		// Ensure output directory exists
-<span class="fc" id="L590">		String outputDir = resourceHelper.getOutputDirectory();</span>
-<span class="fc" id="L591">		Path outputPath = Paths.get(outputDir);</span>
-<span class="fc" id="L592">		Files.createDirectories(outputPath);</span>
+<span class="fc" id="L592">		String outputDir = resourceHelper.getOutputDirectory();</span>
+<span class="fc" id="L593">		Path outputPath = Paths.get(outputDir);</span>
+<span class="fc" id="L594">		Files.createDirectories(outputPath);</span>
 
-<span class="fc bfc" id="L594" title="All 2 branches covered.">		for (Resource resource : modelResources()) {</span>
-<span class="fc" id="L595">			resource.save(options);</span>
-<span class="fc" id="L596">		}</span>
-<span class="fc" id="L597">	}</span>
+<span class="fc bfc" id="L596" title="All 2 branches covered.">		for (Resource resource : modelResources()) {</span>
+<span class="fc" id="L597">			resource.save(options);</span>
+<span class="fc" id="L598">		}</span>
+<span class="fc" id="L599">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
