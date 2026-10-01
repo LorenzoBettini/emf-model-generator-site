@@ -1,11 +1,12 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFModelGenerator.PackageRegistration,0,21,0,0,0,3,0,2,0,2
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFInstanceCreatorFeatureSetter,0,74,0,8,0,21,0,8,0,4
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinFeatureMapGroupMemberSelector,0,6,0,0,0,2,0,2,0,2
-EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFAttributeSetter,0,559,0,120,0,97,0,89,0,29
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFAttributeSetter,0,695,0,166,0,121,0,113,0,30
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFResourceHelper,0,183,0,4,0,43,0,15,0,13
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFValidationKind,0,21,0,0,0,4,0,1,0,1
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFRoundRobinCandidateSelector,0,64,0,4,0,14,0,6,0,4
-EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFModelGenerator,0,660,0,50,0,144,0,64,0,39
+EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFModelGenerator,0,888,0,68,0,203,0,86,0,52
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFModelValidator,0,31,0,4,0,10,0,6,0,4
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFStandardModelValidator,0,125,0,8,0,30,0,11,0,7
 EMF Model Generator,io.github.lorenzobettini.emfmodelgenerator,EMFValidationException,0,48,0,4,0,14,0,7,0,5

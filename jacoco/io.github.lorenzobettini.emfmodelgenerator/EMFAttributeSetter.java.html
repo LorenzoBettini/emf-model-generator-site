@@ -46,9 +46,10 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 
 	// Map to track counters for each EClass/EAttribute combination
 <span class="fc" id="L48">	private final Map&lt;CounterKey, Integer&gt; attributeCounters = new HashMap&lt;&gt;();</span>
+	private int idAttributeCounter;
 
 	// Selector for enum literal candidate selection
-<span class="fc" id="L51">	private EMFCandidateSelectorStrategy&lt;EEnum, EEnumLiteral&gt; enumLiteralSelectorStrategy = new EMFRoundRobinEEnumLiteralCandidateSelector();</span>
+<span class="fc" id="L52">	private EMFCandidateSelectorStrategy&lt;EEnum, EEnumLiteral&gt; enumLiteralSelectorStrategy = new EMFRoundRobinEEnumLiteralCandidateSelector();</span>
 
 	/**
 	 * Function interface for attribute value operations.
@@ -58,8 +59,8 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	}
 
 	protected EMFAttributeSetter() {
-<span class="fc" id="L61">		super(DEFAULT_MULTI_VALUED_COUNT);</span>
-<span class="fc" id="L62">	}</span>
+<span class="fc" id="L62">		super(DEFAULT_MULTI_VALUED_COUNT);</span>
+<span class="fc" id="L63">	}</span>
 
 	/**
 	 * Set the candidate selector strategy for selecting enum literals.
@@ -67,8 +68,8 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @param strategy the candidate selector strategy to use
 	 */
 	public void setEnumLiteralSelectorStrategy(EMFCandidateSelectorStrategy&lt;EEnum, EEnumLiteral&gt; strategy) {
-<span class="fc" id="L70">		this.enumLiteralSelectorStrategy = strategy;</span>
-<span class="fc" id="L71">	}</span>
+<span class="fc" id="L71">		this.enumLiteralSelectorStrategy = strategy;</span>
+<span class="fc" id="L72">	}</span>
 
 	/**
 	 * Set the default integer value to use when generating integer attributes.
@@ -76,8 +77,8 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @param defaultIntValue the default integer value
 	 */
 	public void setDefaultIntValue(final int defaultIntValue) {
-<span class="fc" id="L79">		this.defaultIntValue = defaultIntValue;</span>
-<span class="fc" id="L80">	}</span>
+<span class="fc" id="L80">		this.defaultIntValue = defaultIntValue;</span>
+<span class="fc" id="L81">	}</span>
 
 	/**
 	 * Set the default double value to use when generating double/float attributes.
@@ -85,8 +86,8 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @param defaultDoubleValue the default double value
 	 */
 	public void setDefaultDoubleValue(final double defaultDoubleValue) {
-<span class="fc" id="L88">		this.defaultDoubleValue = defaultDoubleValue;</span>
-<span class="fc" id="L89">	}</span>
+<span class="fc" id="L89">		this.defaultDoubleValue = defaultDoubleValue;</span>
+<span class="fc" id="L90">	}</span>
 
 	/**
 	 * Get the configured default integer value.
@@ -94,7 +95,7 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @return the default integer value
 	 */
 	public int getDefaultIntValue() {
-<span class="fc" id="L97">		return defaultIntValue;</span>
+<span class="fc" id="L98">		return defaultIntValue;</span>
 	}
 
 	/**
@@ -103,7 +104,7 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @return the default double value
 	 */
 	public double getDefaultDoubleValue() {
-<span class="fc" id="L106">		return defaultDoubleValue;</span>
+<span class="fc" id="L107">		return defaultDoubleValue;</span>
 	}
 
 	/**
@@ -115,37 +116,38 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @param attribute the attribute to set
 	 */
 	public void setAttribute(final EObject owner, final EAttribute attribute) {
-<span class="fc" id="L118">		setFeature(owner, attribute);</span>
-<span class="fc" id="L119">	}</span>
+<span class="fc" id="L119">		setFeature(owner, attribute);</span>
+<span class="fc" id="L120">	}</span>
 
 	@Override
 	protected void setSingleFeature(final EObject owner, final EAttribute attribute) {
-<span class="fc" id="L123">		final Object value = generateAttributeValue(owner, attribute);</span>
+<span class="fc" id="L124">		final Object value = generateAttributeValue(owner, attribute);</span>
 		// For single-valued attributes
-<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (value != null) {</span>
-<span class="fc" id="L126">			owner.eSet(attribute, value);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">		if (value != null) {</span>
+<span class="fc" id="L127">			owner.eSet(attribute, value);</span>
 		}
-<span class="fc" id="L128">	}</span>
+<span class="fc" id="L129">	}</span>
 
 	@Override
 	protected void setMultiFeature(final EObject owner, final EAttribute attribute) {
-<span class="fc" id="L132">		final int count = EMFUtils.getEffectiveCount(attribute, getMaxCountFor(owner, attribute));</span>
+<span class="fc" id="L133">		final int count = EMFUtils.getEffectiveCount(attribute, getMaxCountFor(owner, attribute));</span>
 		// For multi-valued attributes, add multiple values
 		// Respect upper and lower bounds
-<span class="fc bfc" id="L135" title="All 2 branches covered.">		for (int i = 0; i &lt; count; i++) {</span>
-<span class="fc" id="L136">			final Object value = generateAttributeValue(owner, attribute);</span>
-<span class="fc bfc" id="L137" title="All 2 branches covered.">			if (value != null) {</span>
-<span class="fc" id="L138">				final var list = EMFUtils.getAsList(owner, attribute);</span>
-<span class="fc" id="L139">				list.add(value);</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">		for (int i = 0; i &lt; count; i++) {</span>
+<span class="fc" id="L137">			final Object value = generateAttributeValue(owner, attribute);</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">			if (value != null) {</span>
+<span class="fc" id="L139">				final var list = EMFUtils.getAsList(owner, attribute);</span>
+<span class="fc" id="L140">				list.add(value);</span>
 			}
 		}
-<span class="fc" id="L142">	}</span>
+<span class="fc" id="L143">	}</span>
 
 	/**
 	 * Generate a sample value for an attribute based on its data type. Uses a
-	 * per-attribute counter to generate unique incremental values. For enum types,
-	 * uses the configured enum literal selector strategy to select enum literals
-	 * (by default, round-robin).
+	 * per-attribute counter to generate unique incremental values. ID attributes
+	 * instead use a counter shared across all EClasses to avoid duplicate IDs. For
+	 * enum types, uses the configured enum literal selector strategy to select
+	 * enum literals (by default, round-robin).
 	 * 
 	 * @param owner The EObject owning the attribute. By default, this parameter is not used in value generation but may be useful for extensions.
 	 * @param attribute the attribute to generate a value for
@@ -153,142 +155,170 @@ public class EMFAttributeSetter extends EMFConfigurableFeatureSetter&lt;EAttribu
 	 * @return the generated value, or null if the data type is not supported
 	 */
 	protected Object generateAttributeValue(EObject owner, final EAttribute attribute) {
-<span class="fc" id="L156">		final EDataType dataType = attribute.getEAttributeType();</span>
+<span class="fc" id="L158">		final EDataType dataType = attribute.getEAttributeType();</span>
 
-<span class="fc" id="L158">		var function = getFunctionFor(attribute);</span>
-<span class="fc bfc" id="L159" title="All 2 branches covered.">		if (function != null) {</span>
-<span class="fc" id="L160">			return function.apply(owner);</span>
+<span class="fc" id="L160">		var function = getFunctionFor(attribute);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (function != null) {</span>
+<span class="fc" id="L162">			return function.apply(owner);</span>
 		}
 
 		// Check if the data type is an enum
-<span class="fc bfc" id="L164" title="All 2 branches covered.">		if (dataType instanceof EEnum eEnum) {</span>
-<span class="fc" id="L165">			return generateEnumValue(eEnum);</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		if (dataType instanceof EEnum eEnum) {</span>
+<span class="fc" id="L167">			return generateEnumValue(eEnum);</span>
 		}
 
 		// Get and increment the counter for this EClass/attribute combination
-<span class="fc" id="L169">		final int counter = getAndIncrementCounter(owner, attribute);</span>
+<span class="fc" id="L171">		final int counter = getAndIncrementCounter(owner, attribute);</span>
 
 		// Generate value based on data type
-<span class="fc" id="L172">		return generateValueForDataType(owner, attribute, dataType, counter);</span>
+<span class="fc" id="L174">		return generateValueForDataType(owner, attribute, dataType, counter);</span>
 	}
 
 	private Object generateEnumValue(final EEnum eEnum) {
-<span class="fc" id="L176">		final var literal = enumLiteralSelectorStrategy.getNextCandidate(null, eEnum);</span>
-<span class="fc bfc" id="L177" title="All 2 branches covered.">		return literal != null ? literal.getInstance() : null;</span>
+<span class="fc" id="L178">		final var literal = enumLiteralSelectorStrategy.getNextCandidate(null, eEnum);</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		return literal != null ? literal.getInstance() : null;</span>
 	}
 
 	private int getAndIncrementCounter(final EObject owner, final EAttribute attribute) {
-<span class="fc" id="L181">		final var key = new CounterKey(owner.eClass(), attribute);</span>
-<span class="fc" id="L182">		final int counter = attributeCounters.getOrDefault(key, 0);</span>
-<span class="fc" id="L183">		attributeCounters.put(key, counter + 1);</span>
-<span class="fc" id="L184">		return counter;</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">		if (attribute.isID()) {</span>
+<span class="fc" id="L184">			return idAttributeCounter++;</span>
+		}
+<span class="fc" id="L186">		final var key = new CounterKey(owner.eClass(), attribute);</span>
+<span class="fc" id="L187">		final int counter = attributeCounters.getOrDefault(key, 0);</span>
+<span class="fc" id="L188">		attributeCounters.put(key, counter + 1);</span>
+<span class="fc" id="L189">		return counter;</span>
 	}
 
 	private Object generateValueForDataType(final EObject owner, final EAttribute attribute, final EDataType dataType, final int counter) {
-<span class="fc bfc" id="L188" title="All 2 branches covered.">		if (isStringType(dataType)) {</span>
-<span class="fc" id="L189">			return generateStringValue(owner, attribute, counter);</span>
-<span class="fc bfc" id="L190" title="All 2 branches covered.">		} else if (isIntegerType(dataType)) {</span>
-<span class="fc" id="L191">			return defaultIntValue + counter;</span>
-<span class="fc bfc" id="L192" title="All 2 branches covered.">		} else if (isBooleanType(dataType)) {</span>
-<span class="fc bfc" id="L193" title="All 2 branches covered.">			return counter % 2 == 0;</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">		} else if (isDoubleType(dataType)) {</span>
-<span class="fc" id="L195">			return defaultDoubleValue + counter;</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">		} else if (isFloatType(dataType)) {</span>
-<span class="fc" id="L197">			return (float) (defaultDoubleValue + counter);</span>
-<span class="fc bfc" id="L198" title="All 2 branches covered.">		} else if (isLongType(dataType)) {</span>
-<span class="fc" id="L199">			return (long) (defaultIntValue + counter);</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">		} else if (isShortType(dataType)) {</span>
-<span class="fc" id="L201">			return (short) (defaultIntValue + counter);</span>
-<span class="fc bfc" id="L202" title="All 2 branches covered.">		} else if (isByteType(dataType)) {</span>
-<span class="fc" id="L203">			return (byte) (defaultIntValue + counter);</span>
-<span class="fc bfc" id="L204" title="All 2 branches covered.">		} else if (isCharType(dataType)) {</span>
-<span class="fc" id="L205">			return (char) ('A' + counter);</span>
-<span class="fc bfc" id="L206" title="All 2 branches covered.">		} else if (dataType == EcorePackage.Literals.EDATE) {</span>
-<span class="fc" id="L207">			return generateDateValue(counter);</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">		} else if (isBigDecimalType(dataType)) {</span>
-<span class="fc" id="L209">			return BigDecimal.valueOf(defaultDoubleValue + counter);</span>
-<span class="fc bfc" id="L210" title="All 2 branches covered.">		} else if (isBigIntegerType(dataType)) {</span>
-<span class="fc" id="L211">			return BigInteger.valueOf((long)defaultIntValue + counter);</span>
-<span class="fc bfc" id="L212" title="All 2 branches covered.">		} else if (isByteArrayType(dataType)) {</span>
-<span class="fc" id="L213">			return generateByteArrayValue(counter);</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">		if (isStringType(dataType)) {</span>
+<span class="fc" id="L194">			return generateStringValue(owner, attribute, counter);</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		} else if (isIntegerType(dataType)) {</span>
+<span class="fc" id="L196">			return defaultIntValue + counter;</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">		} else if (isBooleanType(dataType)) {</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">			return counter % 2 == 0;</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">		} else if (isDoubleType(dataType)) {</span>
+<span class="fc" id="L200">			return defaultDoubleValue + counter;</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		} else if (isFloatType(dataType)) {</span>
+<span class="fc" id="L202">			return (float) (defaultDoubleValue + counter);</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		} else if (isLongType(dataType)) {</span>
+<span class="fc" id="L204">			return (long) (defaultIntValue + counter);</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		} else if (isShortType(dataType)) {</span>
+<span class="fc" id="L206">			return (short) (defaultIntValue + counter);</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		} else if (isByteType(dataType)) {</span>
+<span class="fc" id="L208">			return (byte) (defaultIntValue + counter);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">		} else if (isCharType(dataType)) {</span>
+<span class="fc" id="L210">			return (char) ('A' + counter);</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">		} else if (isDateType(dataType)) {</span>
+<span class="fc" id="L212">			return generateDateValue(counter);</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">		} else if (isBigDecimalType(dataType)) {</span>
+<span class="fc" id="L214">			return BigDecimal.valueOf(defaultDoubleValue + counter);</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">		} else if (isBigIntegerType(dataType)) {</span>
+<span class="fc" id="L216">			return BigInteger.valueOf((long)defaultIntValue + counter);</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">		} else if (isByteArrayType(dataType)) {</span>
+<span class="fc" id="L218">			return generateByteArrayValue(counter);</span>
 		} else {
-<span class="fc" id="L215">			return attribute.getDefaultValue();</span>
+<span class="fc" id="L220">			return attribute.getDefaultValue();</span>
 		}
 	}
 
 	private String generateStringValue(final EObject owner, final EAttribute attribute, final int counter) {
-<span class="fc" id="L220">		final String eClassName = owner.eClass().getName();</span>
-<span class="fc" id="L221">		return eClassName + &quot;_&quot; + attribute.getName() + &quot;_&quot; + (counter + 1);</span>
+<span class="fc" id="L225">		final String eClassName = owner.eClass().getName();</span>
+<span class="fc" id="L226">		return eClassName + &quot;_&quot; + attribute.getName() + &quot;_&quot; + (counter + 1);</span>
 	}
 
 	private Object generateDateValue(final int counter) {
 		// EMF EDate is backed by java.util.Date; keep java.time internally and convert at the boundary.
-<span class="fc" id="L226">		return Date.from(</span>
+<span class="fc" id="L231">		return Date.from(</span>
 			BASE_DATE
-<span class="fc" id="L228">				.plusDays(counter)</span>
-<span class="fc" id="L229">				.atStartOfDay(SYSTEM_ZONE)</span>
-<span class="fc" id="L230">				.toInstant()</span>
+<span class="fc" id="L233">				.plusDays(counter)</span>
+<span class="fc" id="L234">				.atStartOfDay(SYSTEM_ZONE)</span>
+<span class="fc" id="L235">				.toInstant()</span>
 		);
 	}
 
 	private byte[] generateByteArrayValue(final int counter) {
-<span class="fc" id="L235">		return new byte[] { (byte) (defaultIntValue + counter), (byte) (defaultIntValue + counter + 1) };</span>
+<span class="fc" id="L240">		return new byte[] { (byte) (defaultIntValue + counter), (byte) (defaultIntValue + counter + 1) };</span>
 	}
 
 	private boolean isStringType(final EDataType dataType) {
-<span class="fc bfc" id="L239" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ESTRING || &quot;String&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L244" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ESTRING || &quot;String&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">				|| String.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isIntegerType(final EDataType dataType) {
-<span class="fc bfc" id="L243" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EINT || dataType == EcorePackage.Literals.EINTEGER_OBJECT</span>
-<span class="fc bfc" id="L244" title="All 4 branches covered.">				|| &quot;int&quot;.equals(dataType.getName()) || &quot;Integer&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L249" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EINT || dataType == EcorePackage.Literals.EINTEGER_OBJECT</span>
+<span class="fc bfc" id="L250" title="All 4 branches covered.">				|| &quot;int&quot;.equals(dataType.getName()) || &quot;Integer&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">				|| &quot;int&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">				|| Integer.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isBooleanType(final EDataType dataType) {
-<span class="fc bfc" id="L248" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBOOLEAN || dataType == EcorePackage.Literals.EBOOLEAN_OBJECT</span>
-<span class="fc bfc" id="L249" title="All 4 branches covered.">				|| &quot;boolean&quot;.equals(dataType.getName()) || &quot;Boolean&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L256" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBOOLEAN || dataType == EcorePackage.Literals.EBOOLEAN_OBJECT</span>
+<span class="fc bfc" id="L257" title="All 4 branches covered.">				|| &quot;boolean&quot;.equals(dataType.getName()) || &quot;Boolean&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">				|| &quot;boolean&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">				|| Boolean.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isDoubleType(final EDataType dataType) {
-<span class="fc bfc" id="L253" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EDOUBLE || dataType == EcorePackage.Literals.EDOUBLE_OBJECT</span>
-<span class="fc bfc" id="L254" title="All 4 branches covered.">				|| &quot;double&quot;.equals(dataType.getName()) || &quot;Double&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L263" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EDOUBLE || dataType == EcorePackage.Literals.EDOUBLE_OBJECT</span>
+<span class="fc bfc" id="L264" title="All 4 branches covered.">				|| &quot;double&quot;.equals(dataType.getName()) || &quot;Double&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">				|| &quot;double&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">				|| Double.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isFloatType(final EDataType dataType) {
-<span class="fc bfc" id="L258" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EFLOAT || dataType == EcorePackage.Literals.EFLOAT_OBJECT</span>
-<span class="fc bfc" id="L259" title="All 4 branches covered.">				|| &quot;float&quot;.equals(dataType.getName()) || &quot;Float&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L270" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EFLOAT || dataType == EcorePackage.Literals.EFLOAT_OBJECT</span>
+<span class="fc bfc" id="L271" title="All 4 branches covered.">				|| &quot;float&quot;.equals(dataType.getName()) || &quot;Float&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">				|| &quot;float&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">				|| Float.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isLongType(final EDataType dataType) {
-<span class="fc bfc" id="L263" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ELONG || dataType == EcorePackage.Literals.ELONG_OBJECT</span>
-<span class="fc bfc" id="L264" title="All 4 branches covered.">				|| &quot;long&quot;.equals(dataType.getName()) || &quot;Long&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L277" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ELONG || dataType == EcorePackage.Literals.ELONG_OBJECT</span>
+<span class="fc bfc" id="L278" title="All 4 branches covered.">				|| &quot;long&quot;.equals(dataType.getName()) || &quot;Long&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">				|| &quot;long&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">				|| Long.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isShortType(final EDataType dataType) {
-<span class="fc bfc" id="L268" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ESHORT || dataType == EcorePackage.Literals.ESHORT_OBJECT</span>
-<span class="fc bfc" id="L269" title="All 4 branches covered.">				|| &quot;short&quot;.equals(dataType.getName()) || &quot;Short&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L284" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ESHORT || dataType == EcorePackage.Literals.ESHORT_OBJECT</span>
+<span class="fc bfc" id="L285" title="All 4 branches covered.">				|| &quot;short&quot;.equals(dataType.getName()) || &quot;Short&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">				|| &quot;short&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">				|| Short.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isByteType(final EDataType dataType) {
-<span class="fc bfc" id="L273" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBYTE || dataType == EcorePackage.Literals.EBYTE_OBJECT</span>
-<span class="fc bfc" id="L274" title="All 4 branches covered.">				|| &quot;byte&quot;.equals(dataType.getName()) || &quot;Byte&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L291" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBYTE || dataType == EcorePackage.Literals.EBYTE_OBJECT</span>
+<span class="fc bfc" id="L292" title="All 4 branches covered.">				|| &quot;byte&quot;.equals(dataType.getName()) || &quot;Byte&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">				|| &quot;byte&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">				|| Byte.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isCharType(final EDataType dataType) {
-<span class="fc bfc" id="L278" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ECHAR || dataType == EcorePackage.Literals.ECHARACTER_OBJECT</span>
-<span class="fc bfc" id="L279" title="All 4 branches covered.">				|| &quot;char&quot;.equals(dataType.getName()) || &quot;Character&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L298" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.ECHAR || dataType == EcorePackage.Literals.ECHARACTER_OBJECT</span>
+<span class="fc bfc" id="L299" title="All 4 branches covered.">				|| &quot;char&quot;.equals(dataType.getName()) || &quot;Character&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">				|| &quot;char&quot;.equals(dataType.getInstanceClassName())</span>
+<span class="fc bfc" id="L301" title="All 2 branches covered.">				|| Character.class.getName().equals(dataType.getInstanceClassName());</span>
+	}
+
+	private boolean isDateType(final EDataType dataType) {
+<span class="fc bfc" id="L305" title="All 2 branches covered.">		return dataType == EcorePackage.Literals.EDATE</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">				|| Date.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isBigDecimalType(final EDataType dataType) {
-<span class="fc bfc" id="L283" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBIG_DECIMAL || &quot;BigDecimal&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L310" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBIG_DECIMAL || &quot;BigDecimal&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">				|| BigDecimal.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isBigIntegerType(final EDataType dataType) {
-<span class="fc bfc" id="L287" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBIG_INTEGER || &quot;BigInteger&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L315" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBIG_INTEGER || &quot;BigInteger&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L316" title="All 2 branches covered.">				|| BigInteger.class.getName().equals(dataType.getInstanceClassName());</span>
 	}
 
 	private boolean isByteArrayType(final EDataType dataType) {
-<span class="fc bfc" id="L291" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBYTE_ARRAY || &quot;byte[]&quot;.equals(dataType.getName());</span>
+<span class="fc bfc" id="L320" title="All 4 branches covered.">		return dataType == EcorePackage.Literals.EBYTE_ARRAY || &quot;byte[]&quot;.equals(dataType.getName())</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">				|| &quot;byte[]&quot;.equals(dataType.getInstanceClassName());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>

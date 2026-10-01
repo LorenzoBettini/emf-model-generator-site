@@ -19,7 +19,7 @@ public class EMFCrossReferenceSetter extends EMFConfigurableFeatureSetter&lt;ERe
 
 	private static final int DEFAULT_MULTI_VALUED_COUNT = 2;
 <span class="fc" id="L21">	private EMFCandidateSelectorStrategy&lt;EClass, EObject&gt; candidateSelectorStrategy = new EMFRoundRobinEObjectCandidateSelector();</span>
-<span class="fc" id="L22">	private SelfReferencePolicy selfReferencePolicy = (owner, reference) -&gt; false;</span>
+<span class="fc" id="L22">	private CyclePolicy cyclePolicy = (owner, reference) -&gt; false;</span>
 
 	/**
 	 * Function interface for cross reference operations.
@@ -29,27 +29,23 @@ public class EMFCrossReferenceSetter extends EMFConfigurableFeatureSetter&lt;ERe
 	}
 
 	/**
-	 * Functional interface for determining whether direct self-references are allowed.
-	 *
-	 * &lt;p&gt;This policy concerns only references where the owner and candidate are the same
-	 * EObject (cycles of length one). It does not detect or prevent longer cycles among
-	 * non-containment references.&lt;/p&gt;
+	 * Functional interface for determining whether cycles (self-references) are allowed.
 	 */
 	@FunctionalInterface
-	public static interface SelfReferencePolicy {
+	public static interface CyclePolicy {
 		/**
 		 * Determines whether an EObject is allowed to reference itself through the given reference.
 		 * 
 		 * @param owner the EObject that would reference itself
-		 * @param reference the reference through which the owner would reference itself
+		 * @param reference the reference through which the cycle would be created
 		 * @return true if the owner is allowed to reference itself, false otherwise
 		 */
-		boolean allowSelfReferenceFor(EObject owner, EReference reference);
+		boolean allowCycleFor(EObject owner, EReference reference);
 	}
 
 	public EMFCrossReferenceSetter() {
-<span class="fc" id="L51">		super(DEFAULT_MULTI_VALUED_COUNT);</span>
-<span class="fc" id="L52">	}</span>
+<span class="fc" id="L47">		super(DEFAULT_MULTI_VALUED_COUNT);</span>
+<span class="fc" id="L48">	}</span>
 
 	/**
 	 * Set the candidate selector strategy for selecting existing EObject instances.
@@ -57,17 +53,17 @@ public class EMFCrossReferenceSetter extends EMFConfigurableFeatureSetter&lt;ERe
 	 * @param strategy the candidate selector strategy to use
 	 */
 	public void setCandidateSelectorStrategy(EMFCandidateSelectorStrategy&lt;EClass, EObject&gt; strategy) {
-<span class="fc" id="L60">		this.candidateSelectorStrategy = strategy;</span>
-<span class="fc" id="L61">	}</span>
+<span class="fc" id="L56">		this.candidateSelectorStrategy = strategy;</span>
+<span class="fc" id="L57">	}</span>
 
 	/**
-	 * Set the policy for determining whether direct self-references are allowed.
+	 * Set the cycle policy for determining whether self-references are allowed.
 	 * 
-	 * @param policy the self-reference policy to use
+	 * @param cyclePolicy the cycle policy to use
 	 */
-	public void setSelfReferencePolicy(SelfReferencePolicy policy) {
-<span class="fc" id="L69">		this.selfReferencePolicy = policy;</span>
-<span class="fc" id="L70">	}</span>
+	public void setAllowCyclePolicy(CyclePolicy cyclePolicy) {
+<span class="fc" id="L65">		this.cyclePolicy = cyclePolicy;</span>
+<span class="fc" id="L66">	}</span>
 
 	/**
 	 * Reset the candidate selection state.
@@ -78,19 +74,19 @@ public class EMFCrossReferenceSetter extends EMFConfigurableFeatureSetter&lt;ERe
 	 * in subsequent selections.&lt;/p&gt;
 	 */
 	public void reset() {
-<span class="fc" id="L81">		candidateSelectorStrategy.reset();</span>
-<span class="fc" id="L82">	}</span>
+<span class="fc" id="L77">		candidateSelectorStrategy.reset();</span>
+<span class="fc" id="L78">	}</span>
 
 	/**
 	 * Determines whether an EObject is allowed to reference itself through the given reference.
-	 * Uses the configured self-reference policy.
+	 * Uses the configured cycle policy.
 	 * 
 	 * @param owner the EObject that would reference itself
-	 * @param reference the reference through which the owner would reference itself
+	 * @param reference the reference through which the cycle would be created
 	 * @return true if the owner is allowed to reference itself, false otherwise
 	 */
-	protected boolean allowSelfReferenceFor(EObject owner, EReference reference) {
-<span class="fc" id="L93">		return selfReferencePolicy.allowSelfReferenceFor(owner, reference);</span>
+	protected boolean allowCycleFor(EObject owner, EReference reference) {
+<span class="fc" id="L89">		return cyclePolicy.allowCycleFor(owner, reference);</span>
 	}
 
 	/**
@@ -105,8 +101,8 @@ public class EMFCrossReferenceSetter extends EMFConfigurableFeatureSetter&lt;ERe
 	 */
 	@Override
 	protected boolean shouldSetFeature(EObject owner, EReference feature) {
-<span class="fc bfc" id="L108" title="All 2 branches covered.">		return super.shouldSetFeature(owner, feature) ||</span>
-<span class="fc bfc" id="L109" title="All 4 branches covered.">				(feature.isMany() &amp;&amp; feature.getEOpposite() != null);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">		return super.shouldSetFeature(owner, feature) ||</span>
+<span class="fc bfc" id="L105" title="All 4 branches covered.">				(feature.isMany() &amp;&amp; feature.getEOpposite() != null);</span>
 	}
 
 	/**
@@ -121,91 +117,90 @@ public class EMFCrossReferenceSetter extends EMFConfigurableFeatureSetter&lt;ERe
 	 * @param reference the assumed cross EReference to set (its type is assumed to be in a resource, which is assumed to be in a resource set)
 	 */
 	public void setCrossReference(EObject owner, EReference reference) {
-<span class="fc" id="L124">		setFeature(owner, reference);</span>
-<span class="fc" id="L125">	}</span>
+<span class="fc" id="L120">		setFeature(owner, reference);</span>
+<span class="fc" id="L121">	}</span>
 
 	@Override
 	protected void setSingleFeature(EObject owner, EReference reference) {
-<span class="fc" id="L129">		EClass eReferenceType = reference.getEReferenceType();</span>
+<span class="fc" id="L125">		EClass eReferenceType = reference.getEReferenceType();</span>
 		// For single-valued references, use an existing assignable instance
-<span class="fc" id="L131">		EObject referencedEObject = nextAssignableExistingInstance(owner, eReferenceType, reference);</span>
-<span class="fc bfc" id="L132" title="All 2 branches covered.">		if (referencedEObject == null) {</span>
-<span class="fc" id="L133">			return;</span>
+<span class="fc" id="L127">		EObject referencedEObject = nextAssignableExistingInstance(owner, eReferenceType, reference);</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">		if (referencedEObject == null) {</span>
+<span class="fc" id="L129">			return;</span>
 		}
-<span class="fc" id="L135">		owner.eSet(reference, referencedEObject);</span>
-<span class="fc" id="L136">	}</span>
+<span class="fc" id="L131">		owner.eSet(reference, referencedEObject);</span>
+<span class="fc" id="L132">	}</span>
 
 	@Override
 	protected void setMultiFeature(EObject owner, EReference reference) {
-<span class="fc" id="L140">		EClass eReferenceType = reference.getEReferenceType();</span>
-<span class="fc" id="L141">		final var list = EMFUtils.getAsList(owner, reference);</span>
+<span class="fc" id="L136">		EClass eReferenceType = reference.getEReferenceType();</span>
+<span class="fc" id="L137">		final var list = EMFUtils.getAsList(owner, reference);</span>
 
 		// For multi-valued references, add multiple EObjects
 		// Respect upper and lower bounds
-<span class="fc" id="L145">		final int count = EMFUtils.getEffectiveCount(reference, getMaxCountFor(owner, reference));</span>
+<span class="fc" id="L141">		final int count = EMFUtils.getEffectiveCount(reference, getMaxCountFor(owner, reference));</span>
 		// if some values are already set, we only add the missing ones
 		// (this could happen in the presence of opposite references)
-<span class="fc" id="L148">		final int missingCount = count - list.size();</span>
+<span class="fc" id="L144">		final int missingCount = count - list.size();</span>
 
-<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; missingCount; i++) {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		for (int i = 0; i &lt; missingCount; i++) {</span>
 			// Get next candidate using the configured selector strategy
-<span class="fc" id="L152">			EObject referencedEObject = nextAssignableExistingInstance(owner, eReferenceType, reference);</span>
+<span class="fc" id="L148">			EObject referencedEObject = nextAssignableExistingInstance(owner, eReferenceType, reference);</span>
 			// but skip already present ones (only if unique is true), avoiding infinite loops
-<span class="fc bfc" id="L154" title="All 2 branches covered.">			if (reference.isUnique()) {</span>
-<span class="fc" id="L155">				EObject firstCandidate = referencedEObject;</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">				while (referencedEObject != null &amp;&amp;</span>
-<span class="fc bfc" id="L157" title="All 2 branches covered.">						list.contains(referencedEObject)) {</span>
-<span class="fc" id="L158">					referencedEObject = nextAssignableExistingInstance(owner, eReferenceType, reference);</span>
-<span class="fc bfc" id="L159" title="All 2 branches covered.">					if (referencedEObject == firstCandidate) {</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">			if (reference.isUnique()) {</span>
+<span class="fc" id="L151">				EObject firstCandidate = referencedEObject;</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">				while (referencedEObject != null &amp;&amp;</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">						list.contains(referencedEObject)) {</span>
+<span class="fc" id="L154">					referencedEObject = nextAssignableExistingInstance(owner, eReferenceType, reference);</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">					if (referencedEObject == firstCandidate) {</span>
 						// we've looped through all candidates and found no new one
-<span class="fc" id="L161">						return;</span>
+<span class="fc" id="L157">						return;</span>
 					}
 				}
 			}
-<span class="fc bfc" id="L165" title="All 2 branches covered.">			if (referencedEObject == null) {</span>
-<span class="fc" id="L166">				return;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">			if (referencedEObject == null) {</span>
+<span class="fc" id="L162">				return;</span>
 			}
 
-<span class="fc" id="L169">			list.add(referencedEObject);</span>
+<span class="fc" id="L165">			list.add(referencedEObject);</span>
 		}
-<span class="fc" id="L171">	}</span>
+<span class="fc" id="L167">	}</span>
 
 	private EObject nextAssignableExistingInstance(EObject owner, EClass eReferenceType, EReference reference) {
-<span class="fc" id="L174">		var function = getFunctionFor(reference);</span>
-<span class="fc bfc" id="L175" title="All 2 branches covered.">		if (function != null) {</span>
-<span class="fc" id="L176">			final EObject candidate = function.apply(owner);</span>
-<span class="fc bfc" id="L177" title="All 2 branches covered.">			if (candidate != null &amp;&amp;</span>
-<span class="fc bfc" id="L178" title="All 2 branches covered.">					isCandidateValid(owner, reference, candidate)) {</span>
-<span class="fc" id="L179">				return candidate;</span>
+<span class="fc" id="L170">		var function = getFunctionFor(reference);</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (function != null) {</span>
+<span class="fc" id="L172">			final EObject candidate = function.apply(owner);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">			if (candidate != null &amp;&amp;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">					isCandidateValid(owner, reference, candidate)) {</span>
+<span class="fc" id="L175">				return candidate;</span>
 			}
 		}
 
 		// Try to get candidates using the configured selector strategy until we find one
-		// that passes the opposite reference check and is not the owner itself (unless a direct
-		// self-reference is allowed).
+		// that passes the opposite reference check and is not the owner itself (unless cycles are allowed).
 		// Since the selector wraps around, we track the first candidate to detect when
 		// we've checked all
-<span class="fc" id="L188">		final EObject firstCandidate = candidateSelectorStrategy.getNextCandidate(owner, eReferenceType);</span>
-<span class="fc bfc" id="L189" title="All 2 branches covered.">		if (firstCandidate == null) {</span>
-<span class="fc" id="L190">			return null;</span>
+<span class="fc" id="L183">		final EObject firstCandidate = candidateSelectorStrategy.getNextCandidate(owner, eReferenceType);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">		if (firstCandidate == null) {</span>
+<span class="fc" id="L185">			return null;</span>
 		}
 
 		// Note: at this point, getNextCandidate never returns null (it wraps around)
-<span class="fc" id="L194">		EObject candidate = firstCandidate;</span>
+<span class="fc" id="L189">		EObject candidate = firstCandidate;</span>
 		do {
-<span class="fc bfc" id="L196" title="All 2 branches covered.">			if (isCandidateValid(owner, reference, candidate)) {</span>
-<span class="fc" id="L197">				return candidate;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">			if (isCandidateValid(owner, reference, candidate)) {</span>
+<span class="fc" id="L192">				return candidate;</span>
 			}
-<span class="fc" id="L199">			candidate = candidateSelectorStrategy.getNextCandidate(owner, eReferenceType);</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">		} while (candidate != firstCandidate);</span>
+<span class="fc" id="L194">			candidate = candidateSelectorStrategy.getNextCandidate(owner, eReferenceType);</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">		} while (candidate != firstCandidate);</span>
 
 		// We've checked all candidates and none passed the filter
-<span class="fc" id="L203">		return null;</span>
+<span class="fc" id="L198">		return null;</span>
 	}
 
 	private boolean isCandidateValid(EObject owner, EReference reference, EObject candidate) {
-<span class="fc bfc" id="L207" title="All 4 branches covered.">		return (owner != candidate || allowSelfReferenceFor(owner, reference)) &amp;&amp;</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">				EMFUtils.canSetInThePresenceOfOppositeReference(reference, candidate);</span>
+<span class="fc bfc" id="L202" title="All 4 branches covered.">		return (owner != candidate || allowCycleFor(owner, reference)) &amp;&amp;</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">				EMFUtils.canSetInThePresenceOfOppositeReference(reference, candidate);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.15.202606040825</span></div></body></html>
